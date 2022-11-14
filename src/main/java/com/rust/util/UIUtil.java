@@ -50,13 +50,23 @@ public class UIUtil {
         image.handle(it->it.id(finalId));
         return image;
     }
+    public static NkImage create_image(String name,String dir){
+        NkImage image = NkImage.create();
+        int id = -1;
+        try{
+            id = ImageHelper.from(name,dir);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        int finalId = id;
+        image.handle(it->it.id(finalId));
+        return image;
+    }
     public static WindowImage create_wimage(String name){
         WindowImage img = new WindowImage();
         img.name = name;
         img.image = NkImage.create();
-        System.out.println(img.path);
         int id = -1;
-
         try{
             id = ImageHelper.fromUI(img.name);
         }catch (Exception e){

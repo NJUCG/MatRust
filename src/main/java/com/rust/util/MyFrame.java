@@ -7,12 +7,13 @@ package com.rust.util;
 
 
 import com.rust.view.Demo;
-import com.rust.view.IAction;
+import com.rust.view.HeaderBar;
+import com.rust.view.MainWindow;
 import com.rust.view.window.ControllTab;
 import com.rust.view.window.FilePanel;
 import com.rust.view.window.NodeEditor;
 import com.rust.view.window.StatusBar;
-import com.sun.jna.platform.win32.WinNT;
+import com.rust.view.window.style.Style;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
@@ -55,7 +56,7 @@ import static org.lwjgl.system.MemoryUtil.memAddress;
 /**
  * @author elect
  */
-public class MyFrame implements GLFWKeyCallbackI, GLFWCursorPosCallbackI {
+public class MyFrame implements GLFWKeyCallbackI, GLFWCursorPosCallbackI{
     public static int SCR_WIDTH = 1200;
     public static int SCR_HEIGHT = 900;
     public StartPipelineHandler startPipelineHandler = new StartPipelineHandler();
@@ -69,6 +70,7 @@ public class MyFrame implements GLFWKeyCallbackI, GLFWCursorPosCallbackI {
     public NkAllocator ALLOCATOR;
     private NkContext ctx = NkContext.create();
     private NkUserFont default_font = NkUserFont.create();
+    private MainWindow mainWindow = new MainWindow();
     public StatusBar statusBar = StatusBar.instance;
     public ControllTab controllTab = ControllTab.instance;
     public FilePanel filePanel = FilePanel.instance;
@@ -80,6 +82,11 @@ public class MyFrame implements GLFWKeyCallbackI, GLFWCursorPosCallbackI {
     public int frag_shdr;
     public int uniform_tex;
     public int uniform_proj;
+    private NkImage icon;
+    public HeaderBar headerBar = new HeaderBar();{
+        headerBar.headerWidth = SCR_WIDTH;
+        headerBar.headerHeight = 25;
+    }
     public NkBuffer cmds = NkBuffer.create();
     private Demo demo = new Demo();
     public MyFrame(String title) throws Exception {
@@ -123,38 +130,61 @@ public class MyFrame implements GLFWKeyCallbackI, GLFWCursorPosCallbackI {
         GLFW.glfwSetCursorPosCallback(window,this);
         ctx = setupWindow(window);
         setUpFont();
+        mainWindow.initAfterOpenGL(SCR_WIDTH,SCR_HEIGHT);
+
         statusBar.initAfterOpenGL();
         filePanel.initAfterOpenGL();
         editor.initAfterOpenGL();
         statusBar.onStart = startPipelineHandler;
         statusBar.onClear = restartPipelineHandler;
+        icon = UIUtil.create_image("normal.png");
+
         init();
+
         while (!GLFW.glfwWindowShouldClose(window)){
             newFrame();
-            display();
-            //demo.layout(ctx,50,50);
-            statusBar.layout(ctx,100,100);
-            controllTab.layout(ctx,840,0,450,360);
-            filePanel.layout(ctx,840,450,450,360);
-            editor.layout(ctx,100,100,600,600);
             try (MemoryStack stack = stackPush()) {
                 IntBuffer width  = stack.mallocInt(1);
                 IntBuffer height = stack.mallocInt(1);
                 glfwGetWindowSize(window, width, height);
-                glViewport(0, 0, width.get(0), height.get(0));
-                NkColorf bg = demo.background;
-                glClearColor(bg.r(), bg.g(), bg.b(), bg.a());
+                glViewport(0, 0, width.get(0)/2, height.get(0)/2);
             }
-            //glClear(GL_COLOR_BUFFER_BIT);
+            glClearColor(0f,0f,0f,1);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            display();
+            drawWindow(ctx);
+            //statusBar.layout(ctx,100,100);
+            //controllTab.layout(ctx,840,0,450,360);
+            //filePanel.layout(ctx,840,450,450,360);
+            //editor.layout(ctx,100,100,600,600);
             render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
+            nk_clear(ctx);
             glfwSwapBuffers(window);
         }
         shutdown();
         glfwFreeCallbacks(window);
         glfwTerminate();
     }
-    public void drawToolBar(){
 
+    private void drawWindow(NkContext ctx){
+        try (MemoryStack stack = MemoryStack.stackPush()){
+            NkRect rect = NkRect.malloc(stack);
+            rect.set(0,0,SCR_WIDTH,40);
+            ctx = Style.style.toolBarStyle(ctx);
+            if(nk_begin(ctx,"title",rect,NK_WINDOW_BACKGROUND | NK_WINDOW_NO_SCROLLBAR)){
+                NkCommandBuffer canvas = nk_window_get_canvas(ctx);
+                drawToolBar(ctx, canvas);
+                nk_end(ctx);
+            }
+        }
+    }
+    public void drawToolBar(NkContext ctx, NkCommandBuffer canvas){
+        nk_layout_row(ctx, NK_DYNAMIC, 1, new float[]{1});
+        nk_spacing(ctx, 1);
+        nk_layout_row(ctx, NK_STATIC, 15, new float[]{60, 40});
+        nk_spacing(ctx, 1);
+        nk_button_label(ctx, "File");
+        nk_draw_image(canvas,NkRect.create().set(5,5,25,25),icon,Style.white);
     }
     public void shutdown() {
         Objects.requireNonNull(ctx.clip().copy()).free();
@@ -170,7 +200,7 @@ public class MyFrame implements GLFWKeyCallbackI, GLFWCursorPosCallbackI {
         int BITMAP_W = 1024;
         int BITMAP_H = 1024;
 
-        int FONT_HEIGHT = 18;
+        int FONT_HEIGHT = 20;
         int fontTexID   = glGenTextures();
 
         STBTTFontinfo fontInfo = STBTTFontinfo.create();
@@ -520,16 +550,14 @@ public class MyFrame implements GLFWKeyCallbackI, GLFWCursorPosCallbackI {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
     }
-    public int width,height,display_width,display_height;
+    public int width,height,display_width,display_height,display_start_x, display_start_y;
     public void newFrame() {
         try (MemoryStack stack = stackPush()) {
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
-
             glfwGetWindowSize(window, w, h);
             width = w.get(0);
             height = h.get(0);
-
             glfwGetFramebufferSize(window, w, h);
             display_width = w.get(0);
             display_height = h.get(0);
@@ -602,7 +630,6 @@ public class MyFrame implements GLFWKeyCallbackI, GLFWCursorPosCallbackI {
                 // setup buffers to load vertices and elements
                 NkBuffer vbuf = NkBuffer.malloc(stack);
                 NkBuffer ebuf = NkBuffer.malloc(stack);
-
                 nk_buffer_init_fixed(vbuf, vertices/*, max_vertex_buffer*/);
                 nk_buffer_init_fixed(ebuf, elements/*, max_element_buffer*/);
                 nk_convert(ctx, cmds, vbuf, ebuf, config);
@@ -629,7 +656,6 @@ public class MyFrame implements GLFWKeyCallbackI, GLFWCursorPosCallbackI {
                 glDrawElements(GL_TRIANGLES, cmd.elem_count(), GL_UNSIGNED_SHORT, offset);
                 offset += cmd.elem_count() * 2;
             }
-            nk_clear(ctx);
             nk_buffer_clear(cmds);
         }
 

@@ -66,7 +66,7 @@ public class ControllTab extends MyWindow{
                     nk_rect(x, y, rectW, rectH, rect),
                     NK_WINDOW_MINIMIZABLE
             )) {
-                if(nk_tree_push_hashed(ctx,NK_TREE_NODE,"Env",NK_MINIMIZED,getBBuffer("env_tree"),nextSeed())){
+                if(nk_tree_push_hashed(ctx,NK_TREE_TAB,"Env",NK_MINIMIZED,getBBuffer("env_tree"),nextSeed())){
                     addPercentArg(ctx,"RH",0,1,0.01f);
                     addPercentArg(ctx,"CC",0,1,0.01f);
                     addPercentArg(ctx,"SC",0,1,0.01f);
@@ -76,7 +76,7 @@ public class ControllTab extends MyWindow{
                     addPercentArg(ctx,"metallic",0,1,0.01f);
                     nk_tree_pop(ctx);
                 }
-                if(nk_tree_push_hashed(ctx,NK_TREE_NODE,"Engine",NK_MINIMIZED,getBBuffer("engine_tree"),nextSeed())){
+                if(nk_tree_push_hashed(ctx,NK_TREE_TAB,"Engine",NK_MINIMIZED,getBBuffer("engine_tree"),nextSeed())){
                     addPercentArg(ctx,"Grow Time","grow_time",0,200,1);
                     if(nk_tree_push_hashed(ctx,NK_TREE_NODE,"Background Color",NK_MINIMIZED,getBBuffer("background_color_tree"),nextSeed())){
                         if (nk_combo_begin_color(ctx, NkColor.create().set((byte) (255 *background.r()), (byte) (255 *background.g()),(byte) (255 *background.b()),(byte) (255 *background.a())), nk_vec2(nk_widget_width(ctx),400,NkVec2.create()))) {
@@ -91,7 +91,7 @@ public class ControllTab extends MyWindow{
                         }
                         nk_tree_pop(ctx);
                     }
-                    if(nk_tree_push_hashed(ctx,NK_TREE_NODE,"Common Curvature",NK_MINIMIZED,getBBuffer("curvature_tree"),nextSeed())){
+                    if(nk_tree_push_hashed(ctx,NK_TREE_TAB,"Common Curvature",NK_MINIMIZED,getBBuffer("curvature_tree"),nextSeed())){
                         FilePanel.layoutTexturePicker(ctx,commonCurvature);
                         nk_tree_pop(ctx);
                     }

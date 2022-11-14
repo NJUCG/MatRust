@@ -88,8 +88,6 @@ public class TestFrame extends MyFrame{
         float currentTime = (float)GLFW.glfwGetTime();
         TimeManager.shared.deltaTime = currentTime - TimeManager.shared.lastFrame;
         TimeManager.shared.lastFrame = currentTime;
-        glClearColor(0.7f,1f,1f,1);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         shader.use();
         Mat4 projection = Glm.perspective_(GlmExtension.radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         Mat4 view = camera.GetViewMatrix();
