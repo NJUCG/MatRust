@@ -1,15 +1,10 @@
 package com.rust.view;
 
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.awt.GLCanvas;
-import com.jogamp.opengl.util.FPSAnimator;
-import com.rust.view.window.LayerInfo;
+import com.rust.util.MyFrame;
 import com.rust.view.window.NodeObject;
 import com.rust.view.window.NodeSlot;
+import io.qt.widgets.QApplication;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.FileNotFoundException;
 
 public class TestConfig {
@@ -17,7 +12,10 @@ public class TestConfig {
         NodeObject.init();
         NodeSlot.init();
         try {
-            new TestFrame().setup("");
+            QApplication.initialize(args);
+            MyFrame frame = new MyFrame();
+            frame.show();
+            QApplication.exec();
         }catch (Exception e){
             e.printStackTrace();
         }

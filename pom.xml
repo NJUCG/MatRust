@@ -18,7 +18,7 @@
         <legui.version>4.1.0</legui.version>
         <joml.version>1.10.0</joml.version>
         <nifty.version>1.4.3</nifty.version>
-        <qt.version>6.4.1</qt.version>
+        <qt.version>6.4.0</qt.version>
         <lwjgl.natives>natives-windows</lwjgl.natives>
     </properties>
 

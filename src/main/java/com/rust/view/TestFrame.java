@@ -72,7 +72,6 @@ public class TestFrame extends MyFrame{
 
         camera.Position = new Vec3(0,0,3);
         camera.Center = displayLoc;
-        GLFW.glfwGetCursorPos(window,xpos,ypos);
         lastX = xpos.get(0);
         lastY = ypos.get(0);
         try {
@@ -155,7 +154,7 @@ public class TestFrame extends MyFrame{
 
     private boolean turnHeadEnabled = false;
     public void processInput() {
-        camera.FrameFun();
+        /*camera.FrameFun();
         if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS){
             changeView = true;
         }
@@ -183,7 +182,7 @@ public class TestFrame extends MyFrame{
             camera.ProcessMouseMovement(xpos.get(0)-lastX,ypos.get(0)-lastY,true);
             lastX = xpos.get(0);
             lastY = ypos.get(0);
-        }
+        }*/
     }
 
 }
