@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{12094E8C-5FC5-40D3-82ED-ED484CEF33D4}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.22000.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtInstall>6.4.0_msvc2019_64</QtInstall>
+    <QtModules>core;gui;quick;widgets;core5compat;opengl;quickwidgets;uitools;webenginecore;webview</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>6.4.0_msvc2019_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <IncludePath>D:\rust\CRust\CRustDependency\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\rust\CRust\CRustDependency\lib;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>D:\rust\CRust\CRustDependency\include;D:\rust\CRust\CRustDependency\stb-master\stb-master;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalDependencies>assimpd.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="CanvasBackGround.cpp" />
+    <ClCompile Include="ColorHelper.cpp" />
+    <ClCompile Include="ControllerSelector.cpp" />
+    <ClCompile Include="ControllPanel.cpp" />
+    <ClCompile Include="ControllSelectorDelegate.cpp" />
+    <ClCompile Include="ControllTabResponder.cpp" />
+    <ClCompile Include="ControlTabDelegate.cpp" />
+    <ClCompile Include="CssLoader.cpp" />
+    <ClCompile Include="CurvatureHelper.cpp" />
+    <ClCompile Include="DPD.cpp" />
+    <ClCompile Include="DPDPatch.cpp" />
+    <ClCompile Include="EngineTab.cpp" />
+    <ClCompile Include="EnvTab.cpp" />
+    <ClCompile Include="EventAdapter.cpp" />
+    <ClCompile Include="EventResponder.cpp" />
+    <ClCompile Include="FilmHeader.cpp" />
+    <ClCompile Include="FloatEdit.cpp" />
+    <ClCompile Include="FloatEditDelegate.cpp" />
+    <ClCompile Include="FloatEditLabel.cpp" />
+    <ClCompile Include="FloatEditLineEdit.cpp" />
+    <ClCompile Include="FloatEditPushButton.cpp" />
+    <ClCompile Include="FloatEditResponder.cpp" />
+    <ClCompile Include="FloatMiddleButton.cpp" />
+    <ClCompile Include="FloatScrollBar.cpp" />
+    <ClCompile Include="FloatProgressBarResponder.cpp" />
+    <ClCompile Include="FloatScrollNodeDataResponder.cpp" />
+    <ClCompile Include="Header.cpp" />
+    <ClCompile Include="IdGenerator.cpp" />
+    <ClCompile Include="ImageHelper.cpp" />
+    <ClCompile Include="Layer.cpp" />
+    <ClCompile Include="LightData.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="NodeCurve.cpp" />
+    <ClCompile Include="NodeData.cpp" />
+    <ClCompile Include="NodeDataAdapter.cpp" />
+    <ClCompile Include="NodeDataButton.cpp" />
+    <ClCompile Include="NodeDataButtonResponder.cpp" />
+    <ClCompile Include="NodeDataResponder.cpp" />
+    <ClCompile Include="NodeEditor.cpp" />
+    <ClCompile Include="NodeObject.cpp" />
+    <ClCompile Include="NodePool.cpp" />
+    <ClCompile Include="NodeWidget.cpp" />
+    <ClCompile Include="NodeWidgetResponder.cpp" />
+    <ClCompile Include="ObjectData.cpp" />
+    <ClCompile Include="ObjectTab.cpp" />
+    <ClCompile Include="OxideLayer.cpp" />
+    <ClCompile Include="Perlin.cpp" />
+    <ClCompile Include="PerlinBackGroundI.cpp" />
+    <ClCompile Include="PipelineConfig.cpp" />
+    <ClCompile Include="PipelineManager.cpp" />
+    <ClCompile Include="PipelineManagerResponder.cpp" />
+    <ClCompile Include="PipelineOutput.cpp" />
+    <ClCompile Include="PlayerWidget.cpp" />
+    <ClCompile Include="SceneTab.cpp" />
+    <ClCompile Include="SceneTabEntry.cpp" />
+    <ClCompile Include="SceneTabEntryResponder.cpp" />
+    <ClCompile Include="Separator.cpp" />
+    <ClCompile Include="SeparatorContainer.cpp" />
+    <ClCompile Include="SeparatorResponder.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SimpleEntry.cpp" />
+    <ClCompile Include="StackedWidget.cpp" />
+    <ClCompile Include="SulfurLayer.cpp" />
+    <ClCompile Include="TabEntry.cpp" />
+    <ClCompile Include="TabOption.cpp" />
+    <ClCompile Include="TimeMachineIdentifier.cpp" />
+    <ClCompile Include="TimeMachineResponder.cpp" />
+    <ClCompile Include="UIModel.cpp" />
+    <QtRcc Include="QtWidgetsApplication1.qrc" />
+    <QtUic Include="QtWidgetsApplication1.ui" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\CRustDependency\stb-master\stb-master\stb_image.h" />
+    <ClInclude Include="bezier.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CanvasBackGround.h" />
+    <ClInclude Include="ColorHelper.h" />
+    <ClInclude Include="ControllSelectorDelegate.h" />
+    <ClInclude Include="ControllTabResponder.h" />
+    <ClInclude Include="ControlTabDelegate.h" />
+    <ClInclude Include="CssLoader.h" />
+    <ClInclude Include="CurvatureHelper.h" />
+    <ClInclude Include="DPD.h" />
+    <ClInclude Include="DPDPatch.h" />
+    <ClInclude Include="EngineTab.h" />
+    <ClInclude Include="EnvTab.h" />
+    <ClInclude Include="EventAdapter.h" />
+    <ClInclude Include="EventResponder.h" />
+    <ClInclude Include="FilmHeader.h" />
+    <ClInclude Include="FloatEdit.h" />
+    <ClInclude Include="FloatEditDelegate.h" />
+    <ClInclude Include="FloatEditLabel.h" />
+    <ClInclude Include="FloatEditLineEdit.h" />
+    <ClInclude Include="FloatEditPushButton.h" />
+    <ClInclude Include="FloatEditResponder.h" />
+    <ClInclude Include="FloatMiddleButton.h" />
+    <ClInclude Include="FloatScrollBar.h" />
+    <ClInclude Include="FloatProgressBarResponder.h" />
+    <ClInclude Include="FloatScrollNodeDataResponder.h" />
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="IdGenerator.h" />
+    <ClInclude Include="ImageHelper.h" />
+    <ClInclude Include="Layer.h" />
+    <ClInclude Include="LightData.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="NodeCurve.h" />
+    <ClInclude Include="NodeData.h" />
+    <ClInclude Include="NodeDataAdapter.h" />
+    <ClInclude Include="NodeDataButton.h" />
+    <ClInclude Include="NodeDataButtonResponder.h" />
+    <ClInclude Include="NodeDataResponder.h" />
+    <ClInclude Include="NodeEditor.h" />
+    <ClInclude Include="NodeObject.h" />
+    <ClInclude Include="NodePool.h" />
+    <ClInclude Include="NodeWidget.h" />
+    <ClInclude Include="NodeWidgetResponder.h" />
+    <ClInclude Include="node_pool_header.h" />
+    <ClInclude Include="ObjectData.h" />
+    <ClInclude Include="ObjectTab.h" />
+    <ClInclude Include="OxideLayer.h" />
+    <ClInclude Include="Perlin.h" />
+    <ClInclude Include="PerlinBackGroundI.h" />
+    <ClInclude Include="PipelineConfig.h" />
+    <ClInclude Include="PipelineManager.h" />
+    <ClInclude Include="PipelineManagerResponder.h" />
+    <ClInclude Include="PipelineOutput.h" />
+    <ClInclude Include="PlayerWidget.h" />
+    <ClInclude Include="SceneTab.h" />
+    <ClInclude Include="SceneTabEntry.h" />
+    <ClInclude Include="SceneTabEntryResponder.h" />
+    <ClInclude Include="Separator.h" />
+    <ClInclude Include="SeparatorContainer.h" />
+    <ClInclude Include="SeparatorResponder.h" />
+    <ClInclude Include="SimpleEntry.h" />
+    <ClInclude Include="StackedWidget.h" />
+    <ClInclude Include="stb_header.h" />
+    <ClInclude Include="SulfurLayer.h" />
+    <ClInclude Include="TabEntry.h" />
+    <ClInclude Include="TabOption.h" />
+    <QtMoc Include="TimeMachineIdentifier.h" />
+    <ClInclude Include="TimeMachineResponder.h" />
+    <ClInclude Include="UIModel.h" />
+    <QtMoc Include="Canvas.h" />
+    <ClInclude Include="ControllerSelector.h" />
+    <ClInclude Include="ControllPanel.h" />
+    <ClInclude Include="Shader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="canvas.css" />
+    <None Include="controller_panel_style.css" />
+    <None Include="control_selector.css" />
+    <None Include="env_tab.css" />
+    <None Include="float_edit_edit.css" />
+    <None Include="float_edit_hover.css" />
+    <None Include="float_edit_idle.css" />
+    <None Include="float_progressbar.css" />
+    <None Include="header.css" />
+    <None Include="node_data_button.css" />
+    <None Include="node_editor.css" />
+    <None Include="node_widget.css" />
+    <None Include="obejct_tab.css" />
+    <None Include="our_father.css" />
+    <None Include="player_widget.css" />
+    <None Include="resources\shaders\common_shader.frag" />
+    <None Include="resources\shaders\common_shader.vert" />
+    <None Include="resources\shaders\grid_shader.frag" />
+    <None Include="resources\shaders\grid_shader.vert" />
+    <None Include="resources\shaders\tri_shader.frag" />
+    <None Include="resources\shaders\tri_shader.vert" />
+    <None Include="scene.css" />
+    <None Include="selector_button_active.css" />
+    <None Include="svpng.inc" />
+    <None Include="tabentry.css" />
+    <None Include="time_machine_identifier.css" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

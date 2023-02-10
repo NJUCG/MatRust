@@ -1,0 +1,18 @@
+QWidget{
+    background-color:#3D3D3D;
+    color:white;
+}
+QPushButton#header_icon {
+    background-color:transparent;
+    background-image: url("resources/ui/icons/right_arrow_30.png");
+    background-size:10px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+QPushButton#header_icon:checked {
+    background-color: transparent;
+    background-image: url("resources/ui/icons/down_arrow_30.png");
+    background-size: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+}

@@ -1,0 +1,64 @@
+/*horizontal ：水平QSlider*/
+QSlider::groove:horizontal {
+    border: 0px solid #bbb;
+}
+
+/*1.滑动过的槽设计参数*/
+QSlider::sub-page:horizontal {
+    /*槽颜色*/
+    background: #4772B3;
+    /*外环区域倒圆角度*/
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    /*上遮住区域高度*/
+    margin-top: 0px;
+    /*下遮住区域高度*/
+    margin-bottom: 0px;
+    /*width在这里无效，不写即可*/
+}
+
+/*2.未滑动过的槽设计参数*/
+QSlider::add-page:horizontal {
+    /*槽颜色*/
+    background: #545454;
+    /*外环大小0px就是不显示，默认也是0*/
+    border: 0px solid #777;
+    /*外环区域倒圆角度*/
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    /*上遮住区域高度*/
+    margin-top: 0px;
+    /*下遮住区域高度*/
+    margin-bottom: 0px;
+}
+
+/*3.平时滑动的滑块设计参数*/
+QSlider::handle:horizontal {
+    /*滑块颜色*/
+    background: #4772B3;
+    /*滑块的宽度*/
+    width: 5px;
+    /*滑块外环为1px，再加颜色*/
+    border: 1px solid #4772B3;
+    /*滑块外环倒圆角度*/
+    border-radius: 2px;
+    /*上遮住区域高度*/
+    margin-top: 0px;
+    /*下遮住区域高度*/
+    margin-bottom: 0px;
+}
+
+
+QLabel{
+    background-color:transparent;
+    color:white;
+    border-width:0px;
+    border-color:transparent;
+}
+
+QWidget#spacing {
+    background-color: transparent;
+    color: white;
+    border-width: 0px;
+    border-color: transparent;
+}

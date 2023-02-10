@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty>
+    <screen id="start">
+        <layer childLayout="center">
+            <text font="aurulent-sans-16.fnt" color="#ffff"
+                  text="Hello World!" />
+        </layer>
+    </screen>
+</nifty>

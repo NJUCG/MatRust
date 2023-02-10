@@ -1,0 +1,12 @@
+QWidget {
+    background-color: #2D2D2D;
+    color: white;
+}
+QWidget#header {
+    background-color: #000000;
+    color: white;
+}
+QLabel{
+    background-color: #2D2D2D;
+    color: white;
+}

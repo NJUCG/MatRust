@@ -1,0 +1,43 @@
+QWidget{
+    background-color:#303030;
+    color:white;
+    border-radius: 4px;
+}
+QPushButton{
+    border-radius: 4px;
+}
+QPushButton#play_and_pause {
+    background-color: transparent;
+    background-image: url("resources/ui/icons/play_30.png");
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+QPushButton#play_and_pause:hover{
+    background-color: #656565;
+    background-image: url("resources/ui/icons/play_30.png");
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+QPushButton#play_and_pause:checked{
+    background-color: #656565;
+    background-image: url("resources/ui/icons/pause_30.png");
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+QPushButton#replay {
+    background-color: transparent;
+    background-image: url("resources/ui/icons/replay_30.png");
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+QPushButton#replay:hover {
+    background-color: #656565;
+    background-image: url("resources/ui/icons/replay_30.png");
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+}

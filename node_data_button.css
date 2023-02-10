@@ -1,0 +1,64 @@
+QPushButton#orange{
+    border:2px groove gray;
+    border-radius:5px;
+    padding:2px 4px;
+    background-color:darkorange;
+}
+QPushButton#orange:hover {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 2px 4px;
+    background-color: darkorange;
+}
+
+QPushButton#gray {
+    border: 2px groove gray;
+    border-radius: 5px;
+    padding: 2px 4px;
+    background-color: #666666;
+}
+QPushButton#gray:hover {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 2px 4px;
+    background-color: #666666;
+}
+QPushButton#blue {
+    border: 2px groove gray;
+    border-radius: 5px;
+    padding: 2px 4px;
+    background-color: darkblue;
+}
+QPushButton#blue:hover {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 2px 4px;
+    background-color: darkblue;
+}
+QPushButton#purple {
+    border: 2px groove gray;
+    border-radius: 5px;
+    padding: 2px 4px;
+    background-color:purple;
+}
+
+QPushButton#blue:hover {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 2px 4px;
+    background-color: purple;
+}
+
+QPushButton#green {
+    border: 2px groove gray;
+    border-radius: 5px;
+    padding: 2px 4px;
+    background-color: darkgreen;
+}
+
+QPushButton#green:hover {
+    border: 2px groove white;
+    border-radius: 5px;
+    padding: 2px 4px;
+    background-color: darkgreen;
+}
