@@ -31,7 +31,7 @@ public:
 	FloatEdit();
 	void set_min_value(float);
 	void set_max_value(float);
-	inline void set_value(float new_value);
+	inline void set_value(float new_value, bool respond = true);
 	float value;
 	float min_value, max_value;
 	float step;

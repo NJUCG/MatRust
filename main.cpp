@@ -19,6 +19,12 @@
 #include"SceneTab.h"
 #include"EventAdapter.h"
 
+// 载入模型
+// 导出截图
+
+// 两套参数调节：物理环境，艺术设计
+// 规律输入
+
 int mainWindow(int argc,char* argv[]){
     QApplication a(argc, argv);
     QWidget* w = new QWidget();
@@ -33,6 +39,8 @@ int mainWindow(int argc,char* argv[]){
     header->setFixedHeight(20);
 
     SceneTab* scene = new SceneTab();
+    ControllPanel* control = new ControllPanel();
+
     top_layout->addWidget(header);
     top_layout->setContentsMargins(0, 0, 0, 0);
     top_layout->setSpacing(spacing);
@@ -97,7 +105,6 @@ int mainWindow(int argc,char* argv[]){
 
     right_container_layout->addWidget(right_separator);
 
-    ControllPanel* control = new ControllPanel();
     right_container_layout->addWidget(control);
 
     right_container->setLayout(right_container_layout);

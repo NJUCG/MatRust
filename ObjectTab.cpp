@@ -11,18 +11,19 @@ void ObjectTab::set_name(string name)
 	name_label->setText((QString::fromLocal8Bit(name.c_str())));
 }
 
-void ObjectTab::set_object(ObjectData data)
+void ObjectTab::set_object(ObjectData* data)
 {
-	set_name(data.name);
-	set_property("loc_x", data.loc.x);
-	set_property("loc_y", data.loc.y);
-	set_property("loc_z", data.loc.z);
-	set_property("rot_x", data.rot.x);
-	set_property("rot_y", data.rot.y);
-	set_property("rot_z", data.rot.z);
-	set_property("scl_x", data.scl.x);
-	set_property("scl_y", data.scl.y);
-	set_property("scl_z", data.scl.z);
+	set_name(data->name);
+	switch_tab_style(data->type, data);
+	set_property("loc_x", data->loc.x);
+	set_property("loc_y", data->loc.y);
+	set_property("loc_z", data->loc.z);
+	set_property("rot_x", data->rot.x);
+	set_property("rot_y", data->rot.y);
+	set_property("rot_z", data->rot.z);
+	set_property("scl_x", data->scl.x);
+	set_property("scl_y", data->scl.y);
+	set_property("scl_z", data->scl.z);
 	
 	local_data["loc_x"]->update();
 	local_data["loc_y"]->update();
@@ -33,25 +34,67 @@ void ObjectTab::set_object(ObjectData data)
 	local_data["scl_x"]->update();
 	local_data["scl_y"]->update();
 	local_data["scl_z"]->update();
+
+	current_obj = data;
 }
 
 void ObjectTab::set_property(string name, float data)
 {
 	if (local_data.find(name) != local_data.end()) {
-		local_data[name]->set_value(data);
+		local_data[name]->set_value(data, false);
+	}
+}
+
+float ObjectTab::get_property(string name)
+{
+	if (local_data.find(name) != local_data.end() && local_data[name] != nullptr) {
+		FloatEdit* data = local_data[name];
+		float t = data->value;
+		return local_data[name]->value;
+	}
+	return 0;
+}
+
+void ObjectTab::switch_tab_style(string style, ObjectData* data)
+{
+	deactivate_property("lght_int");
+	if (style == "light") {
+		LightData* light_data = (LightData*)data;
+		activate_property("lght_int");
+		set_property("lght_int", light_data->light_intensity.x);
 	}
 }
 
 ObjectData ObjectTab::get_object()
 {
-	return ObjectData();
+	if (!current_obj) {
+		return ObjectData();
+	}
+	current_obj->loc.x = get_property("loc_x");
+	current_obj->loc.y = get_property("loc_y");
+	current_obj->loc.z = get_property("loc_z");
+
+	current_obj->rot.x = get_property("rot_x");
+	current_obj->rot.y = get_property("rot_y");
+	current_obj->rot.z = get_property("rot_z");
+
+	current_obj->scl.x = get_property("scl_x");
+	current_obj->scl.y = get_property("scl_y");
+	current_obj->scl.z = get_property("scl_z");
+
+	if (current_obj->type == "light") {
+		LightData* lg = (LightData*)current_obj;
+		float li = get_property("lght_int");
+		lg->light_intensity = vec3(li, li, li);
+	}
+
+	return *current_obj;
 }
 
 void ObjectTab::on_value_changed(string name, float data)
 {
-	ObjectData* obj = new ObjectData();
-	*obj = get_object();
-	EventAdapter::shared->push_data(obj);
+	get_object();
+	EventAdapter::shared->push_data(current_obj);
 	EventAdapter::shared->trigger_event("object_value_changed");
 }
 
@@ -59,7 +102,7 @@ void ObjectTab::on_trigger(string name)
 {
 	if(name == "selected_object_changed") {
 		ObjectData* obj = (ObjectData*)EventAdapter::shared->pop_data();
-		set_object(*obj);
+		set_object(obj);
 	}
 }
 
@@ -67,6 +110,7 @@ void ObjectTab::init()
 {
 	setStyleSheet(CssLoader::load_css("object_tab.css"));
 	local_data = unordered_map<string, FloatEdit*>();
+	label_data = unordered_map<string, QLabel*>();
 	EventAdapter::shared->register_event("selected_object_changed", this);
 }
 
@@ -106,16 +150,23 @@ void ObjectTab::addComponent()
 
 	top_layout->addWidget(spacing);
 
+	add_property("   Light Intensity", "lght_int", "", 0);
+
+	deactivate_property("lght_int");
+
+	top_layout->addWidget(spacing);
+
 	top_layout->addWidget(new QWidget());
 
 	setLayout(top_layout);
 
-	ObjectData default_object;
-	default_object.loc = vec4(0, 0, 0, 0);
-	default_object.rot = vec4(0, 0, 0, 0);
-	default_object.scl = vec4(1, 1, 1, 0);
-	default_object.name = "      нч";
+	ObjectData* default_object = new ObjectData();
+	default_object->loc = vec4(0, 0, 0, 0);
+	default_object->rot = vec4(0, 0, 0, 0);
+	default_object->scl = vec4(1, 1, 1, 0);
+	default_object->name = "      нч";
 	set_object(default_object);
+	delete default_object;
 }
 
 void ObjectTab::header()
@@ -187,4 +238,21 @@ void ObjectTab::add_property(string prefix, string data_tag, string unit, float 
 	top_layout->addWidget(x_w);
 
 	local_data[data_tag] = edit;
+	label_data[data_tag] = x_label;
+}
+
+void ObjectTab::deactivate_property(string name)
+{
+	if (local_data.find(name) != local_data.end()) {
+		local_data[name]->setVisible(false);
+		label_data[name]->setVisible(false);
+	}
+}
+
+void ObjectTab::activate_property(string name)
+{
+	if (local_data.find(name) != local_data.end()) {
+		local_data[name]->setVisible(true);
+		label_data[name]->setVisible(true);
+	}
 }

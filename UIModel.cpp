@@ -43,6 +43,8 @@ UIModel::UIModel() {
 	scene_entry_icon_width = 20;
 
 	scene_entry_line_height = 25;
+
+	header_tab_width = 20;
 }
 UIModel* UIModel::get()
 {

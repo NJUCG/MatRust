@@ -274,6 +274,12 @@
     <ClCompile Include="LightData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HeaderTab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HeaderTabEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -495,6 +501,12 @@
     <ClInclude Include="LightData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HeaderTab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HeaderTabEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="TimeMachineIdentifier.h">
@@ -581,6 +593,12 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="obejct_tab.css">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="header_tab_style.css">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="header_tab_style_hover.css">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

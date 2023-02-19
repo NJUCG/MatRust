@@ -122,6 +122,8 @@
     <ClCompile Include="FloatProgressBarResponder.cpp" />
     <ClCompile Include="FloatScrollNodeDataResponder.cpp" />
     <ClCompile Include="Header.cpp" />
+    <ClCompile Include="HeaderTab.cpp" />
+    <ClCompile Include="HeaderTabEntry.cpp" />
     <ClCompile Include="IdGenerator.cpp" />
     <ClCompile Include="ImageHelper.cpp" />
     <ClCompile Include="Layer.cpp" />
@@ -197,6 +199,8 @@
     <ClInclude Include="FloatProgressBarResponder.h" />
     <ClInclude Include="FloatScrollNodeDataResponder.h" />
     <ClInclude Include="Header.h" />
+    <ClInclude Include="HeaderTab.h" />
+    <ClInclude Include="HeaderTabEntry.h" />
     <ClInclude Include="IdGenerator.h" />
     <ClInclude Include="ImageHelper.h" />
     <ClInclude Include="Layer.h" />
@@ -255,6 +259,8 @@
     <None Include="float_edit_idle.css" />
     <None Include="float_progressbar.css" />
     <None Include="header.css" />
+    <None Include="header_tab_style.css" />
+    <None Include="header_tab_style_hover.css" />
     <None Include="node_data_button.css" />
     <None Include="node_editor.css" />
     <None Include="node_widget.css" />

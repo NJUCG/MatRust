@@ -59,6 +59,9 @@ public:
 	int scene_entry_icon_width;
 	int scene_entry_line_height;
 
+	//
+	int header_tab_width;
+
 private:
 	static UIModel* model;
 	UIModel();

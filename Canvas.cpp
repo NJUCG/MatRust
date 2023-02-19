@@ -16,7 +16,10 @@ void Canvas::on_trigger(string name)
 {
     if (name == string("object_value_changed")) {
         ObjectData* obj = (ObjectData*)(EventAdapter::shared->pop_data());
-        object_list[obj->name] = obj;
+        if (obj) {
+            object_list[obj->name] = obj;
+            update();
+        }
     }
 }
 
@@ -39,7 +42,7 @@ void Canvas::init()
     EventAdapter::shared->trigger_event("add_object_to_tab");
     EventAdapter::shared->push_data(obj);
     EventAdapter::shared->trigger_event("selected_object_changed");
-
+    object_list[obj->name] = obj;
 
     this->scr_width = m->src_width;
     this->scr_height = m->src_height;
@@ -63,7 +66,7 @@ void Canvas::init()
     this->direct_zoom_controller = zoom_project();
     this->object_list = unordered_map<string, ObjectData*>();
 
-    EventAdapter::shared->register_event("object_value_change", this);
+    EventAdapter::shared->register_event("object_value_changed", this);
     init_light();
 
 }
@@ -86,6 +89,7 @@ void Canvas::init_light()
     EventAdapter::shared->push_data(lght);
     EventAdapter::shared->trigger_event("add_object_to_tab");
     lights_data.push_back(lght);
+    object_list[lght->name] = lght;
 
     lightPos = vec3(0, 0, init_loc.z - 3);
     lght = new LightData();
@@ -99,8 +103,8 @@ void Canvas::init_light()
     EventAdapter::shared->push_data(lght);
     EventAdapter::shared->trigger_event("add_object_to_tab");
 
-
-    lights_data.push_back(lght);;
+    lights_data.push_back(lght);
+    object_list[lght->name] = lght;
 
     lightPos = vec3(init_loc.x - 2, 0, init_loc.z);
 
@@ -116,7 +120,7 @@ void Canvas::init_light()
     EventAdapter::shared->trigger_event("add_object_to_tab");
 
     lights_data.push_back(lght);
-
+    object_list[lght->name] = lght;
 
     lightPos = vec3(init_loc.x + 2, 0, init_loc.z);
 
@@ -130,6 +134,9 @@ void Canvas::init_light()
     lght->type = "light";
     EventAdapter::shared->push_data(lght);
     EventAdapter::shared->trigger_event("add_object_to_tab");
+
+    lights_data.push_back(lght);
+    object_list[lght->name] = lght;
 }
 void Canvas::set_up_light()
 {
@@ -200,7 +207,13 @@ void Canvas::drawTriangle() {
     }
     mat4 view = camera->GetViewMatrix();
     mat4 model_m(1);
-    model_m = glm::translate(model_m, init_loc);
+    ObjectData* object_dat = object_list["object"];
+    if (object_dat != nullptr) {
+        model_m = glm::translate(model_m, vec3(object_dat->loc.x, object_dat->loc.y, object_dat->loc.z));
+    }
+    else {
+        model_m = glm::translate(model_m, init_loc);
+    }
     model_m = glm::scale(model_m, vec3(1, 1, 1));
     model_m = glm::rotate(model_m, glm::radians(-90.0f), vec3(0, 1, 0));
     

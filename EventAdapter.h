@@ -4,6 +4,7 @@
 #include<vector>
 #include"EventResponder.h"
 #include<stack>
+#include"qwidget.h"
 using namespace std;
 
 class EventAdapter

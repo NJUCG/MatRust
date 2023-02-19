@@ -36,7 +36,7 @@ void FloatEdit::init()
 	pages = vector<QWidget*>();
 }
 
-inline void FloatEdit::set_value(float new_value)
+inline void FloatEdit::set_value(float new_value, bool respond)
 {
 	if (new_value < min_value) {
 		value = min_value;
@@ -47,7 +47,7 @@ inline void FloatEdit::set_value(float new_value)
 		value = new_value;
 	}
 	middle_button->setText(get_value().c_str());
-	if (responder) {
+	if (responder && respond) {
 		responder->on_value_changed(name, value);
 	}
 }
@@ -114,7 +114,6 @@ void FloatEdit::addComponent()
 	editor->setFixedHeight(height);
 	connect(editor, &QLineEdit::editingFinished, [this]()->void {
 		edit_finish_edit();
-
 	});
 	
 	editor->setVisible(false);
@@ -128,6 +127,8 @@ void FloatEdit::addComponent()
 
 	hover_mode->blockSignals(true);
 	editor->blockSignals(true);
+
+	setCurrentIndex(0);
 
 	setLayout(top_layout);
 }

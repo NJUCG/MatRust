@@ -13,4 +13,17 @@ void Header::init()
 
 void Header::addComponent()
 {
+	top_layout = new QHBoxLayout();
+	top_layout->setContentsMargins(2, 2, 2, 2);
+	top_layout->setSpacing(5);
+
+	add_tab(new HeaderTab());
+
+	top_layout->addWidget(new QWidget());
+	setLayout(top_layout);
+}
+
+void Header::add_tab(HeaderTab* tab)
+{
+	top_layout->addWidget(tab);
 }

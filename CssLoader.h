@@ -8,5 +8,6 @@ class CssLoader
 {
 public:
 	static QString load_css(string path);
+	static string load_css_str(string path);
 };
 

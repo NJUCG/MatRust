@@ -12,6 +12,7 @@ void EventAdapter::register_event(string name, EventResponder* responder) {
 	if (find(events[name].begin(), events[name].end(), responder) == events[name].end()) {
 		events[name].push_back(responder);
 	}
+	
 }
 void EventAdapter::deregsiter_event(string name, EventResponder* responder) {
 	if (events.find(name) != events.end()) {
@@ -25,6 +26,8 @@ void EventAdapter::trigger_event(string name) {
 		for (vector<EventResponder*>::iterator it = events[name].begin(); it != events[name].end(); it++) {
 			(*it)->on_trigger(name);
 		}
+	}
+	else {
 	}
 }
 void EventAdapter::init_event_adapter() {
