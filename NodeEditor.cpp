@@ -23,6 +23,13 @@ void NodeEditor::init()
 
 void NodeEditor::addComponent()
 {
+	panel = new NodeEditorPanel();
+	panel->responder = this;
+	panel->setParent(this);
+	panel->move(10, 10);
+	panel->hide();
+	
+	/*
 	NodeWidget* test_widget = new NodeWidget(this, 40, 40);
 	test_widget->setParent(this);
 	test_widget->move(40 - offset_x, 40 - offset_y);
@@ -32,6 +39,19 @@ void NodeEditor::addComponent()
 	test_widget1->setParent(this);
 	test_widget1->move(240 - offset_x, 140 - offset_y);
 	widgets.push_back(test_widget1);
+	*/
+}
+
+void NodeEditor::btn_down(NodeWidget*)
+{
+}
+
+void NodeEditor::open_panel()
+{
+}
+
+void NodeEditor::close_panel()
+{
 }
 
 void NodeEditor::add_dots()
@@ -140,6 +160,23 @@ void NodeEditor::mousePressEvent(QMouseEvent* e)
 	mouse_down = true;
 	if (e->button() == Qt::MiddleButton) {
 		mouse_middle_down = true;
+		if (panel && !panel->isHidden()) {
+			panel->hide();
+		}
+	}
+	else if (e->button() == Qt::RightButton) {
+		if (panel) {
+			if (panel->isHidden()) {
+				panel->show();
+				QPoint local = mapFromGlobal(e->globalPos());
+				panel->move(local.x(), local.y());
+			}
+		}
+	}
+	else {
+		if (panel && !panel->isHidden()) {
+			panel->hide();
+		}
 	}
 }
 
@@ -237,6 +274,14 @@ void NodeEditor::release_on_me(QPoint pos)
 								pool->connect<float>(start->id, button->id);
 							}
 						}
+						else if (start_value == "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >") {
+							if (start->is_adapter) {
+								pool->connect<string>(button->id, start->id);
+							}
+							else {
+								pool->connect<string>(start->id, button->id);
+							}
+						}
 					}
 					break;
 				}
@@ -265,4 +310,38 @@ void NodeEditor::update_temp_curve(QPoint pos)
 	current_pos = pos;
 	update();
 }
+
+void NodeEditor::btn_down(string tag)
+{
+	if (!panel) {
+		return;
+	}
+	panel->hide();
+
+	if (tag == "no") {
+		QPoint ppos = panel->pos();
+		NodeWidget* test_widget1 = new NodeWidget(this, ppos.x() + offset_x, ppos.y() + offset_y);
+		test_widget1->setParent(this);
+		test_widget1->move(ppos);
+		widgets.push_back(test_widget1);
+		test_widget1->show();
+	}
+	else if (tag == "custom_layer") {
+		QPoint ppos = panel->pos();
+		CustomLayerNodeWidget* w = new CustomLayerNodeWidget(this, ppos.x() + offset_x, ppos.y() + offset_y);
+		w->setParent(this);
+		w->move(ppos);
+		widgets.push_back(w);
+		w->show();
+	}
+	else if (tag == "layer_machine") {
+		QPoint ppos = panel->pos();
+		LayerMachineNodeWidget* w = new LayerMachineNodeWidget(this, ppos.x() + offset_x, ppos.y() + offset_y);
+		w->setParent(this);
+		w->move(ppos);
+		widgets.push_back(w);
+		w->show();
+	}
+}
+
 

@@ -7,7 +7,7 @@ SulfurLayer::SulfurLayer()
 void SulfurLayer::accept_rules(PipelineConfig* config)
 {
     Layer::accept_rules(config);
-    part_per_sec = 10000 / (int)((config->textureHeight * config->textureWidth * config->sc * config->oc * config->rh));
+    part_per_sec = 200 / (int)((config->textureHeight * config->textureWidth * config->sc * config->oc * config->rh));
     w = config->textureWidth;
     h = config->textureHeight;
     lattice = vector<vector<float>>(h, vector<float>(w, 0));
@@ -35,7 +35,7 @@ void SulfurLayer::accept_rules(PipelineConfig* config)
     }
 
     dpd = DPD();
-    dpd.setUp(w, h, part_per_sec, (float)config->sc / 8, lattice, 0);
+    dpd.setUp(w, h, part_per_sec, (float)config->sc / 1.2f, lattice, 4);
     localOutput = dpd.output;
     prepared = true;
 }

@@ -13,6 +13,9 @@
 #include"PipelineManager.h"
 #include"LightData.h"
 #include"EventAdapter.h"
+#include<qpushbutton.h>
+#include<qimage.h>
+#include<qapplication.h>
 
 #define CANVAS_VIEW_NONE 0
 #define CANVAS_VIEW_ROTATE 0x1
@@ -29,6 +32,10 @@ public:
     ~Canvas();
     void setModel(Model*);
     void on_trigger(string) override;
+    void time_up() override;
+    QApplication* app = nullptr;
+    WId wid;
+    QWidget* father;
 protected:
     vector<LightData*> lights_data;
 

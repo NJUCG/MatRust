@@ -21,6 +21,21 @@ void Canvas::on_trigger(string name)
             update();
         }
     }
+    else if (name == "selected_mesh_changed") {
+        QString* path = (QString*)(EventAdapter::shared->pop_data());
+        if (path) {
+            setModel(new Model(path->toStdString().c_str()));
+            update();
+            setModel(new Model(path->toStdString().c_str()));
+            update();
+        }
+    }
+}
+
+void Canvas::time_up()
+{
+    QScreen* scr = QGuiApplication::primaryScreen();
+    scr->grabWindow(father->winId(), 0, UIModel::get()->header_height, width(), height()).save("123.jpg", "jpg");
 }
 
 void Canvas::init()
@@ -67,11 +82,14 @@ void Canvas::init()
     this->object_list = unordered_map<string, ObjectData*>();
 
     EventAdapter::shared->register_event("object_value_changed", this);
+    EventAdapter::shared->register_event("selected_mesh_changed", this);
+
     init_light();
 
 }
 void Canvas::addComponent()
 {
+
 }
 void Canvas::init_light()
 {
@@ -200,10 +218,10 @@ void Canvas::drawTriangle() {
     //准备相机
     mat4 projection;
     if (is_ortho) {
-        projection = glm::ortho(-direct_zoom_controller, direct_zoom_controller, -direct_zoom_controller, direct_zoom_controller, 0.1f, 100.0f);
+        projection = glm::ortho(-direct_zoom_controller, direct_zoom_controller, -direct_zoom_controller, direct_zoom_controller, 0.1f, 45.0f);
     }
     else {
-        projection = glm::perspective(radians(direct_zoom_controller), (float)width() / (float)height(), 0.1f, 100.0f);
+        projection = glm::perspective(radians(direct_zoom_controller), (float)width() / (float)height(), 0.1f, 45.0f);
     }
     mat4 view = camera->GetViewMatrix();
     mat4 model_m(1);

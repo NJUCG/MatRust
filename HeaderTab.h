@@ -5,6 +5,11 @@
 #include"qevent.h"
 #include"CssLoader.h"
 
+#define HEADER_TAB_IDLE 0
+#define HEADER_TAB_HOVER 1
+#define HEADER_TAB_SELECTED 2
+
+
 class HeaderTab : public QWidget
 {
 public:
@@ -17,6 +22,7 @@ protected:
 	unordered_map<string, HeaderTabEntry*> entries;
 
 	bool is_mouse_in = false;
+	int state;
 
 	void init();
 	void addComponent();
@@ -24,5 +30,6 @@ protected:
 	void shrink();
 	void enterEvent(QEnterEvent*) override;
 	void leaveEvent(QEvent*) override;
+	void mousePressEvent(QMouseEvent*) override;
 };
 

@@ -44,7 +44,13 @@ UIModel::UIModel() {
 
 	scene_entry_line_height = 25;
 
-	header_tab_width = 20;
+	header_tab_width = 60;
+
+	selector_height = 25;
+
+	selector_width = 400;
+
+	header_height = 50;
 }
 UIModel* UIModel::get()
 {

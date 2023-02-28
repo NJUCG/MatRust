@@ -17,7 +17,7 @@ void Header::addComponent()
 	top_layout->setContentsMargins(2, 2, 2, 2);
 	top_layout->setSpacing(5);
 
-	add_tab(new HeaderTab());
+	add_tab(new HeaderTab("Model"));
 
 	top_layout->addWidget(new QWidget());
 	setLayout(top_layout);

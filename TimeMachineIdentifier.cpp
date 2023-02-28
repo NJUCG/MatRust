@@ -57,6 +57,13 @@ void TimeMachineIdentifier::init()
 		if (current_time > stop_time) {
 			current_time = stop_time;
 			pause();
+			int rs = events.size();
+			for (int i = 0; i < rs; i++) {
+				TimeMachineResponder* responder = events[i];
+				if (responder) {
+					responder->time_up();
+				}
+			}
 			emit time_exhausted();
 		}
 

@@ -29,6 +29,11 @@ public:
     {
         loadModel(path);
     }
+    ~Model() {
+    }
+    void Clear() {
+
+    }
 
     // draws the model, and thus all its meshes
     void Draw(Shader& shader)

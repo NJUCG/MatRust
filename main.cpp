@@ -19,8 +19,16 @@
 #include"SceneTab.h"
 #include"EventAdapter.h"
 
-// 载入模型
-// 导出截图
+// fov 调整
+// 环境光
+// 拉满参数以后生成大量铜锈
+// 添加其他增长模式
+// 
+// mesh sampling
+// 裁剪曲率
+// 
+// 高度图
+// 自由截图
 
 // 两套参数调节：物理环境，艺术设计
 // 规律输入
@@ -29,6 +37,7 @@ int mainWindow(int argc,char* argv[]){
     QApplication a(argc, argv);
     QWidget* w = new QWidget();
     PipelineManager::init_pipeline();
+    
     w->setStyleSheet(CssLoader::load_css("our_father.css"));
 
     int spacing = UIModel::get()->common_spacing;
@@ -36,7 +45,7 @@ int mainWindow(int argc,char* argv[]){
     // 绘制画布
     QVBoxLayout* top_layout = new QVBoxLayout();
     Header* header = new Header();
-    header->setFixedHeight(20);
+    header->setFixedHeight(UIModel::get()->header_height);
 
     SceneTab* scene = new SceneTab();
     ControllPanel* control = new ControllPanel();
@@ -67,6 +76,9 @@ int mainWindow(int argc,char* argv[]){
     canvas_container_layout->setContentsMargins(0, 0, 0, 0);
 
     Canvas* canvas = new Canvas();
+    canvas->app = &a;
+    canvas->wid = w->winId();
+    canvas->father = w;
     canvas_container_layout->addWidget(canvas);
 
     canvas_container->setLayout(canvas_container_layout);
@@ -123,8 +135,9 @@ int mainWindow(int argc,char* argv[]){
 
     separator->init(left_container, right_container, true);
 
-    Model* model = new Model("resources/models/stranger/stranger.obj");
-    canvas->setModel(model);
+    Model* model = new Model("resources/models/space_ship/space_ship.obj");
+    //"resources/models/99 - intergalactic_spaceship - obj/Intergalactic_Spaceship-(Wavefront).obj"
+    //canvas->setModel(model);
 
     player->register_timer(canvas);
 

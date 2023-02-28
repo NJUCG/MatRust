@@ -1,5 +1,6 @@
 #pragma once
 #include<qwidget.h>
+#include<qlabel.h>
 #include<qlayout.h>
 #include<iostream>
 #include<string>

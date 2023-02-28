@@ -92,7 +92,7 @@ void main()
     float roughness = roughness4.z;
     F0 = mix(F0, albedo, metallic);
     // reflectance equation
-    vec3 Lo = vec3(0.0);
+    vec3 Lo = vec3(0.0f);
     for(int i = 0; i < 4; ++i)
     {
         // calculate per-light radiance

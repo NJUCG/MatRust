@@ -61,6 +61,12 @@ public:
 
 	//
 	int header_tab_width;
+	
+	int selector_height;
+	int selector_width;
+
+	//
+	int header_height;
 
 private:
 	static UIModel* model;

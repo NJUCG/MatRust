@@ -57,11 +57,16 @@ void ControllPanel::addComponent()
 	engine_tab->setObjectName("engine_tab");
 	layout->addWidget(engine_tab);
 
+	LayerTab* layer_tab = new LayerTab();
+	layer_tab->setObjectName("layer_tab");
+	layout->addWidget(layer_tab);
+
 	tabs_dict["default"] = default_tab;
 	tabs_dict["bake"] = bake_tab;
 	tabs_dict["env"] = env_tab;
 	tabs_dict["object-30"] = obj_tab;
 	tabs_dict["engine-30"] = engine_tab;
+	tabs_dict["layer-30"] = layer_tab;
 
 	container->setLayout(layout);
 	current_tab = default_tab;
@@ -70,6 +75,7 @@ void ControllPanel::addComponent()
 	env_tab->hide();
 	obj_tab->hide();
 	engine_tab->hide();
+	layer_tab->hide();
 	
 	top_layout->addWidget(container);
 	

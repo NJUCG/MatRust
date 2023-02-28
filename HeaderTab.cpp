@@ -30,8 +30,20 @@ void HeaderTab::addComponent()
 {
 	UIModel* model = UIModel::get();
 	int width = model->header_tab_width;
-
 	setFixedWidth(width);
+
+	QVBoxLayout* tab_layout = new QVBoxLayout();
+	tab_layout->setContentsMargins(2, 2, 2, 2);
+	tab_layout->setSpacing(0);
+
+	QLabel* tab = new QLabel();
+
+	tab->setAlignment(Qt::AlignCenter);
+	tab->setText(tab_name.c_str());
+
+	tab_layout->addWidget(tab);
+
+	setLayout(tab_layout);
 }
 
 void HeaderTab::expand()
@@ -44,16 +56,30 @@ void HeaderTab::shrink()
 
 void HeaderTab::enterEvent(QEnterEvent* e)
 {
-	if (!is_mouse_in) {
-		is_mouse_in = true;
+	if (state == HEADER_TAB_IDLE) {
 		setStyleSheet(hover_style.c_str());
+		
+		state = HEADER_TAB_HOVER;
 	}
 }
 
 void HeaderTab::leaveEvent(QEvent* e)
 {
-	if (is_mouse_in) {
-		is_mouse_in = false;
+	if (state != HEADER_TAB_IDLE) {
 		setStyleSheet(default_style.c_str());
+
+		if (state == HEADER_TAB_SELECTED) {
+			shrink();
+		}
+
+		state = HEADER_TAB_IDLE;
+	}
+}
+
+void HeaderTab::mousePressEvent(QMouseEvent*)
+{
+	if (state != HEADER_TAB_SELECTED) {
+		expand();
+		state = HEADER_TAB_SELECTED;
 	}
 }

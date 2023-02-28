@@ -10,8 +10,13 @@
 #include"NodeCurve.h"
 #include<qcursor.h>
 #include<qpainterpath.h>
+#include"NodeEditorPanel.h"
+#include"CustomLayerNodeWidget.h"
+#include"LayerMachineNodeWidget.h"
+
 using namespace std;
-class NodeEditor: public QWidget, public NodeWidgetResponder
+class NodeEditor: public QWidget, public NodeWidgetResponder, public NodeEditorPanelResponder
+
 {
 public:
 	NodeEditor();
@@ -20,11 +25,19 @@ public:
 	void reset_curving() override;
 	void on_widget_move() override;
 	void update_temp_curve(QPoint) override;
+	void btn_down(string) override;
 protected:
 	NodePool* pool = nullptr;
+	NodeEditorPanel* panel = nullptr;
 	vector<NodeWidget*> widgets;
+	QVBoxLayout* top_layout = nullptr;
+
 	void init();
 	void addComponent();
+
+	void btn_down(NodeWidget*);
+	void open_panel();
+	void close_panel();
 
 	void add_dots();
 	

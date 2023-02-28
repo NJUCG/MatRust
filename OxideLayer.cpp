@@ -10,7 +10,7 @@ void OxideLayer::accept_rules(PipelineConfig* config)
 	Layer::accept_rules(config);
 
 	this->config = config;
-	a = (float)(config->temperature / 75 + config->rh * 10) / 5;
+	a = (float)(config->temperature / 45 + config->rh * 20) / 4;
 	b = a * 15;
 	k = a / 15;
 	n = 2;
