@@ -139,6 +139,7 @@
     <ClCompile Include="LightData.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="MyRandom.cpp" />
     <ClCompile Include="NodeCurve.cpp" />
     <ClCompile Include="NodeData.cpp" />
     <ClCompile Include="NodeDataAdapter.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="TimeMachineIdentifier.cpp" />
     <ClCompile Include="TimeMachineResponder.cpp" />
     <ClCompile Include="UIModel.cpp" />
+    <ClCompile Include="_3DBlueNoiseSampler.cpp" />
     <QtRcc Include="QtWidgetsApplication1.qrc" />
     <QtUic Include="QtWidgetsApplication1.ui" />
     <ClCompile Include="main.cpp" />
@@ -227,7 +229,9 @@
     <ClInclude Include="LayerTab.h" />
     <ClInclude Include="LightData.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshProperty.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="MyRandom.h" />
     <ClInclude Include="NodeCurve.h" />
     <ClInclude Include="NodeData.h" />
     <ClInclude Include="NodeDataAdapter.h" />
@@ -265,6 +269,7 @@
     <ClInclude Include="SulfurLayer.h" />
     <ClInclude Include="TabEntry.h" />
     <ClInclude Include="TabOption.h" />
+    <ClInclude Include="_3DBlueNoiseSampler.h" />
     <QtMoc Include="TimeMachineIdentifier.h" />
     <ClInclude Include="TimeMachineResponder.h" />
     <ClInclude Include="UIModel.h" />
@@ -302,6 +307,8 @@
     <None Include="resources\shaders\grid_shader.vert" />
     <None Include="resources\shaders\tri_shader.frag" />
     <None Include="resources\shaders\tri_shader.vert" />
+    <None Include="sampler_shader.frag" />
+    <None Include="sampler_shader.vert" />
     <None Include="scene.css" />
     <None Include="selector_button_active.css" />
     <None Include="svpng.inc" />

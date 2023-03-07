@@ -137,7 +137,7 @@ int mainWindow(int argc,char* argv[]){
 
     Model* model = new Model("resources/models/space_ship/space_ship.obj");
     //"resources/models/99 - intergalactic_spaceship - obj/Intergalactic_Spaceship-(Wavefront).obj"
-    //canvas->setModel(model);
+    canvas->setModel(model);
 
     player->register_timer(canvas);
 

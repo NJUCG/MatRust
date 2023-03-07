@@ -6,35 +6,10 @@
 #include <QOpenGLExtraFunctions>
 #include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLVersionFunctionsFactory>
-#include <string>
 #include <vector>
 #include"PipelineManager.h"
-using namespace std;
-
-#define MAX_BONE_INFLUENCE 4
-
-struct Vertex {
-    // position
-    glm::vec3 Position;
-    // normal
-    glm::vec3 Normal;
-    // texCoords
-    glm::vec2 TexCoords;
-    // tangent
-    glm::vec3 Tangent;
-    // bitangent
-    glm::vec3 Bitangent;
-    //bone indexes which will influence this vertex
-    int m_BoneIDs[MAX_BONE_INFLUENCE];
-    //weights from each bone
-    float m_Weights[MAX_BONE_INFLUENCE];
-};
-
-struct Texture {
-    unsigned int id;
-    string type;
-    string path;
-};
+#include"MeshProperty.h"
+#include"_3DBlueNoiseSampler.h"
 
 class Mesh {
 public:
@@ -42,8 +17,11 @@ public:
     vector<Vertex>       vertices;
     vector<unsigned int> indices;
     vector<Texture>      textures;
+    PoissonSampler sampler;
     unsigned int VAO;
 
+
+    int td = -1;
     // constructor
     Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures)
     {
@@ -53,6 +31,30 @@ public:
 
         // now that we have all the required data, set the vertex buffers and its attribute pointers.
         setupMesh();
+
+        sampler.sample(vertices, indices, 0.5f);
+        vector<vec2> t = sampler.get_texture();
+        int tl = 256;
+        vector<vector<vec4>> tex(tl, vector<vec4>(tl, vec4(0, 0, 0,255)));
+        for (int i = 0; i < t.size(); i++) {
+            int x_i = floor(t[i].x * (double)tl);
+            int y_i = floor(t[i].y * (double)tl);
+            if (x_i < 0) {
+                x_i = 0;
+            }
+            if (x_i > tl - 1) {
+                x_i = tl - 1;
+            }
+
+            if (y_i < 0) {
+                y_i = 0;
+            }
+            if (y_i > tl - 1) {
+                y_i = tl - 1;
+            }
+            tex[x_i][y_i] = vec4(255, 255, 255, 255);
+        }
+        td = PipelineManager::bind4Map(tex);
     }
 
     // render the mesh
@@ -88,7 +90,8 @@ public:
         }
 
         
-        int generated_map = PipelineManager::shared->output->diffuse_map;
+        //int generated_map = PipelineManager::shared->output->diffuse_map;
+        int generated_map = td;
         if (generated_map > 0) {
             f->glActiveTexture(GL_TEXTURE0);
             shader.setInt("material_texture_diffuse0", 0);

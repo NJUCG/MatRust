@@ -41,6 +41,7 @@ public:
 
 	PipelineOutput* output = nullptr;
 	void generate_rust(double);
+	static int bind4Map(vector<vector<vec4>>);
 protected:
 	vector<Layer*> layers;
 	vector<vector<vector<RustUnit>>> units;
@@ -51,5 +52,5 @@ protected:
 	float current_time = 0.0f;
 	void merge_layers();
 	float getTransmittance(FilmComposition composite, float thick);
-	static int bind4Map(vector<vector<vec4>>);
+
 };

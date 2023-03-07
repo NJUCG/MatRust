@@ -192,6 +192,7 @@ void PipelineManager::merge_layers()
     }
 }
 
+
 int PipelineManager::bind4Map(vector<vector<vec4>> lists)
 {
     if (lists.size() == 0) {

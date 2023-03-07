@@ -325,7 +325,8 @@ void NodeEditor::btn_down(string tag)
 		test_widget1->move(ppos);
 		widgets.push_back(test_widget1);
 		test_widget1->show();
-	}
+	} 
+
 	else if (tag == "custom_layer") {
 		QPoint ppos = panel->pos();
 		CustomLayerNodeWidget* w = new CustomLayerNodeWidget(this, ppos.x() + offset_x, ppos.y() + offset_y);

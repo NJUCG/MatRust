@@ -48,6 +48,12 @@
     <Filter Include="Source Files\Core\Noise">
       <UniqueIdentifier>{4b317bfe-b519-47f2-a169-a131db620abf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\Sampler">
+      <UniqueIdentifier>{c68c266a-e984-4a51-a942-cbccbaad5ab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Sampler">
+      <UniqueIdentifier>{075f3e02-6723-41eb-a8b5-73311a6b4dea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="QtWidgetsApplication1.qrc">
@@ -316,6 +322,12 @@
     <ClCompile Include="NodeWidgetLabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MyRandom.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="_3DBlueNoiseSampler.cpp">
+      <Filter>Source Files\Core\Sampler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -579,6 +591,15 @@
     <ClInclude Include="NodeWidgetLabel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MyRandom.h">
+      <Filter>Header Files\uitl</Filter>
+    </ClInclude>
+    <ClInclude Include="_3DBlueNoiseSampler.h">
+      <Filter>Header Files\Core\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshProperty.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="TimeMachineIdentifier.h">
@@ -687,6 +708,12 @@
     </None>
     <None Include="node_widget_label_style.css">
       <Filter>Header Files</Filter>
+    </None>
+    <None Include="sampler_shader.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="sampler_shader.frag">
+      <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
