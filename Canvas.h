@@ -68,8 +68,8 @@ protected:
     Shader* shader;
 
     GLuint VAO, VBO;
-    void initTriangle();
-    void drawTriangle();
+    void init_scene();
+    void draw_scene();
 
 
     
@@ -105,4 +105,8 @@ protected:
     inline float zoom_project();
 
     void frame_consumer(float) override;
+
+    //让模型在主context中修复
+    string model_path = "";
+    bool should_load = false;
 };

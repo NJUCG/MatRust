@@ -194,9 +194,9 @@ int model_loading_test(int argc, char* argv[]) {
     w->show();
     w->resize(800, 600);
 
-    Model* model = new Model();
-    model->loadModel("D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/stranger/stranger.obj");
-    canvas->setModel(model);
+    //Model* model = new Model();
+    //model->loadModel("D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/stranger/stranger.obj");
+    //canvas->setModel(model);
 
     return a.exec();
 }

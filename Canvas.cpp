@@ -24,9 +24,8 @@ void Canvas::on_trigger(string name)
     else if (name == "selected_mesh_changed") {
         QString* path = (QString*)(EventAdapter::shared->pop_data());
         if (path) {
-            //setModel(new Model(path->toStdString()));
-            model_itself->release_model();
-            model_itself->loadModel(path->toStdString());
+            model_path = path->toStdString();
+            should_load = true;
             update();
         }
     }
@@ -170,14 +169,14 @@ void Canvas::set_up_light()
     }
 }
 void Canvas::initializeGL() {
-    initTriangle();
+    init_scene();
     if (this->background) {
         delete this->background;
     }
     this->background = new CanvasBackGround();
 }
 void Canvas::paintGL() {
-    drawTriangle();
+    draw_scene();
 }
 void Canvas::resizeGL(int w, int h){
     QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
@@ -204,13 +203,18 @@ void Canvas::render_output()
     }
     f->glActiveTexture(GL_TEXTURE0);
 }
-void Canvas::initTriangle() {
+void Canvas::init_scene() {
     QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
     shader = new Shader("resources/shaders/tri_shader.vert", "resources/shaders/tri_shader.frag");
     grid_shader = new Shader("resources/shaders/grid_shader.vert", "resources/shaders/grid_shader.frag");
 
 }
-void Canvas::drawTriangle() {
+void Canvas::draw_scene() {
+    if (should_load) {
+        model_itself->loadModel(model_path);
+        should_load = false;
+    }
+
     QOpenGLFunctions_3_3_Core* f = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_3_3_Core>(QOpenGLContext::currentContext());
     f->glClearColor(0.231f, 0.231f, 0.231f, 1.0f);
     f->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -284,8 +288,7 @@ void Canvas::keyPressEvent(QKeyEvent* e)
     }
     else if (key == Qt::Key_O) {
         if (!setted) {
-            model_itself->loadModel("D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/stranger/stranger.obj");
-            setted = true;
+
         }
     }
 }
