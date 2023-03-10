@@ -29,7 +29,7 @@ unsigned int ImageHelper::TextureFromFile(const char* path, const string& direct
             format = GL_RGB;
         else if (nrComponents == 4)
             format = GL_RGBA;
-
+        
         f->glBindTexture(GL_TEXTURE_2D, textureID);
         f->glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         f->glGenerateMipmap(GL_TEXTURE_2D);

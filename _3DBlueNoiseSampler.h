@@ -77,6 +77,7 @@ class _3DBlueNoiseSampler
 public:
 	virtual vector<_3DSample*> sample(vector<Vertex>,vector<unsigned int>,float) = 0;
 	virtual vector<vec2> get_texture() = 0;
+	static void init_samplers();
 protected:
 
 };
@@ -86,6 +87,8 @@ class PoissonSampler: public _3DBlueNoiseSampler
 public:
 	vector<_3DSample*> sample(vector<Vertex>, vector<unsigned int>,float) override;
 	vector<vec2> get_texture() override;
+	static PoissonSampler* shared;
+	static void init_poisson_sampler();
 protected:
 	vector<Vertex> local_vertices;
 	vector<_3DSample*> res;

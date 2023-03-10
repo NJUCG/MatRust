@@ -36,6 +36,9 @@ public:
     QApplication* app = nullptr;
     WId wid;
     QWidget* father;
+    void initializeGL() override;
+    void paintGL() override;
+    void resizeGL(int w, int h) override;
 protected:
     vector<LightData*> lights_data;
 
@@ -45,6 +48,7 @@ protected:
     Camera* camera = nullptr;
     vec3 init_loc;
     int scr_width, scr_height;
+    bool setted = false;
 
     unordered_map<string, ObjectData*> object_list;
 
@@ -53,9 +57,7 @@ protected:
     void init_light();
     void set_up_light();
 
-    void initializeGL() override;
-    void paintGL() override;
-    void resizeGL(int w,int h) override;
+
     
     // äÖÈ¾Ä£¿é
     int metallic_index, roughness_index;

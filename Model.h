@@ -24,15 +24,20 @@ public:
     string directory;
     bool gammaCorrection;
     static unsigned int TextureFromFile(const char* path, const string& directory, bool gamma = false);
+
+    Model(bool gamma = false) : gammaCorrection(gamma)
+    {
+
+    }
+
     // constructor, expects a filepath to a 3D model.
     Model(string const& path, bool gamma = false) : gammaCorrection(gamma)
     {
         loadModel(path);
     }
-    ~Model() {
-    }
-    void Clear() {
 
+    ~Model() {
+        release_model();
     }
 
     // draws the model, and thus all its meshes
@@ -41,11 +46,21 @@ public:
         for (unsigned int i = 0; i < meshes.size(); i++)
             meshes[i].Draw(shader);
     }
-
-private:
+    void release_model() {
+        for (Mesh m : meshes) {
+            m.release_mesh();
+        }
+        meshes.clear();
+        QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
+        for (Texture t : textures_loaded) {
+            f->glDeleteTextures(1, &(t.id));
+        }
+        textures_loaded.clear();
+    }
     // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
     void loadModel(string const& path)
     {
+        release_model();
         // read file via ASSIMP
         Assimp::Importer importer;
         const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
@@ -55,12 +70,15 @@ private:
             cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
             return;
         }
+
         // retrieve the directory path of the filepath
         directory = path.substr(0, path.find_last_of('/'));
 
         // process ASSIMP's root node recursively
         processNode(scene->mRootNode, scene);
     }
+private:
+
 
     // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
     void processNode(aiNode* node, const aiScene* scene)
@@ -175,7 +193,7 @@ private:
             aiString str;
             mat->GetTexture(type, i, &str);
             // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-            bool skip = false;
+            /*bool skip = false;
             for (unsigned int j = 0; j < textures_loaded.size(); j++)
             {
                 if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
@@ -186,14 +204,14 @@ private:
                 }
             }
             if (!skip)
-            {   // if texture hasn't been loaded already, load it
+            {   // if texture hasn't been loaded already, load it*/
                 Texture texture;
                 texture.id = TextureFromFile(str.C_Str(), this->directory);
                 texture.type = typeName;
                 texture.path = str.C_Str();
                 textures.push_back(texture);
                 textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
-            }
+            //}
         }
         return textures;
     }

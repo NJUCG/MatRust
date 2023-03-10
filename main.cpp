@@ -37,7 +37,9 @@ int mainWindow(int argc,char* argv[]){
     QApplication a(argc, argv);
     QWidget* w = new QWidget();
     PipelineManager::init_pipeline();
-    
+    _3DBlueNoiseSampler::init_samplers();
+
+
     w->setStyleSheet(CssLoader::load_css("our_father.css"));
 
     int spacing = UIModel::get()->common_spacing;
@@ -135,11 +137,66 @@ int mainWindow(int argc,char* argv[]){
 
     separator->init(left_container, right_container, true);
 
-    Model* model = new Model("resources/models/space_ship/space_ship.obj");
-    //"resources/models/99 - intergalactic_spaceship - obj/Intergalactic_Spaceship-(Wavefront).obj"
-    canvas->setModel(model);
+    //Model* model = new Model();
 
-    player->register_timer(canvas);
+    //model->loadModel("D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/stranger/stranger.obj");
+    //model->release_model();
+    //model->loadModel("D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/space_ship/space_ship.obj");
+    //"resources/models/99 - intergalactic_spaceship - obj/Intergalactic_Spaceship-(Wavefront).obj"
+    // "resources/models/plane/plane.obj"
+    // "resources/models/stranger/stranger.obj"
+    // "D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/stranger/stranger.obj"
+    //canvas->setModel(model);
+
+    //player->register_timer(canvas);
+
+    return a.exec();
+}
+int model_loading_test(int argc, char* argv[]) {
+    QApplication a(argc, argv);
+    QWidget* w = new QWidget();
+    PipelineManager::init_pipeline();
+    _3DBlueNoiseSampler::init_samplers();
+    w->setStyleSheet(CssLoader::load_css("our_father.css"));
+
+    int spacing = UIModel::get()->common_spacing;
+
+    // »æÖÆ»­²¼
+    QVBoxLayout* top_layout = new QVBoxLayout();
+
+    QWidget* canvas_container = new QWidget();
+    canvas_container->setStyleSheet("border-radius:4px");
+
+    QVBoxLayout* canvas_container_layout = new QVBoxLayout();
+    canvas_container_layout->setContentsMargins(0, 0, 0, 0);
+
+    Canvas* canvas = new Canvas();
+    canvas->app = &a;
+    canvas->wid = w->winId();
+    canvas->father = w;
+    canvas_container_layout->addWidget(canvas);
+
+    canvas_container->setLayout(canvas_container_layout);
+
+    top_layout->addWidget(canvas_container);
+    
+    //model->release_model();
+    //model->loadModel("D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/space_ship/space_ship.obj");
+    //"resources/models/99 - intergalactic_spaceship - obj/Intergalactic_Spaceship-(Wavefront).obj"
+    // "resources/models/plane/plane.obj"
+    // "resources/models/stranger/stranger.obj"
+    // "D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/stranger/stranger.obj"
+
+
+    //player->register_timer(canvas);
+
+    w->setLayout(top_layout);
+    w->show();
+    w->resize(800, 600);
+
+    Model* model = new Model();
+    model->loadModel("D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/stranger/stranger.obj");
+    canvas->setModel(model);
 
     return a.exec();
 }
@@ -315,5 +372,5 @@ int image_test() {
 }
 int main(int argc, char *argv[]){
     EventAdapter::init_event_adapter();
-    return mainWindow(argc, argv);
+    return model_loading_test(argc, argv);
 }

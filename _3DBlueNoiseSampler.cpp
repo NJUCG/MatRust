@@ -143,6 +143,11 @@ vector<vec2> PoissonSampler::get_texture()
 	}
 	return textures;
 }
+PoissonSampler* PoissonSampler::shared = nullptr;
+void PoissonSampler::init_poisson_sampler()
+{
+	shared = new PoissonSampler();
+}
 
 void PoissonSampler::get_triangles()
 {
@@ -181,4 +186,9 @@ vec3 _3DTriangle::get_sample()
 vec2 _3DTriangle::get_uv()
 {
 	return uv;
+}
+
+void _3DBlueNoiseSampler::init_samplers()
+{
+	PoissonSampler::init_poisson_sampler();
 }

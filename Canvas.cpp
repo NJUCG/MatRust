@@ -24,9 +24,9 @@ void Canvas::on_trigger(string name)
     else if (name == "selected_mesh_changed") {
         QString* path = (QString*)(EventAdapter::shared->pop_data());
         if (path) {
-            setModel(new Model(path->toStdString().c_str()));
-            update();
-            setModel(new Model(path->toStdString().c_str()));
+            //setModel(new Model(path->toStdString()));
+            model_itself->release_model();
+            model_itself->loadModel(path->toStdString());
             update();
         }
     }
@@ -40,6 +40,9 @@ void Canvas::time_up()
 
 void Canvas::init()
 {
+    if (!model_itself) {
+        model_itself = new Model();
+    }
     lights_data = vector<LightData*>();
     setStyleSheet("border-radius:4px;");
     camera = new Camera();
@@ -168,8 +171,10 @@ void Canvas::set_up_light()
 }
 void Canvas::initializeGL() {
     initTriangle();
+    if (this->background) {
+        delete this->background;
+    }
     this->background = new CanvasBackGround();
-    
 }
 void Canvas::paintGL() {
     drawTriangle();
@@ -200,13 +205,8 @@ void Canvas::render_output()
     f->glActiveTexture(GL_TEXTURE0);
 }
 void Canvas::initTriangle() {
-    float vertices[] = {
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f,  0.5f, 0.0f
-    };
     QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
-    shader = new Shader("resources/shaders/common_shader.vert", "resources/shaders/common_shader.frag");
+    shader = new Shader("resources/shaders/tri_shader.vert", "resources/shaders/tri_shader.frag");
     grid_shader = new Shader("resources/shaders/grid_shader.vert", "resources/shaders/grid_shader.frag");
 
 }
@@ -246,7 +246,6 @@ void Canvas::drawTriangle() {
     grid_shader->setFloat("near", 0.1f);
     grid_shader->setFloat("far", 100.0f);
     
-
     // »æÖÆ±³¾°
     background->Draw();
 
@@ -282,6 +281,12 @@ void Canvas::keyPressEvent(QKeyEvent* e)
 
     if (key == Qt::Key_Shift) {
         view_state |= 0x2;
+    }
+    else if (key == Qt::Key_O) {
+        if (!setted) {
+            model_itself->loadModel("D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/stranger/stranger.obj");
+            setted = true;
+        }
     }
 }
 

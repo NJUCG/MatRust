@@ -10,6 +10,7 @@
 #include"PipelineManager.h"
 #include"MeshProperty.h"
 #include"_3DBlueNoiseSampler.h"
+#include<qdebug.h>
 
 class Mesh {
 public:
@@ -19,7 +20,6 @@ public:
     vector<Texture>      textures;
     PoissonSampler sampler;
     unsigned int VAO;
-
 
     int td = -1;
     // constructor
@@ -32,7 +32,7 @@ public:
         // now that we have all the required data, set the vertex buffers and its attribute pointers.
         setupMesh();
 
-        sampler.sample(vertices, indices, 0.5f);
+        /*sampler.sample(vertices, indices, 0.5f);
         vector<vec2> t = sampler.get_texture();
         int tl = 256;
         vector<vector<vec4>> tex(tl, vector<vec4>(tl, vec4(0, 0, 0,255)));
@@ -54,9 +54,8 @@ public:
             }
             tex[x_i][y_i] = vec4(255, 255, 255, 255);
         }
-        td = PipelineManager::bind4Map(tex);
+        td = PipelineManager::bind4Map(tex);*/
     }
-
     // render the mesh
     void Draw(Shader& shader)
     {
@@ -84,14 +83,13 @@ public:
 
             // now set the sampler to the correct texture unit
             int loc = f->glGetUniformLocation(shader.ID, ("material_" + name + "0").c_str());
-            f->glUniform1i(f->glGetUniformLocation(shader.ID, (name + number).c_str()), i);
+            f->glUniform1i(loc, i);
             // and finally bind the texture
             f->glBindTexture(GL_TEXTURE_2D, textures[i].id);
         }
-
         
-        //int generated_map = PipelineManager::shared->output->diffuse_map;
-        int generated_map = td;
+        int generated_map = PipelineManager::shared->output->diffuse_map;
+        //int generated_map = td;
         if (generated_map > 0) {
             f->glActiveTexture(GL_TEXTURE0);
             shader.setInt("material_texture_diffuse0", 0);
@@ -106,12 +104,6 @@ public:
         // always good practice to set everything back to defaults once configured.
         f->glActiveTexture(GL_TEXTURE0);
     }
-
-private:
-    // render data 
-    unsigned int VBO, EBO;
-
-    // initializes all the buffer objects/arrays
     void setupMesh()
     {
         QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
@@ -156,4 +148,19 @@ private:
         f->glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_Weights));
         f->glBindVertexArray(0);
     }
+    void release_mesh() {
+        QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
+        f->glDeleteVertexArrays(1, &VAO);
+        f->glDeleteBuffers(1, &VBO);
+        f->glDeleteBuffers(1, &EBO);
+    }
+    ~Mesh() {
+        //release_mesh();
+    }
+private:
+    // render data 
+    unsigned int VBO, EBO;
+
+    // initializes all the buffer objects/arrays
+
 };

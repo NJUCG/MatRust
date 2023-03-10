@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\86180\AppData\Local\Temp\zwx4vre0.vwg;D:\qt\6.4.0\msvc2019_64\include;D:\qt\6.4.0\msvc2019_64\include\QtQuickWidgets;D:\qt\6.4.0\msvc2019_64\include\QtWebEngineCore;D:\qt\6.4.0\msvc2019_64\include\QtQuick;D:\qt\6.4.0\msvc2019_64\include\QtUiTools;D:\qt\6.4.0\msvc2019_64\include\QtOpenGLWidgets;D:\qt\6.4.0\msvc2019_64\include\QtOpenGL;D:\qt\6.4.0\msvc2019_64\include\QtWidgets;D:\qt\6.4.0\msvc2019_64\include\QtWebView;D:\qt\6.4.0\msvc2019_64\include\QtGui;D:\qt\6.4.0\msvc2019_64\include\QtQmlModels;D:\qt\6.4.0\msvc2019_64\include\QtWebChannel;D:\qt\6.4.0\msvc2019_64\include\QtQml;D:\qt\6.4.0\msvc2019_64\include\QtQmlIntegration;D:\qt\6.4.0\msvc2019_64\include\QtNetwork;D:\qt\6.4.0\msvc2019_64\include\QtCore5Compat;D:\qt\6.4.0\msvc2019_64\include\QtPositioning;D:\qt\6.4.0\msvc2019_64\include\QtCore;C:\Users\86180\AppData\Local\Temp\zwx4vre0.vwg;/include;D:\qt\6.4.0\msvc2019_64\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\86180\AppData\Local\Temp\4cmo4s1v.ji5;D:\qt\6.4.0\msvc2019_64\include;D:\qt\6.4.0\msvc2019_64\include\QtQuickWidgets;D:\qt\6.4.0\msvc2019_64\include\QtWebEngineCore;D:\qt\6.4.0\msvc2019_64\include\QtQuick;D:\qt\6.4.0\msvc2019_64\include\QtUiTools;D:\qt\6.4.0\msvc2019_64\include\QtOpenGLWidgets;D:\qt\6.4.0\msvc2019_64\include\QtOpenGL;D:\qt\6.4.0\msvc2019_64\include\QtWidgets;D:\qt\6.4.0\msvc2019_64\include\QtWebView;D:\qt\6.4.0\msvc2019_64\include\QtGui;D:\qt\6.4.0\msvc2019_64\include\QtQmlModels;D:\qt\6.4.0\msvc2019_64\include\QtWebChannel;D:\qt\6.4.0\msvc2019_64\include\QtQml;D:\qt\6.4.0\msvc2019_64\include\QtQmlIntegration;D:\qt\6.4.0\msvc2019_64\include\QtNetwork;D:\qt\6.4.0\msvc2019_64\include\QtCore5Compat;D:\qt\6.4.0\msvc2019_64\include\QtPositioning;D:\qt\6.4.0\msvc2019_64\include\QtCore;C:\Users\86180\AppData\Local\Temp\4cmo4s1v.ji5;/include;D:\qt\6.4.0\msvc2019_64\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -permissive- -Zc:__cplusplus -Zc:externConstexpr -utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>.\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -81,10 +81,10 @@
     <ClCompile Include="qrc_qml.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\Users\86180\AppData\Local\Temp\zwx4vre0.vwg\main.qml" />
+    <None Include="C:\Users\86180\AppData\Local\Temp\4cmo4s1v.ji5\main.qml" />
     <CustomBuild Include="qml.qrc">
       <FileType>Document</FileType>
-      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">qml.qrc;D:\qt\6.4.0\msvc2019_64\bin\rcc.exe;C:\Users\86180\AppData\Local\Temp\zwx4vre0.vwg\main.qml;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">qml.qrc;D:\qt\6.4.0\msvc2019_64\bin\rcc.exe;C:\Users\86180\AppData\Local\Temp\4cmo4s1v.ji5\main.qml;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">D:\qt\6.4.0\msvc2019_64\bin\rcc.exe -name qml --no-zstd qml.qrc -o qrc_qml.cpp</Command>
       <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">RCC qml.qrc</Message>
       <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">qrc_qml.cpp;%(Outputs)</Outputs>
