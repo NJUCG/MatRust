@@ -372,5 +372,5 @@ int image_test() {
 }
 int main(int argc, char *argv[]){
     EventAdapter::init_event_adapter();
-    return model_loading_test(argc, argv);
+    return mainWindow(argc, argv);
 }

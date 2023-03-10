@@ -205,7 +205,7 @@ void Canvas::render_output()
 }
 void Canvas::init_scene() {
     QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
-    shader = new Shader("resources/shaders/tri_shader.vert", "resources/shaders/tri_shader.frag");
+    shader = new Shader("resources/shaders/common_shader.vert", "resources/shaders/common_shader.frag");
     grid_shader = new Shader("resources/shaders/grid_shader.vert", "resources/shaders/grid_shader.frag");
 
 }

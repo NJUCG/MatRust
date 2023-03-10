@@ -71,8 +71,6 @@ protected:
     void init_scene();
     void draw_scene();
 
-
-    
     // ½»»¥Ä£¿é
     unsigned int view_state = 0;
     QPoint prev_cursor;
