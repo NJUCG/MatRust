@@ -22,8 +22,13 @@ TimeMachineIdentifier::~TimeMachineIdentifier()
 void TimeMachineIdentifier::play()
 {
 	timer->start(50);
-
-	PipelineManager::shared->start_pipeline();
+	PipelineConfig* c = new PipelineConfig();
+	EventAdapter::shared->push_data(c);
+	EventAdapter::shared->trigger_event("combine_config_event_env_tab");
+	EventAdapter::shared->trigger_event("combine_config_event_node_editor");
+	EventAdapter::shared->trigger_event("combine_config_event_canvas");
+	EventAdapter::shared->pop_data();
+	PipelineManager::shared->start_pipeline(c);
 }
 
 void TimeMachineIdentifier::pause()
@@ -34,6 +39,7 @@ void TimeMachineIdentifier::pause()
 void TimeMachineIdentifier::clear()
 {
 	timer->stop();
+	PipelineManager::shared->clear_pipeline();
 	current_time = 0;
 	update();
 }

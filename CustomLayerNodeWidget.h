@@ -5,7 +5,7 @@ class CustomLayerNodeWidget: public NodeWidget, public LabeledComboBoxResponder
 {
 public:
 	CustomLayerNodeWidget(NodeWidgetResponder*, int, int);
-	void value_changed(string, string) override;
+	void value_changed(QString, QString) override;
 	~CustomLayerNodeWidget();
 protected:
 	void init();

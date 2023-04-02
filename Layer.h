@@ -16,6 +16,8 @@ public:
     float thickness;
     float metallic;
     float roughness;
+
+    float ac;
     FilmComposition composition = None;
 };
 

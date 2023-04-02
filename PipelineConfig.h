@@ -2,6 +2,7 @@
 #include<string>
 #include<glm/glm.hpp>
 #include<vector>
+#include"LayerConfig.h"
 using namespace std;
 using namespace glm;
 
@@ -26,5 +27,7 @@ public:
     vector<vector<float>> roughness;
     bool useCurvature = true;
     vector<vector<float>> curvature;
+
+    vector<LayerConfig*> layers;
 };
 

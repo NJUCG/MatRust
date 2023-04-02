@@ -31,7 +31,7 @@ void OxideLayer::accept_rules(PipelineConfig* config)
 		}
 	}
 
-	ImageHelper::save_pic("perlin.png", p_char, 3, config->textureWidth, config->textureHeight);
+	// ImageHelper::save_pic("perlin.png", p_char, 3, config->textureWidth, config->textureHeight);
 
 	for (int i = 0; i < config->textureHeight; i++) {
 		for (int j = 0; j < config->textureWidth; j++)

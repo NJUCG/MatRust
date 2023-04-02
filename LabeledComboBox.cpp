@@ -1,6 +1,6 @@
 #include "LabeledComboBox.h"
 
-LabeledComboBox::LabeledComboBox(LabeledComboBoxResponder* responder,string tag)
+LabeledComboBox::LabeledComboBox(LabeledComboBoxResponder* responder,QString tag)
 {
 	this->tag = tag;
 	this->responder = responder;
@@ -8,35 +8,35 @@ LabeledComboBox::LabeledComboBox(LabeledComboBoxResponder* responder,string tag)
 	addComponent();
 }
 
-void LabeledComboBox::add_item(string item)
+void LabeledComboBox::add_item(QString item)
 {
-	combo_box->addItem(QString::fromLocal8Bit(item.c_str()));
+	combo_box->addItem(item);
 }
 
-void LabeledComboBox::on_streamed(void* v)
+void LabeledComboBox::on_streamed(void* v,int)
 {
-	string fv = *((string*)v);
+	QString fv = *((QString*)v);
 	streamed = true;
 
 	setDisabled(true);
-	combo_box->setCurrentText(fv.c_str());
+	combo_box->setCurrentText(fv);
 }
 
-void LabeledComboBox::value_changed(void* v)
+void LabeledComboBox::value_changed(void* v,int)
 {
 	if (streamed) {
-		string fv = *((string*)v);
-		combo_box->setCurrentText(fv.c_str());
+		QString fv = *((QString*)v);
+		combo_box->setCurrentText(fv);
 	}
 }
 
-void LabeledComboBox::on_cutoff(void*)
+void LabeledComboBox::on_cutoff(void*,int)
 {
 	streamed = false;
 	setDisabled(false);
 }
 
-void LabeledComboBox::set_node_data(NodeData<string>* node_data)
+void LabeledComboBox::set_node_data(NodeData<QString>* node_data)
 {
 	this->node_data = node_data;
 }
@@ -44,7 +44,7 @@ void LabeledComboBox::set_node_data(NodeData<string>* node_data)
 void LabeledComboBox::init()
 {
 	setStyleSheet(CssLoader::load_css("labeled_combo_box_style.css"));
-	items = vector<string>();
+	items = vector<QString>();
 }
 
 void LabeledComboBox::addComponent()
@@ -57,16 +57,16 @@ void LabeledComboBox::addComponent()
 	setFixedHeight(model->float_slider_height);
 
 	tag_label = new QLabel();
-	tag_label->setText(QString::fromLocal8Bit(tag.c_str()));
+	tag_label->setText(tag);
 	tag_label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	top_layout->addWidget(tag_label);
 
 	combo_box = new QComboBox();
 	connect(combo_box, &QComboBox::currentTextChanged, [this](const QString& text) {
-		responder->value_changed(tag, text.toStdString());
+		responder->value_changed(tag, text);
 		if (node_data) {
 			if (!streamed) {
-				node_data->set(text.toStdString());
+				node_data->set(text);
 			}
 		}
 		});

@@ -6,31 +6,29 @@ NodeWidgetLabel::NodeWidgetLabel()
 	addComponent();
 }
 
-void NodeWidgetLabel::on_streamed(void* v)
+void NodeWidgetLabel::on_streamed(void* v,int)
 {
-	string fv = *((string*)v);
+	QString fv = *((QString*)v);
 	streamed = true;
-	setText(fv.c_str());
+	setText(fv);
 }
 
-void NodeWidgetLabel::value_changed(void* v)
+void NodeWidgetLabel::value_changed(void* v, int)
 {
-	if (streamed) {
-		string fv = *((string*)v);
-		setText(fv.c_str());
-	}
+	QString fv = *((QString*)v);
+	setText(fv);
 }
 
-void NodeWidgetLabel::on_cutoff(void*)
+void NodeWidgetLabel::on_cutoff(void*,int)
 {
 	streamed = false;
-	setText("");
+	setText(default_msg);
 }
 
-void NodeWidgetLabel::set_node_data(NodeData<string>* node_data)
+void NodeWidgetLabel::set_node_data(NodeData<QString>* node_data)
 {
 	this->node_data = node_data;
-	setText(node_data->value->c_str());
+	setText(*(node_data->value));
 }
 
 void NodeWidgetLabel::init()

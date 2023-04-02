@@ -6,7 +6,7 @@ CustomLayerNodeWidget::CustomLayerNodeWidget(NodeWidgetResponder* responder, int
 	addComponent();
 }
 
-void CustomLayerNodeWidget::value_changed(string tag, string text)
+void CustomLayerNodeWidget::value_changed(QString tag, QString text)
 {
 	if (tag == "生长方式") {
 		if (text == "DPD") {
@@ -55,24 +55,18 @@ void CustomLayerNodeWidget::addComponent()
 
 void CustomLayerNodeWidget::body()
 {
-	vector<string> item_list;
+	vector<QString> item_list;
 	item_list.push_back("DPD");
 	item_list.push_back("Ballistic");
 
-	new_line("growth alg", item_list);
+	new_line("growth alg", "growth alg", item_list);
 	
-	add_float_argument("r", false, false);
-	add_float_argument("g", false, false);
-	add_float_argument("b", false, false);
-
-	add_float_argument("transmittance", false, false);
-
-	new_label("output", true, false);
+	new_float_argument("transmittance","transmittance", false, false);
 }
 
 void CustomLayerNodeWidget::prepare_arguments()
 {
-	title = string("Custom Layer");
+	title = "Custom Layer";
 	title_color = string("background-color:#2B652B;");
 }
 

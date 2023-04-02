@@ -16,6 +16,7 @@
 #include<qpushbutton.h>
 #include<qimage.h>
 #include<qapplication.h>
+#include"StringHelper.h"
 
 #define CANVAS_VIEW_NONE 0
 #define CANVAS_VIEW_ROTATE 0x1
@@ -49,6 +50,10 @@ protected:
     vec3 init_loc;
     int scr_width, scr_height;
     bool setted = false;
+
+    bool is_pipeline_on = false;
+    float i_metallic = 0.0f;
+    float i_roughness = 0.0f;
 
     unordered_map<string, ObjectData*> object_list;
 

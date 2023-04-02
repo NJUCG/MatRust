@@ -6,6 +6,7 @@
 #include<string>
 #include"NodeEditorPanel.h"
 #include"CssLoader.h"
+#include"StringHelper.h"
 using namespace std;
 
 class NodeEditorPanel: public QWidget
@@ -21,6 +22,6 @@ protected:
 	void init();
 	void addComponent();
 
-	void add_btn(string, string);
+	void add_btn(QString, string);
 };
 

@@ -32,7 +32,7 @@ public:
         // now that we have all the required data, set the vertex buffers and its attribute pointers.
         setupMesh();
 
-        sampler.sample(vertices, indices, 0.5f);
+        /*sampler.sample(vertices, indices, 0.5f);
         vector<vec2> t = sampler.get_texture();
         int tl = 256;
         vector<vector<vec4>> tex(tl, vector<vec4>(tl, vec4(0, 0, 0,255)));
@@ -54,7 +54,7 @@ public:
             }
             tex[x_i][y_i] = vec4(255, 255, 255, 255);
         }
-        td = PipelineManager::bind4Map(tex);
+        td = PipelineManager::bind4Map(tex);*/
     }
     // render the mesh
     void Draw(Shader& shader)
@@ -88,8 +88,7 @@ public:
             f->glBindTexture(GL_TEXTURE_2D, textures[i].id);
         }
         
-        //int generated_map = PipelineManager::shared->output->diffuse_map;
-        int generated_map = td;
+        int generated_map = PipelineManager::shared->output->diffuse_map;
         if (generated_map > 0) {
             f->glActiveTexture(GL_TEXTURE0);
             shader.setInt("material_texture_diffuse0", 0);

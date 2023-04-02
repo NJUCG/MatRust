@@ -2,7 +2,10 @@
 #include"NodeData.h"
 #include"IdGenerator.h"
 #include<unordered_map>
+#include<qcolor.h>
+#include<qstring.h>
 #include <time.h>
+#include"LayerConfig.h"
 class NodePool
 {
 public:
@@ -26,8 +29,14 @@ public:
 	template<typename T>
 	bool connect(int src_id, int dst_id);
 
+	// reverse 表示用src_id当dst_id, 后者反之
+	bool connect_(int src_id, int dst_id, bool reverse = false);
+
 	template<typename T>
 	bool cut_off(int src_id, int dst_id);
+
+	// reverse 表示用src_id当dst_id， 后者反之
+	bool cut_off_(int src_id, int dst_id, bool reverse = false);
 
 	string get_value_type(int id);
 protected:
@@ -37,6 +46,102 @@ protected:
 inline NodePool::NodePool() {
 	data_pool = unordered_map<int, void*>();
 	generator = new IdGenerator(time(NULL), 1000);
+}
+
+inline bool NodePool::connect_(int src_id, int dst_id, bool reverse)
+{
+	string start_value = get_value_type(src_id);
+	string stop_value = get_value_type(dst_id);
+	if (start_value != stop_value) {
+		return false;
+	}
+	if (start_value == "float") {
+		if (!reverse) {
+			return connect<float>(src_id, dst_id);
+		}
+		else {
+			return connect<float>(dst_id, src_id);
+		}
+	}
+	else if (start_value == "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >") {
+		if (!reverse) {
+			return connect<float>(src_id, dst_id);
+		}
+		else {
+			return connect<float>(dst_id, src_id);
+		}
+	}
+	else if (start_value == "class QColor") {
+		if (!reverse) {
+			return connect<QColor>(src_id, dst_id);
+		}
+		else {
+			return connect<QColor>(dst_id, src_id);
+		}
+	}
+	else if (start_value == "class LayerConfig * __ptr64") {
+		if (!reverse) {
+			return connect<LayerConfig*>(src_id, dst_id);
+		}
+		else {
+			return connect<LayerConfig*>(dst_id, src_id);
+		}
+	}
+	else if (start_value == "class QString") {
+		if (!reverse) {
+			return connect<QString>(src_id, dst_id);
+		}
+		else {
+			return connect<QString>(dst_id, src_id);
+		}
+	}
+	return false;
+}
+
+inline bool NodePool::cut_off_(int src_id, int dst_id, bool reverse)
+{
+	string start_value = get_value_type(src_id);
+	if (start_value == "float") {
+		if (!reverse) {
+			return cut_off<float>(src_id, dst_id);
+		}
+		else {
+			return cut_off<float>(dst_id, src_id);
+		}
+	}
+	else if (start_value == "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >") {
+		if (!reverse) {
+			return cut_off<float>(src_id, dst_id);
+		}
+		else {
+			return cut_off<float>(dst_id, src_id);
+		}
+	}
+	else if (start_value == "class QColor") {
+		if (!reverse) {
+			return cut_off<QColor>(src_id, dst_id);
+		}
+		else {
+			return cut_off<QColor>(dst_id, src_id);
+		}
+	}
+	else if (start_value == "class LayerConfig * __ptr64") {
+		if (!reverse) {
+			return cut_off<LayerConfig*>(src_id, dst_id);
+		}
+		else {
+			return cut_off<LayerConfig*>(dst_id, src_id);
+		}
+	}
+	else if (start_value == "class QString") {
+		if (!reverse) {
+			return cut_off<QString>(src_id, dst_id);
+		}
+		else {
+			return cut_off<QString>(dst_id, src_id);
+		}
+	}
+	return false;
 }
 
 inline string NodePool::get_value_type(int id)

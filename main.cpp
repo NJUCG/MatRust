@@ -18,6 +18,9 @@
 #include"ImageHelper.h"
 #include"SceneTab.h"
 #include"EventAdapter.h"
+#include<qcolordialog.h>
+#include"AlgArgAnalyzer.h"
+#include"StringHelper.h"
 
 // fov 调整
 // 环境光
@@ -27,11 +30,13 @@
 // mesh sampling
 // 裁剪曲率
 // 
-// 高度图
+// 高度图，法线扰动
 // 自由截图
 
 // 两套参数调节：物理环境，艺术设计
 // 规律输入
+
+// 添加readme, 记得加<a target="_blank" href="https://icons8.com/icon/95809/plus-math">Plus Math</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 
 int mainWindow(int argc,char* argv[]){
     QApplication a(argc, argv);
@@ -148,7 +153,7 @@ int mainWindow(int argc,char* argv[]){
     // "D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/stranger/stranger.obj"
     //canvas->setModel(model);
 
-    //player->register_timer(canvas);
+    player->register_timer(canvas);
 
     return a.exec();
 }
@@ -214,6 +219,28 @@ int test_window(int argc, char* argv[]) {
     tab->add_property("mesh-30", "hello");
     tab->add_property("light-30", "hello2");
     top_layout->addWidget(tab);
+
+    w->setLayout(top_layout);
+    w->show();
+    w->resize(800, 600);
+
+    return a.exec();
+}
+int palette_test(int argc, char* argv[]) {
+    QApplication a(argc, argv);
+    QWidget* w = new QWidget();
+
+    w->setStyleSheet(CssLoader::load_css("our_father.css"));
+
+    QVBoxLayout* top_layout = new QVBoxLayout();
+    top_layout->setContentsMargins(0, 0, 0, 0);
+    top_layout->setSpacing(0);
+
+    QPushButton* btn = new QPushButton();
+
+    QColorDialog* dialog = new QColorDialog();
+
+    top_layout->addWidget(btn);
 
     w->setLayout(top_layout);
     w->show();
@@ -370,7 +397,33 @@ int image_test() {
     ImageHelper::save_pic("hello.png", data, 3, w, h);
     return 0;
 }
+int analyzer_test() {
+
+    string test_str = "( sc + 2.1 ) * ( oc + 2.1 ) * ( rh + 0.1 ) ";
+    PipelineConfig* config = new PipelineConfig();
+    config->sc = 0.8f;
+    config->oc = 1.0f;
+    config->rh = 2.0f;
+
+    AlgArgAnalyzer::analyzer->register_config(config);
+
+    float t = AlgArgAnalyzer::analyzer->get_arg(test_str);
+    cout << t << endl;
+    return 0;
+}
+int strings_test() {
+    StringHelper::init_string_helper();
+
+    //cout << SCENE_TAB_HEADER_TITLE << endl;
+    //cout << StringHelper::fetch("nihao_ch") << endl;
+
+    return 0;
+}
 int main(int argc, char *argv[]){
     EventAdapter::init_event_adapter();
+    AlgArgAnalyzer::init_analyzer();
+    StringHelper::init_string_helper();
+    //return analyzer_test();
     return mainWindow(argc, argv);
+    //return strings_test();
 }

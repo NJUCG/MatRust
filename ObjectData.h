@@ -6,7 +6,10 @@ using namespace std;
 class ObjectData
 {
 public:
+	// 仅在部分情况有用
+	int idx;
 	string name;
+	string tag;
 	string type;
 	string path;
 	vec4 loc;

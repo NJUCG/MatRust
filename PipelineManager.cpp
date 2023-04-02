@@ -1,4 +1,4 @@
-#include "PipelineManager.h"
+Ôªø#include "PipelineManager.h"
 PipelineManager* PipelineManager::shared;
 
 void PipelineManager::init_pipeline()
@@ -41,8 +41,11 @@ void PipelineManager::register_layer(Layer* layer)
 
 void PipelineManager::start_pipeline(PipelineConfig* config)
 {
+    if (state != Open) {
+        return;
+    }
     if (config == nullptr) {
-        // ◊‘––∆¥◊∞Pipeline config
+        // Ëá™Ë°åÊãºË£ÖPipeline config
         config = new PipelineConfig();
         config->oc = config->sc = config->cc = 0.8f;
         config->textureWidth = config->textureHeight = 200;
@@ -51,7 +54,6 @@ void PipelineManager::start_pipeline(PipelineConfig* config)
         config->backTexture = vector<vector<vec4>>(config->textureHeight, vector<vec4>(config->textureWidth, vec4()));
         config->metallic = vector<vector<float>>(config->textureHeight, vector<float>(config->textureWidth, 0.1f));
         config->roughness = vector<vector<float>>(config->textureHeight, vector<float>(config->textureWidth, 1.0f));
-        config->curvature = CurvatureHelper::generate("resources/models/stranger/curve.png");
         for (int i = 0; i < 200; i++) {
             for (int j = 0; j < 200; j++) {
                 config->backTexture[i][j] = vec4(255, 80, 60, 255);
@@ -65,17 +67,42 @@ void PipelineManager::start_pipeline(PipelineConfig* config)
     dispatch_rules();
 }
 
+void PipelineManager::clear_pipeline()
+{
+    for (Layer* layer : layers) {
+        delete layer;
+    }
+    layers.clear();
+
+    units.clear();
+
+    state = Open;
+}
+
+void PipelineManager::pause_pipeline()
+{
+}
+
+void PipelineManager::continue_pipeline()
+{
+}
+
 void PipelineManager::prepare_layers()
 {
     units = vector<vector<vector<RustUnit>>>();
-    
-    Layer* oxide_layer = new OxideLayer();
-    Layer* sulfur_layer = new SulfurLayer();
-
-    //layers.push_back(oxide_layer);
-    layers.push_back(sulfur_layer);
-
-    units.push_back(vector<vector<RustUnit>>(config->textureHeight, vector<RustUnit>(config->textureWidth, RustUnit())));
+    for (int i = 0; i < config->layers.size(); i++) {
+        LayerConfig* c = config->layers[i];
+        if (c->alg_type == "perlin") {
+            CustomPerlinLayer* layer = new CustomPerlinLayer(c);
+            layers.push_back(layer);
+            units.push_back(vector<vector<RustUnit>>(config->textureHeight, vector<RustUnit>(config->textureWidth, RustUnit())));
+        }
+        else if (c->alg_type == "DPD") {
+            CustomDPDLayer* layer = new CustomDPDLayer(c);
+            layers.push_back(layer);
+            units.push_back(vector<vector<RustUnit>>(config->textureHeight, vector<RustUnit>(config->textureWidth, RustUnit())));
+        }
+    }
 }
 
 void PipelineManager::dispatch_rules()
@@ -94,7 +121,6 @@ void PipelineManager::generate_rust(double delta)
 	int ls = layers.size();
 	for (int i = 0; i < ls; i++) {
 		Layer* layer = layers[i];
-
 		layer->rust(delta);
 	}
     merge_layers();
@@ -121,33 +147,26 @@ void PipelineManager::merge_layers()
         f->glDeleteTextures(1, addr);
     }
 
-    // UIΩÁ√Ê¥ÓΩ®
-    // ≤Œ ˝√Ê∞Â£¨‘§¿¿øÚ£¨Àÿ≤ƒø‚£¨◊¥Ã¨¿∏
-    // ø≈¡£∏–∑®œÚÕº
-    // πÊ‘Ú
-    // ≤ƒ÷ «®“∆
-
     int layerSize = layers.size();
 
-    ///∑¥…‰¬ ’‚÷ªÃ·π©“ª∏ˆF0≤ƒ÷ £¨∆‰”‡‘⁄shader÷–
     for (int i = 0; i < config->textureHeight; i++) {
         for (int j = 0; j < config->textureWidth; j++) {
             vec4 color(0, 0, 0, 0);
             float lightIntensity = 1;
             for (int k = 0; k < layerSize; k++) {
                 RustUnit unit = units[k][i][j];
-                float transmittance = (float)getTransmittance(unit.composition, unit.thickness);
-                
+                float transmittance = 0;
+                if (unit.composition == FilmComposition::Custom) {
+                    transmittance = (float)getTransmittance(unit.ac, unit.thickness);
+                }
+                else {
+                    transmittance = (float)getTransmittance(unit.composition, unit.thickness);
+                }
                 color = color + unit.color * (1 - transmittance) * lightIntensity;
                 lightIntensity *= transmittance;
             }
             color = color + config->backTexture[i][j] * lightIntensity;
             color.w = 255;
-            /*
-            if (color.x != 255) {
-                qDebug() << color.x << " " << color.y << " " << color.z << " " << color.w;
-            }*/
-            
             diffData[i][j] = color;
         }
     }
@@ -159,7 +178,13 @@ void PipelineManager::merge_layers()
             float lightIntensity = 1;
             for (int k = layerSize - 1; k >= 0; k--) {
                 RustUnit unit = units[k][i][j];
-                float transmittance = (float)getTransmittance(unit.composition, unit.thickness);
+                float transmittance = 0;
+                if (unit.composition == FilmComposition::Custom) {
+                    transmittance = (float)getTransmittance(unit.ac, unit.thickness);
+                }
+                else {
+                    transmittance = (float)getTransmittance(unit.composition, unit.thickness);
+                }
                 color = color + vec4(0, 0, unit.roughness * (1 - transmittance) * lightIntensity, 0);
                 lightIntensity *= transmittance;
             }
@@ -176,7 +201,13 @@ void PipelineManager::merge_layers()
             float lightIntensity = 1;
             for (int k = layerSize - 1; k >= 0; k--) {
                 RustUnit unit = units[k][i][j];
-                float transmittance = (float)getTransmittance(unit.composition, unit.thickness);
+                float transmittance = 0;
+                if (unit.composition == FilmComposition::Custom) {
+                    transmittance = (float)getTransmittance(unit.ac, unit.thickness);
+                }
+                else {
+                    transmittance = (float)getTransmittance(unit.composition, unit.thickness);
+                }
                 color = color + vec4(0, 0, unit.metallic * (1 - transmittance) * lightIntensity, 0);
                 lightIntensity *= transmittance;
             }
@@ -235,7 +266,7 @@ float PipelineManager::getTransmittance(FilmComposition composition, float thick
     double ac = 0;
     switch (composition) {
     case CuI_O:
-        ac = -5.2;
+        ac = -0.52;
     case CuII_O:
         break;
     case CuSO4:
@@ -244,4 +275,9 @@ float PipelineManager::getTransmittance(FilmComposition composition, float thick
         break;
     }
     return exp(ac * thickness);
+}
+
+float PipelineManager::getTransmittance(float ac, float thick)
+{
+    return exp(ac * thick);
 }

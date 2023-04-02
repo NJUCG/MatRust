@@ -93,6 +93,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AlgArgAnalyzer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="CanvasBackGround.cpp" />
@@ -105,8 +106,13 @@
     <ClCompile Include="CssLoader.cpp" />
     <ClCompile Include="CurvatureHelper.cpp" />
     <ClCompile Include="CustomComboBox.cpp" />
+    <ClCompile Include="CustomDPDLayer.cpp" />
+    <ClCompile Include="CustomLayer.cpp" />
+    <ClCompile Include="CustomLayerBuilder.cpp" />
     <ClCompile Include="CustomLayerNodeWidget.cpp" />
+    <ClCompile Include="CustomPerlinLayer.cpp" />
     <ClCompile Include="DPD.cpp" />
+    <ClCompile Include="DPDLayerNodeWidget.cpp" />
     <ClCompile Include="DPDPatch.cpp" />
     <ClCompile Include="EngineTab.cpp" />
     <ClCompile Include="EnvTab.cpp" />
@@ -147,23 +153,29 @@
     <ClCompile Include="NodeDataButtonResponder.cpp" />
     <ClCompile Include="NodeDataResponder.cpp" />
     <ClCompile Include="NodeEditor.cpp" />
+    <ClCompile Include="NodeEditorData.cpp" />
     <ClCompile Include="NodeEditorPanel.cpp" />
     <ClCompile Include="NodeEditorPanelResponder.cpp" />
+    <ClCompile Include="NodeLineEditor.cpp" />
     <ClCompile Include="NodeObject.cpp" />
     <ClCompile Include="NodePool.cpp" />
     <ClCompile Include="NodeWidget.cpp" />
     <ClCompile Include="NodeWidgetLabel.cpp" />
+    <ClCompile Include="NodeWidgetLayerConfigLabel.cpp" />
+    <ClCompile Include="NodeWidgetPalette.cpp" />
     <ClCompile Include="NodeWidgetResponder.cpp" />
     <ClCompile Include="ObjectData.cpp" />
     <ClCompile Include="ObjectTab.cpp" />
     <ClCompile Include="OxideLayer.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="PerlinBackGroundI.cpp" />
+    <ClCompile Include="PerlinLayerNodeWidget.cpp" />
     <ClCompile Include="PipelineConfig.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
     <ClCompile Include="PipelineManagerResponder.cpp" />
     <ClCompile Include="PipelineOutput.cpp" />
     <ClCompile Include="PlayerWidget.cpp" />
+    <ClCompile Include="RuleWrapper.cpp" />
     <ClCompile Include="SceneTab.cpp" />
     <ClCompile Include="SceneTabEntry.cpp" />
     <ClCompile Include="SceneTabEntryResponder.cpp" />
@@ -173,6 +185,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleEntry.cpp" />
     <ClCompile Include="StackedWidget.cpp" />
+    <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="SulfurLayer.cpp" />
     <ClCompile Include="TabEntry.cpp" />
     <ClCompile Include="TabOption.cpp" />
@@ -186,6 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CRustDependency\stb-master\stb-master\stb_image.h" />
+    <ClInclude Include="AlgArgAnalyzer.h" />
     <ClInclude Include="bezier.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CanvasBackGround.h" />
@@ -196,8 +210,13 @@
     <ClInclude Include="CssLoader.h" />
     <ClInclude Include="CurvatureHelper.h" />
     <ClInclude Include="CustomComboBox.h" />
+    <ClInclude Include="CustomDPDLayer.h" />
+    <ClInclude Include="CustomLayer.h" />
+    <ClInclude Include="CustomLayerBuilder.h" />
     <ClInclude Include="CustomLayerNodeWidget.h" />
+    <ClInclude Include="CustomPerlinLayer.h" />
     <ClInclude Include="DPD.h" />
+    <ClInclude Include="DPDLayerNodeWidget.h" />
     <ClInclude Include="DPDPatch.h" />
     <ClInclude Include="EngineTab.h" />
     <ClInclude Include="EnvTab.h" />
@@ -225,6 +244,7 @@
     <ClInclude Include="LabeledComboBox.h" />
     <ClInclude Include="LabeledComboBoxResponder.h" />
     <ClInclude Include="Layer.h" />
+    <ClInclude Include="LayerConfig.h" />
     <ClInclude Include="LayerMachineNodeWidget.h" />
     <ClInclude Include="LayerTab.h" />
     <ClInclude Include="LightData.h" />
@@ -239,12 +259,16 @@
     <ClInclude Include="NodeDataButtonResponder.h" />
     <ClInclude Include="NodeDataResponder.h" />
     <ClInclude Include="NodeEditor.h" />
+    <ClInclude Include="NodeEditorData.h" />
     <ClInclude Include="NodeEditorPanel.h" />
     <ClInclude Include="NodeEditorPanelResponder.h" />
+    <ClInclude Include="NodeLineEditor.h" />
     <ClInclude Include="NodeObject.h" />
     <ClInclude Include="NodePool.h" />
     <ClInclude Include="NodeWidget.h" />
     <ClInclude Include="NodeWidgetLabel.h" />
+    <ClInclude Include="NodeWidgetLayerConfigLabel.h" />
+    <ClInclude Include="NodeWidgetPalette.h" />
     <ClInclude Include="NodeWidgetResponder.h" />
     <ClInclude Include="node_pool_header.h" />
     <ClInclude Include="ObjectData.h" />
@@ -252,11 +276,13 @@
     <ClInclude Include="OxideLayer.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="PerlinBackGroundI.h" />
+    <ClInclude Include="PerlinLayerNodeWidget.h" />
     <ClInclude Include="PipelineConfig.h" />
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="PipelineManagerResponder.h" />
     <ClInclude Include="PipelineOutput.h" />
     <ClInclude Include="PlayerWidget.h" />
+    <ClInclude Include="RuleWrapper.h" />
     <ClInclude Include="SceneTab.h" />
     <ClInclude Include="SceneTabEntry.h" />
     <ClInclude Include="SceneTabEntryResponder.h" />
@@ -266,6 +292,8 @@
     <ClInclude Include="SimpleEntry.h" />
     <ClInclude Include="StackedWidget.h" />
     <ClInclude Include="stb_header.h" />
+    <ClInclude Include="StringHelper.h" />
+    <ClInclude Include="string_defs.h" />
     <ClInclude Include="SulfurLayer.h" />
     <ClInclude Include="TabEntry.h" />
     <ClInclude Include="TabOption.h" />
@@ -298,6 +326,8 @@
     <None Include="node_editor_panel_style.css" />
     <None Include="node_widget.css" />
     <None Include="node_widget_label_style.css" />
+    <None Include="node_widget_line_editor_style.css" />
+    <None Include="node_widget_palette_style.css" />
     <None Include="obejct_tab.css" />
     <None Include="our_father.css" />
     <None Include="player_widget.css" />
@@ -311,6 +341,7 @@
     <None Include="sampler_shader.vert" />
     <None Include="scene.css" />
     <None Include="selector_button_active.css" />
+    <None Include="strings.json" />
     <None Include="svpng.inc" />
     <None Include="tabentry.css" />
     <None Include="time_machine_identifier.css" />

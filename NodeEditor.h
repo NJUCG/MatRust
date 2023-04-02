@@ -13,9 +13,14 @@
 #include"NodeEditorPanel.h"
 #include"CustomLayerNodeWidget.h"
 #include"LayerMachineNodeWidget.h"
-
+#include"EventAdapter.h"
+#include"PipelineConfig.h"
+#include"PerlinLayerNodeWidget.h"
+#include"DPDLayerNodeWidget.h"
+#include<qfiledialog.h>
 using namespace std;
-class NodeEditor: public QWidget, public NodeWidgetResponder, public NodeEditorPanelResponder
+
+class NodeEditor: public QWidget, public NodeWidgetResponder, public NodeEditorPanelResponder, public EventResponder
 
 {
 public:
@@ -26,8 +31,17 @@ public:
 	void on_widget_move() override;
 	void update_temp_curve(QPoint) override;
 	void btn_down(string) override;
-protected:
+	void on_trigger(string) override;
+	void start_linking(NodeDataButton*) override;
+	void remove_connection(NodeDataButton*) override;
+
+	void read_config(QString);
+	void write_config(QString);
+protected: 
 	NodePool* pool = nullptr;
+
+	LayerMachineNodeWidget* machine = nullptr;
+
 	NodeEditorPanel* panel = nullptr;
 	vector<NodeWidget*> widgets;
 	QVBoxLayout* top_layout = nullptr;
@@ -51,7 +65,6 @@ protected:
 
 	void update_widgets(QPoint);
 
-	void start_linking(NodeDataButton*) override;
 	// 移动了多少
 	float offset_x, offset_y;
 	bool mouse_down = false;

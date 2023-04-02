@@ -29,7 +29,7 @@ UIModel::UIModel() {
 
 	common_spacing = 0;
 
-	init_loc = vec3(0, 0, -3);
+	init_loc = vec3(0, 0, 0);
 
 	canvas_view_move_sensitivity = 0.02f;
 
@@ -51,6 +51,8 @@ UIModel::UIModel() {
 	selector_width = 400;
 
 	header_height = 50;
+
+	node_widget_line_height = 20;
 }
 UIModel* UIModel::get()
 {

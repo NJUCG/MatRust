@@ -17,7 +17,12 @@ void Canvas::on_trigger(string name)
     if (name == string("object_value_changed")) {
         ObjectData* obj = (ObjectData*)(EventAdapter::shared->pop_data());
         if (obj) {
-            object_list[obj->name] = obj;
+            if (obj->type == "mesh") {
+                object_list[obj->tag] = obj;
+            }
+            else if (obj->type == "light") {
+                lights_data[obj->idx] = (LightData*)obj;
+            }
             update();
         }
     }
@@ -28,6 +33,24 @@ void Canvas::on_trigger(string name)
             should_load = true;
             update();
         }
+    }
+    else if (name == "combine_config_event_canvas") {
+        PipelineConfig* c = (PipelineConfig*)EventAdapter::shared->pop_data();
+        
+        c->backTexture = vector<vector<vec4>>(c->textureHeight, vector<vec4>(c->textureWidth, vec4(255, 80, 60, 255)));
+        c->curvature = CurvatureHelper::generate("resources/models/stranger/curve.png");
+
+        is_pipeline_on = true;
+
+        EventAdapter::shared->push_data(c);
+    }
+    else if (name == "model_back_roughness_changed") {
+        float r = *((float*)EventAdapter::shared->pop_data());
+        i_roughness = r;
+    }
+    else if (name == "model_back_metallic_changed") {
+        float m = *((float*)EventAdapter::shared->pop_data());
+        i_metallic = m;
     }
 }
 
@@ -50,7 +73,8 @@ void Canvas::init()
     this->init_loc = m->init_loc;
 
     ObjectData* obj = new ObjectData();
-    obj->name = "object";
+    obj->name = SCENE_TAB_OBJECT_TITLE.toStdString();
+    obj->tag = "object";
     obj->type = "mesh";
     obj->loc = vec4(init_loc.x, init_loc.y, init_loc.z, 1);
     obj->rot = vec4(0, 0, 0, 0);
@@ -85,6 +109,10 @@ void Canvas::init()
 
     EventAdapter::shared->register_event("object_value_changed", this);
     EventAdapter::shared->register_event("selected_mesh_changed", this);
+    EventAdapter::shared->register_event("combine_config_event_canvas", this);
+
+    EventAdapter::shared->register_event("model_back_roughness_changed", this);
+    EventAdapter::shared->register_event("model_back_metallic_changed", this);
 
     init_light();
 
@@ -96,16 +124,17 @@ void Canvas::addComponent()
 void Canvas::init_light()
 {
     int t = 16;
-    vec3 lightIntensity(t, t, t);
-    vec3 lightPos(0, 0, init_loc.z + 3);
+    vec3 lightIntensity(t * 6, t * 6, t * 6);
+    vec3 lightPos(0, init_loc.y + 6, init_loc.z + 3);
     LightData* lght = new LightData();
-    lght->name = "light_0";
+    lght->name = SCENE_TAB_LIGHT_TITLE_0.toStdString();
     lght->light_name = "lightPosition[0]";
     lght->loc = vec4(lightPos.x, lightPos.y, lightPos.z, 1);
     lght->rot = vec4(0, 0, 0, 0);
     lght->scl = vec4(1, 1, 1, 1);
     lght->light_intensity = lightIntensity;
     lght->type = "light";
+    lght->idx = 0;
     EventAdapter::shared->push_data(lght);
     EventAdapter::shared->trigger_event("add_object_to_tab");
     lights_data.push_back(lght);
@@ -113,13 +142,14 @@ void Canvas::init_light()
 
     lightPos = vec3(0, 0, init_loc.z - 3);
     lght = new LightData();
-    lght->name = "light_1";
+    lght->name = SCENE_TAB_LIGHT_TITLE_1.toStdString();
     lght->light_name = "lightPosition[1]";
     lght->loc = vec4(lightPos.x, lightPos.y, lightPos.z, 1);
     lght->rot = vec4(0, 0, 0, 0);
     lght->scl = vec4(1, 1, 1, 1);
     lght->light_intensity = lightIntensity;
     lght->type = "light";
+    lght->idx = 1;
     EventAdapter::shared->push_data(lght);
     EventAdapter::shared->trigger_event("add_object_to_tab");
 
@@ -129,13 +159,14 @@ void Canvas::init_light()
     lightPos = vec3(init_loc.x - 2, 0, init_loc.z);
 
     lght = new LightData();
-    lght->name = "light_2";
+    lght->name = SCENE_TAB_LIGHT_TITLE_2.toStdString();
     lght->light_name = "lightPosition[2]";
     lght->loc = vec4(lightPos.x, lightPos.y, lightPos.z, 1);
     lght->rot = vec4(0, 0, 0, 0);
     lght->scl = vec4(1, 1, 1, 1);
     lght->light_intensity = lightIntensity;
     lght->type = "light";
+    lght->idx = 2;
     EventAdapter::shared->push_data(lght);
     EventAdapter::shared->trigger_event("add_object_to_tab");
 
@@ -145,13 +176,14 @@ void Canvas::init_light()
     lightPos = vec3(init_loc.x + 2, 0, init_loc.z);
 
     lght = new LightData();
-    lght->name = "light_3";
+    lght->name = SCENE_TAB_LIGHT_TITLE_3.toStdString();
     lght->light_name = "lightPosition[3]";
     lght->loc = vec4(lightPos.x, lightPos.y, lightPos.z, 1);
     lght->rot = vec4(0, 0, 0, 0);
     lght->scl = vec4(1, 1, 1, 1);
     lght->light_intensity = lightIntensity;
     lght->type = "light";
+    lght->idx = 3;
     EventAdapter::shared->push_data(lght);
     EventAdapter::shared->trigger_event("add_object_to_tab");
 
@@ -162,9 +194,7 @@ void Canvas::set_up_light()
 {
     shader->setInt("lightCount", lights_data.size());
     for (int i = 0; i < lights_data.size(); i++) {
-        string t = string("lightPosition[") + std::to_string(i) + string("]");
-        string t1 = string("lightColors[") + std::to_string(i) + string("]");
-        shader->setVec3(string("lightPosition[") + std::to_string(i) + string("]"), vec3(lights_data[i]->loc.x, lights_data[i]->loc.y, lights_data[i]->loc.z));
+        shader->setVec3(string("lightPositions[") + std::to_string(i) + string("]"), vec3(lights_data[i]->loc.x, lights_data[i]->loc.y, lights_data[i]->loc.z));
         shader->setVec3(string("lightColors[") + std::to_string(i) + string("]"), lights_data[i]->light_intensity);
     }
 }
@@ -178,25 +208,27 @@ void Canvas::initializeGL() {
 void Canvas::paintGL() {
     draw_scene();
 }
+
 void Canvas::resizeGL(int w, int h){
     QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
     f->glViewport(100, 200, w, h);
 }
+
 void Canvas::render_output()
 {
     QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
     f->glActiveTexture(GL_TEXTURE0 + metallic_index);
     shader->setInt("metallicMap", metallic_index);
-    if (PipelineManager::shared->output->metallic_map < 0) {
-        //f->glBindTexture(GL_TEXTURE_2D, mMap);
+    if (!is_pipeline_on || PipelineManager::shared->output->metallic_map < 0) {
+        shader->setFloat("i_metallic", i_metallic);
     }
     else {
         f->glBindTexture(GL_TEXTURE_2D, PipelineManager::shared->output->metallic_map);
     }
     f->glActiveTexture(GL_TEXTURE0 + roughness_index);
     shader->setInt("roughnessMap", roughness_index);
-    if (PipelineManager::shared->output->roughness_map < 0) {
-        //glBindTexture(GL_TEXTURE_2D, rMap);
+    if (!is_pipeline_on || PipelineManager::shared->output->roughness_map < 0) {
+        shader->setFloat("i_roughness", i_roughness);
     }
     else {
         f->glBindTexture(GL_TEXTURE_2D, PipelineManager::shared->output->roughness_map);
@@ -207,12 +239,12 @@ void Canvas::init_scene() {
     QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
     shader = new Shader("resources/shaders/common_shader.vert", "resources/shaders/common_shader.frag");
     grid_shader = new Shader("resources/shaders/grid_shader.vert", "resources/shaders/grid_shader.frag");
-
 }
 void Canvas::draw_scene() {
     if (should_load) {
         model_itself->loadModel(model_path);
         should_load = false;
+        EventAdapter::shared->trigger_event("new_mesh_loaded");
     }
 
     QOpenGLFunctions_3_3_Core* f = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_3_3_Core>(QOpenGLContext::currentContext());
@@ -232,11 +264,13 @@ void Canvas::draw_scene() {
     ObjectData* object_dat = object_list["object"];
     if (object_dat != nullptr) {
         model_m = glm::translate(model_m, vec3(object_dat->loc.x, object_dat->loc.y, object_dat->loc.z));
+        model_m = glm::scale(model_m, vec3(object_dat->scl.x, object_dat->scl.y, object_dat->scl.z));
     }
     else {
         model_m = glm::translate(model_m, init_loc);
+        model_m = glm::scale(model_m, vec3(0.2f, 0.2f, 0.2f));
     }
-    model_m = glm::scale(model_m, vec3(1, 1, 1));
+
     model_m = glm::rotate(model_m, glm::radians(-90.0f), vec3(0, 1, 0));
     
     f->glEnable(GL_DEPTH_TEST);
@@ -262,6 +296,7 @@ void Canvas::draw_scene() {
     shader->setMat4("view", view);
     shader->setMat4("projection", projection);
     shader->setVec3("camPos", camera->Position);
+    shader->setBool("is_pipeline_on", is_pipeline_on);
 
     render_output();
 

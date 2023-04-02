@@ -3,3 +3,8 @@ QLabel {
     color:white;
     border-radius: 0px;
 }
+QLabel#tag {
+    background-color: #3A5986;
+    color: white;
+    border-radius: 4px;
+}

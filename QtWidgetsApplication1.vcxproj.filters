@@ -54,6 +54,24 @@
     <Filter Include="Source Files\Core\Sampler">
       <UniqueIdentifier>{075f3e02-6723-41eb-a8b5-73311a6b4dea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\UI\NodeEditorWidgets">
+      <UniqueIdentifier>{aee8ac38-be0b-453c-8519-6a37987a907d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\NodeEditorWidgets">
+      <UniqueIdentifier>{a084a2c6-b0c0-4f05-83ee-57fce0f5d59e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\styles">
+      <UniqueIdentifier>{ffda15db-7b0c-4b0b-88ec-65e09844f98e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core\Layers">
+      <UniqueIdentifier>{bcde4a2e-3854-43f3-ae2d-99a89a41bdd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Layers">
+      <UniqueIdentifier>{8c5c6e1f-7b5d-4788-a8da-e4f65c320f9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util\JsonHelper">
+      <UniqueIdentifier>{eece2668-71d5-40f4-8fb1-ad2f3dfdaa02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="QtWidgetsApplication1.qrc">
@@ -124,9 +142,6 @@
     <ClCompile Include="EnvTab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NodeEditor.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
     <ClCompile Include="NodeData.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
@@ -137,9 +152,6 @@
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="IdGenerator.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="NodeWidget.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="NodeWidgetResponder.cpp">
@@ -214,9 +226,6 @@
     <ClCompile Include="PipelineOutput.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="OxideLayer.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Perlin.cpp">
       <Filter>Source Files\Core\Noise</Filter>
     </ClCompile>
@@ -246,9 +255,6 @@
     </ClCompile>
     <ClCompile Include="DPDPatch.cpp">
       <Filter>Source Files\Core\Noise</Filter>
-    </ClCompile>
-    <ClCompile Include="SulfurLayer.cpp">
-      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="SceneTab.cpp">
       <Filter>Source Files</Filter>
@@ -298,13 +304,7 @@
     <ClCompile Include="LayerTab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NodeEditorPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NodeEditorPanelResponder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CustomLayerNodeWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CustomComboBox.cpp">
@@ -316,17 +316,74 @@
     <ClCompile Include="LabeledComboBoxResponder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LayerMachineNodeWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NodeWidgetLabel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MyRandom.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="_3DBlueNoiseSampler.cpp">
       <Filter>Source Files\Core\Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeLineEditor.cpp">
+      <Filter>Source Files\UI\NodeEditorWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeWidgetLabel.cpp">
+      <Filter>Source Files\UI\NodeEditorWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeWidget.cpp">
+      <Filter>Source Files\UI\NodeEditorWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomLayerNodeWidget.cpp">
+      <Filter>Source Files\UI\NodeEditorWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeWidgetPalette.cpp">
+      <Filter>Source Files\UI\NodeEditorWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="LayerMachineNodeWidget.cpp">
+      <Filter>Source Files\UI\NodeEditorWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditor.cpp">
+      <Filter>Source Files\UI\NodeEditorWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomLayer.cpp">
+      <Filter>Source Files\Core\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="OxideLayer.cpp">
+      <Filter>Source Files\Core\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="SulfurLayer.cpp">
+      <Filter>Source Files\Core\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgArgAnalyzer.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RuleWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomLayerBuilder.cpp">
+      <Filter>Source Files\Core\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomPerlinLayer.cpp">
+      <Filter>Source Files\Core\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="PerlinLayerNodeWidget.cpp">
+      <Filter>Source Files\UI\NodeEditorWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditorPanel.cpp">
+      <Filter>Source Files\UI\NodeEditorWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeWidgetLayerConfigLabel.cpp">
+      <Filter>Source Files\UI\NodeEditorWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomDPDLayer.cpp">
+      <Filter>Source Files\Core\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="DPDLayerNodeWidget.cpp">
+      <Filter>Source Files\UI\NodeEditorWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="StringHelper.cpp">
+      <Filter>Source Files\util\JsonHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditorData.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -381,9 +438,6 @@
     <ClInclude Include="EnvTab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NodeEditor.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="ControllTabResponder.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
@@ -397,9 +451,6 @@
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="node_pool_header.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeWidget.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="IdGenerator.h">
@@ -465,9 +516,6 @@
     <ClInclude Include="stb_header.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CanvasBackGround.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -487,9 +535,6 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="PipelineOutput.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="OxideLayer.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Perlin.h">
@@ -515,9 +560,6 @@
     </ClInclude>
     <ClInclude Include="DPDPatch.h">
       <Filter>Header Files\Core\Noise</Filter>
-    </ClInclude>
-    <ClInclude Include="SulfurLayer.h">
-      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="SceneTab.h">
       <Filter>Header Files</Filter>
@@ -567,13 +609,7 @@
     <ClInclude Include="LayerTab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NodeEditorPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="NodeEditorPanelResponder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomLayerNodeWidget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CustomComboBox.h">
@@ -585,12 +621,6 @@
     <ClInclude Include="LabeledComboBoxResponder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LayerMachineNodeWidget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeWidgetLabel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MyRandom.h">
       <Filter>Header Files\uitl</Filter>
     </ClInclude>
@@ -599,6 +629,78 @@
     </ClInclude>
     <ClInclude Include="MeshProperty.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeLineEditor.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeWidgetLabel.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeWidget.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomLayerNodeWidget.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeWidgetPalette.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="LayerMachineNodeWidget.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomLayer.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="OxideLayer.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="SulfurLayer.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgArgAnalyzer.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RuleWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomLayerBuilder.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomPerlinLayer.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="LayerConfig.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="PerlinLayerNodeWidget.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditorPanel.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeWidgetLayerConfigLabel.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomDPDLayer.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="DPDLayerNodeWidget.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="string_defs.h">
+      <Filter>Source Files\util\JsonHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="StringHelper.h">
+      <Filter>Source Files\util\JsonHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditorData.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -616,57 +718,6 @@
     <None Include="resources\shaders\tri_shader.vert">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="controller_panel_style.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="control_selector.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="tabentry.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="float_edit_edit.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="float_edit_hover.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="float_edit_idle.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="env_tab.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="node_editor.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="node_widget.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="float_progressbar.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="node_data_button.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="selector_button_active.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="player_widget.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="time_machine_identifier.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="header.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="our_father.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
-    <None Include="canvas.css">
-      <Filter>Header Files\UI</Filter>
-    </None>
     <None Include="resources\shaders\grid_shader.frag">
       <Filter>Resource Files\shaders</Filter>
     </None>
@@ -682,38 +733,98 @@
     <None Include="svpng.inc">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="scene.css">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="obejct_tab.css">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="header_tab_style.css">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="header_tab_style_hover.css">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="file_selector_style.css">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="layer_tab_style.css">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="node_editor_panel_style.css">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="labeled_combo_box_style.css">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="node_widget_label_style.css">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="sampler_shader.vert">
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="sampler_shader.frag">
       <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="canvas.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="control_selector.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="controller_panel_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="env_tab.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="float_edit_edit.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="float_edit_hover.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="float_edit_idle.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="float_progressbar.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="header.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="node_data_button.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="node_editor.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="node_widget.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="our_father.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="player_widget.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="selector_button_active.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="tabentry.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="time_machine_identifier.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="file_selector_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="header_tab_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="header_tab_style_hover.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="labeled_combo_box_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="layer_tab_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="node_editor_panel_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="node_widget_label_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="obejct_tab.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="scene.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="node_widget_line_editor_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="node_widget_palette_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="strings.json">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
 </Project>

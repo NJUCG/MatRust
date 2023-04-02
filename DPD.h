@@ -2,6 +2,7 @@
 #include<vector>
 #include<set>
 #include "DPDPatch.h"
+#include<qdebug.h>
 using namespace std;
 
 class DPD {
@@ -20,7 +21,7 @@ public:
     vector<int> dx = { 1, 1,  0, -1, -1,-1,0 };
     vector<int> dy = { 0,-1, -1, -1, 0,1,1 };
     vector<DPDPatch*> patches;
-    int maxPatch = 8;
+    int maxPatch = 1000;
     int initSeed = 2;
     float latticeMax = 0;
     vector<vector<float>> latticePrefix;
@@ -55,7 +56,7 @@ public:
             }
         }
     }
-    void setUp(int w, int h, int seedTimer, float growSpd, vector<vector<float>> lattice, int initSeed) {
+    void setUp(int w, int h, float seedTimer, float growSpd, vector<vector<float>> lattice, int initSeed) {
         this->lattice = lattice;
         this->growSpd = growSpd;
         this->w = w;

@@ -55,25 +55,25 @@ void ObjectTab::switch_tab_style(string style, ObjectData* data)
 
 		spacing->setFixedHeight(line_height);
 
-		add_property("Location x", "loc_x", "m", 0);
-		add_property("y", "loc_y", "m", 0);
-		add_property("z", "loc_z", "m", 0);
+		add_property(OBJECT_TAB_LOC_X, "loc_x", "m", 0);
+		add_property(OBJECT_TAB_LOC_Y, "loc_y", "m", 0);
+		add_property(OBJECT_TAB_LOC_Z, "loc_z", "m", 0);
 
 		top_layout->addSpacing(line_height);
 
-		add_property("Rotate x", "rot_x", " ", 0);
-		add_property("y", "rot_y", " ", 0);
-		add_property("z", "rot_z", " ", 0);
+		add_property(OBJECT_TAB_ROT_X, "rot_x", " ", 0);
+		add_property(OBJECT_TAB_ROT_Y, "rot_y", " ", 0);
+		add_property(OBJECT_TAB_ROT_Z, "rot_z", " ", 0);
 
 		top_layout->addSpacing(line_height);
 
-		add_property("Scale x", "scl_x", "%", 0);
-		add_property("y", "scl_y", "%", 0);
-		add_property("z", "scl_z", "%", 0);
+		add_property(OBJECT_TAB_SCL_X, "scl_x", "%", 0);
+		add_property(OBJECT_TAB_SCL_Y, "scl_y", "%", 0);
+		add_property(OBJECT_TAB_SCL_Z, "scl_z", "%", 0);
 
 		top_layout->addSpacing(line_height);
 
-		add_property("Light Intensity", "lght_int", "", 0);
+		add_property(OBJECT_TAB_LIGHT_INTENSITY, "lght_int", "", 0);
 
 		set_property("lght_int", light_data->light_intensity.z);
 
@@ -96,7 +96,7 @@ void ObjectTab::switch_tab_style(string style, ObjectData* data)
 		container_layout->addWidget(new QWidget());
 
 		mesh_selector = new FileSelector();
-		mesh_selector->set_name("模型路径");
+		mesh_selector->set_name(OBJECT_TAB_OBJECT_MODEL_PATH);
 		mesh_selector->event_name = "selected_mesh_changed";
 		mesh_selector->tag = "mesh_path";
 
@@ -108,21 +108,21 @@ void ObjectTab::switch_tab_style(string style, ObjectData* data)
 
 		top_layout->addWidget(selector_container);
 
-		add_property("Location x", "loc_x", "m", 0);
-		add_property("y", "loc_y", "m", 0);
-		add_property("z", "loc_z", "m", 0);
+		add_property(OBJECT_TAB_LOC_X, "loc_x", "m", 0);
+		add_property(OBJECT_TAB_LOC_Y, "loc_y", "m", 0);
+		add_property(OBJECT_TAB_LOC_Z, "loc_z", "m", 0);
 
 		top_layout->addSpacing(line_height);
 
-		add_property("Rotate x", "rot_x", " ", 0);
-		add_property("y", "rot_y", " ", 0);
-		add_property("z", "rot_z", " ", 0);
+		add_property(OBJECT_TAB_ROT_X, "rot_x", " ", 0);
+		add_property(OBJECT_TAB_ROT_Y, "rot_y", " ", 0);
+		add_property(OBJECT_TAB_ROT_Z, "rot_z", " ", 0);
 
 		top_layout->addSpacing(line_height);
 
-		add_property("Scale x", "scl_x", "%", 0);
-		add_property("y", "scl_y", "%", 0);
-		add_property("z", "scl_z", "%", 0);
+		add_property(OBJECT_TAB_SCL_X, "scl_x", "%", 100,1,1000);
+		add_property(OBJECT_TAB_SCL_Y, "scl_y", "%", 100,1,1000);
+		add_property(OBJECT_TAB_SCL_Z, "scl_z", "%", 100,1,1000);
 	}
 
 	set_property("loc_x", data->loc.x);
@@ -149,9 +149,9 @@ ObjectData ObjectTab::get_object()
 	current_obj->rot.y = get_property("rot_y");
 	current_obj->rot.z = get_property("rot_z");
 
-	current_obj->scl.x = get_property("scl_x");
-	current_obj->scl.y = get_property("scl_y");
-	current_obj->scl.z = get_property("scl_z");
+	current_obj->scl.x = get_property("scl_x") / 100.0f;
+	current_obj->scl.y = get_property("scl_y") / 100.0f;
+	current_obj->scl.z = get_property("scl_z") / 100.0f;
 
 	if (current_obj->type == "light") {
 		LightData* lg = (LightData*)current_obj;
@@ -197,7 +197,7 @@ void ObjectTab::addComponent()
 	default_object->loc = vec4(0, 0, 0, 0);
 	default_object->rot = vec4(0, 0, 0, 0);
 	default_object->scl = vec4(1, 1, 1, 0);
-	default_object->name = "      无";
+	default_object->name = "无";
 	default_object->type = "mesh";
 	set_object(default_object);
 
@@ -257,15 +257,15 @@ void ObjectTab::header(string type)
 
 	QLabel* header_label = new QLabel();
 
-	string header_txt = "";
+	QString header_txt = "";
 	if (type == "mesh") {
-		header_txt = "物体";
+		header_txt = OBJECT_TAB_OBJECT_HEADER_TITLE;
 	}
 	else if (type == "light") {
-		header_txt = "光照";
+		header_txt = OBJECT_TAB_LIGHT_HEADER_TITLE;
 	}
 
-	header_label->setText(QString::fromLocal8Bit(header_txt.c_str()));
+	header_label->setText(header_txt);
 
 	header_layout->addWidget(header_label);
 
@@ -276,7 +276,7 @@ void ObjectTab::header(string type)
 	header->setFixedHeight(model->control_selector_button_width);
 }
 
-void ObjectTab::add_property(string prefix, string data_tag, string unit, float init_data)
+void ObjectTab::add_property(QString prefix, string data_tag, string unit, float init_data,float min,float max)
 {
 	if (local_data.find(data_tag) != local_data.end()) {
 		return;
@@ -286,8 +286,8 @@ void ObjectTab::add_property(string prefix, string data_tag, string unit, float 
 	int line_height = model->control_panel_line_height;
 	// 一格数据
 	FloatEdit* edit = new FloatEdit();
-	edit->set_min_value(-100);
-	edit->set_max_value(100);
+	edit->set_min_value(min);
+	edit->set_max_value(max);
 	edit->unit = unit;
 	edit->set_value(init_data);
 	edit->responder = this;
@@ -299,7 +299,7 @@ void ObjectTab::add_property(string prefix, string data_tag, string unit, float 
 	x_l->setAlignment(Qt::AlignRight);
 
 	QLabel* x_label = new QLabel();
-	x_label->setText((QString::fromLocal8Bit(prefix.c_str())));
+	x_label->setText(prefix);
 	x_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
 	x_l->setContentsMargins(0, 0, 0, 0);

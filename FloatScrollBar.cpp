@@ -1,6 +1,6 @@
 #include "FloatScrollBar.h"
 
-FloatSliderBar::FloatSliderBar(FloatSliderBarResponder* responder, string title, float min, float max,float delta)
+FloatSliderBar::FloatSliderBar(FloatSliderBarResponder* responder, QString title, float min, float max,float delta)
 {
 	this->responder = responder;
 	this->delta = delta;
@@ -18,7 +18,7 @@ float FloatSliderBar::d_value()
 	return (float)value() / delta;
 }
 
-void FloatSliderBar::on_streamed(void* v)
+void FloatSliderBar::on_streamed(void* v,int)
 {
 	float fv = *((float*)v);
 	streamed = true;
@@ -27,15 +27,13 @@ void FloatSliderBar::on_streamed(void* v)
 	setValue(fv * delta);
 }
 
-void FloatSliderBar::value_changed(void* v)
+void FloatSliderBar::value_changed(void* v, int)
 {
-	if (streamed) {
-		float fv = *((float*)v);
-		setValue(fv * delta);
-	}
+	float fv = *((float*)v);
+	setValue(fv * delta);
 }
 
-void FloatSliderBar::on_cutoff(void*)
+void FloatSliderBar::on_cutoff(void*,int)
 {
 	streamed = false;
 	setDisabled(false);
@@ -59,12 +57,10 @@ void FloatSliderBar::addComponent()
 	setFixedHeight(model->float_slider_height);
 
 	name_label = new QLabel();
-	name_label->setFixedWidth(model->float_slider_title_label_width);
-	name_label->setText(QString::fromLocal8Bit(title.c_str()));
+	//name_label->setFixedWidth(model->float_slider_title_label_width);
+	name_label->setText(title);
 
 	layout->addWidget(name_label);
-
-	layout->addStretch(1);
 
 	value_label = new QLabel();
 	value_label->setFixedWidth(model->float_slider_value_label_width);

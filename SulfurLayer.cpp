@@ -7,10 +7,11 @@ SulfurLayer::SulfurLayer()
 void SulfurLayer::accept_rules(PipelineConfig* config)
 {
     Layer::accept_rules(config);
-    part_per_sec = 200 / (int)((config->textureHeight * config->textureWidth * config->sc * config->oc * config->rh));
+    part_per_sec = 200 * (int)((config->textureHeight * config->textureWidth * (config->sc+0.01f) * (config->oc+0.01f) * (config->rh + 0.01f)));
     w = config->textureWidth;
     h = config->textureHeight;
     lattice = vector<vector<float>>(h, vector<float>(w, 0));
+
     float maxCurvature = 0;
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {

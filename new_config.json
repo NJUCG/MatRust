@@ -1,0 +1,36 @@
+{
+    "connections": [
+        {
+            "start_pos_x": 1029,
+            "start_pos_y": 816,
+            "start_widget_idx": 1,
+            "stop_pos_x": 1187,
+            "stop_pos_y": 737,
+            "stop_widget_idx": 0
+        }
+    ],
+    "offset_x": 127,
+    "offset_y": -47,
+    "widgets": [
+        {
+            "loc_x": 315,
+            "loc_y": 215,
+            "type": "layer_machine"
+        },
+        {
+            "color_b": 97,
+            "color_g": 255,
+            "color_r": 108,
+            "grow spd": "sc * 0.8",
+            "init seed": 6,
+            "loc_x": -83,
+            "loc_y": -66,
+            "metallic": 0.33000001311302185,
+            "name": "锈蚀层1",
+            "part per sec": " 200 / ( sc + 0.01 ) * ( oc + 0.01 ) * ( rh + 0.01 )",
+            "roughness": 1,
+            "transmittance": -0.5099999904632568,
+            "type": "DPD"
+        }
+    ]
+}

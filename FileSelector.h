@@ -8,12 +8,14 @@
 #include"FileSelectorResponder.h"
 #include<qevent.h>
 #include"EventAdapter.h"
+#include"string_defs.h"
+#include"StringHelper.h"
 
 class FileSelector: public QWidget
 {
 public:
 	FileSelector();
-	void set_name(string);
+	void set_name(QString);
 	FileSelectorResponder* responder = nullptr;
 	string event_name = "";
 	string tag = "";

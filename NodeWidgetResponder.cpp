@@ -26,3 +26,7 @@ void NodeWidgetResponder::on_widget_move()
 void NodeWidgetResponder::update_temp_curve(QPoint)
 {
 }
+
+void NodeWidgetResponder::remove_connection(NodeDataButton*)
+{
+}

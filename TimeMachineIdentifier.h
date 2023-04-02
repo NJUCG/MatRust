@@ -9,13 +9,14 @@
 #include<vector>
 #include<qstyleoption.h>
 #include"TimeMachineResponder.h"
+#include"EventAdapter.h"
 using namespace std;
 class TimeMachineIdentifier: public QWidget
 
 {
 	Q_OBJECT
 public:
-	TimeMachineIdentifier(float start_time = 0, float stop_time = 10, float step = 1);
+	TimeMachineIdentifier(float start_time = 0, float stop_time = 20, float step = 1);
 	void register_responder(TimeMachineResponder*);
 	~TimeMachineIdentifier();
 	float current_time;

@@ -57,7 +57,7 @@ void NodeData<T>::on_shut_off() {
 		adapter[i]->stream_from(this);
 	}
 	for (int i = 0; i < responder.size(); i++) {
-		responder[i]->on_cutoff(nullptr);
+		responder[i]->on_cutoff(nullptr, id);
 	}
 }
 template<class T>
@@ -87,7 +87,7 @@ bool NodeData<T>::stream_from(NodeData* src) {
 		adapter[i]->stream_from(this);
 	}
 	for (int i = 0; i < responder.size(); i++) {
-		responder[i]->on_streamed(value);
+		responder[i]->on_streamed(value,id);
 	}
 	return true;
 }
@@ -123,7 +123,7 @@ void NodeData<T>::set(T var) {
 template<class T>
 void NodeData<T>::on_set_value() {
 	for (int i = 0; i < responder.size(); i++) {
-		responder[i]->value_changed(value);
+		responder[i]->value_changed(value, id);
 	}
 }
 template<class T>

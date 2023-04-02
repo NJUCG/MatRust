@@ -1,0 +1,59 @@
+{
+    "connections": [
+        {
+            "start_pos_x": 1228,
+            "start_pos_y": 1580,
+            "start_widget_idx": 1,
+            "stop_pos_x": 1550,
+            "stop_pos_y": 811,
+            "stop_widget_idx": 0
+        },
+        {
+            "start_pos_x": 987,
+            "start_pos_y": 1004,
+            "start_widget_idx": 2,
+            "stop_pos_x": 1550,
+            "stop_pos_y": 766,
+            "stop_widget_idx": 0
+        }
+    ],
+    "offset_x": -110,
+    "offset_y": -416,
+    "widgets": [
+        {
+            "loc_x": 519,
+            "loc_y": 68,
+            "type": "layer_machine"
+        },
+        {
+            "color_b": 0,
+            "color_g": 0,
+            "color_r": 0,
+            "grow spd": "sc * 0.8",
+            "init seed": 0,
+            "loc_x": -43,
+            "loc_y": 522,
+            "metallic": 0,
+            "name": "锈蚀层",
+            "part per sec": " 200 / ( sc + 0.01 ) * ( oc + 0.01 ) * ( rh + 0.01 )",
+            "roughness": 0,
+            "transmittance": 0,
+            "type": "DPD"
+        },
+        {
+            "bias height": 0,
+            "block width": 0,
+            "color_b": 0,
+            "color_g": 0,
+            "color_r": 0,
+            "cutoff height": 0,
+            "loc_x": -284,
+            "loc_y": -54,
+            "metallic": 0,
+            "name": "锈蚀层",
+            "roughness": 0,
+            "transmittance": 0,
+            "type": "perlin"
+        }
+    ]
+}

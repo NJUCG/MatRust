@@ -11,5 +11,6 @@ public:
 	virtual void reset_curving();
 	virtual void on_widget_move();
 	virtual void update_temp_curve(QPoint);
+	virtual void remove_connection(NodeDataButton*);
 };
 

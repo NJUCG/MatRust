@@ -7,4 +7,6 @@ enum FilmComposition {
     CuSO4,
     /// 碱式硫酸铜
     CSA,
+    /// 自定义
+    Custom,
 };

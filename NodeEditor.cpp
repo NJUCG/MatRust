@@ -19,6 +19,7 @@ void NodeEditor::init()
 
 	widgets = vector<NodeWidget*>();
 	curves = vector<NodeCurve*>();
+	EventAdapter::shared->register_event("combine_config_event_node_editor", this);
 }
 
 void NodeEditor::addComponent()
@@ -250,7 +251,6 @@ void NodeEditor::release_on_me(QPoint pos)
 {
 	if (is_curving) {
 		int wl = widgets.size();
-		NodeDataButton* stop = nullptr;
 		for (int i = 0; i < wl; i++) {
 			NodeWidget* w = widgets[i];
 			QPoint topLeft = w->mapToGlobal(QPoint(0, 0));
@@ -265,22 +265,10 @@ void NodeEditor::release_on_me(QPoint pos)
 					string stop_value = pool->get_value_type(button->id);
 					if (start_value == stop_value && (start->is_adapter != button->is_adapter)) {
 						temp_curve->stop = button;
-						curves.push_back(temp_curve);
-						if (start_value == "float") {
-							if (start->is_adapter) {
-								pool->connect<float>(button->id, start->id);
-							}
-							else {
-								pool->connect<float>(start->id, button->id);
-							}
-						}
-						else if (start_value == "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >") {
-							if (start->is_adapter) {
-								pool->connect<string>(button->id, start->id);
-							}
-							else {
-								pool->connect<string>(start->id, button->id);
-							}
+						if (pool->connect_(start->id, button->id, start->is_adapter)) {
+							start->is_linked = button->is_linked = true;
+
+							curves.push_back(temp_curve);
 						}
 					}
 					break;
@@ -335,14 +323,191 @@ void NodeEditor::btn_down(string tag)
 		widgets.push_back(w);
 		w->show();
 	}
-	else if (tag == "layer_machine") {
+	else if (tag == "layer_machine" && !machine) {
 		QPoint ppos = panel->pos();
-		LayerMachineNodeWidget* w = new LayerMachineNodeWidget(this, ppos.x() + offset_x, ppos.y() + offset_y);
+		machine = new LayerMachineNodeWidget(this, ppos.x() + offset_x, ppos.y() + offset_y);
+		machine->setParent(this);
+		machine->move(ppos);
+		widgets.push_back(machine);
+		machine->show();
+	}
+	else if (tag == "perlin_layer") {
+		QPoint ppos = panel->pos();
+		PerlinLayerNodeWidget* w = new PerlinLayerNodeWidget(this, ppos.x() + offset_x, ppos.y() + offset_y);
 		w->setParent(this);
 		w->move(ppos);
 		widgets.push_back(w);
 		w->show();
 	}
+	else if (tag == "dpd_layer") {
+		QPoint ppos = panel->pos();
+		DPDLayerNodeWidget* w = new DPDLayerNodeWidget(this, ppos.x() + offset_x, ppos.y() + offset_y);
+		w->setParent(this);
+		w->move(ppos);
+		widgets.push_back(w);
+		w->show();
+	}
+	else if (tag == "save_config") {
+		write_config(QFileDialog::getSaveFileName(nullptr, NODE_EDITOR_PANEL_SAVE_CONFIG, ".", "*.json"));
+	}
+	else if (tag == "read_config") {
+		read_config(QFileDialog::getOpenFileName(nullptr, NODE_EDITOR_PANEL_READ_CONFIG, ".", "*.json"));
+	}
+}
+
+void NodeEditor::on_trigger(string e)
+{
+	if (e == "combine_config_event_node_editor") {
+		PipelineConfig* c = (PipelineConfig*)EventAdapter::shared->pop_data();
+
+		if (machine) {
+			c->layers = machine->get_layers();
+		}
+		
+		EventAdapter::shared->push_data(c);
+	}
+}
+
+void NodeEditor::remove_connection(NodeDataButton* btn)
+{
+	for (int i = 0; i < curves.size();i++) {
+		NodeCurve* c = curves[i];
+		if (c->start == btn || c->stop == btn) {
+			c->start->is_linked = c->stop->is_linked = false;
+			pool->cut_off_(c->start->id, c->stop->id, c->start->is_adapter);
+			curves.erase(curves.begin() + i);
+			update();
+			break;
+		}
+	}
+}
+
+void NodeEditor::read_config(QString path)
+{
+	for (NodeWidget* w : widgets) {
+		delete w;
+	}
+	widgets.clear();
+	for (NodeCurve* c : curves) {
+		delete c;
+	}
+	curves.clear();
+
+	QFile load_file(path);
+
+	if (!load_file.open(QIODeviceBase::ReadOnly)) {
+		qWarning() << "config file read failed.";
+		return;
+	}
+
+	QByteArray save_data = load_file.readAll();
+	QJsonDocument load_doc(QJsonDocument::fromJson(save_data));
+
+	QJsonObject json = load_doc.object();
+
+	QJsonArray widgets_array = json["widgets"].toArray();
+
+	offset_x = json["offset_x"].toDouble();
+	offset_y = json["offset_y"].toDouble();
+
+	for (const QJsonValue &widget_v : widgets_array) {
+		QJsonObject obj = widget_v.toObject();
+		NodeWidget* w = nullptr;
+		if (obj["type"] == "perlin") {
+			w = new PerlinLayerNodeWidget(this, obj["loc_x"].toInt(), obj["loc_y"].toInt());
+		}
+		else if (obj["type"] == "DPD") {
+			w = new DPDLayerNodeWidget(this, obj["loc_x"].toInt(), obj["loc_y"].toInt());
+		}
+		else if (obj["type"] == "layer_machine") {
+			w = new LayerMachineNodeWidget(this, obj["loc_x"].toInt(), obj["loc_y"].toInt());
+			machine = (LayerMachineNodeWidget*)w;
+		}
+		w->read(obj);
+		w->setParent(this);
+		w->move(w->loc_x - offset_x, w->loc_y - offset_y);
+		widgets.push_back(w);
+		w->show();
+	}
+
+	QJsonArray curves_array = json["connections"].toArray();
+
+	for (const QJsonValue& curve_v : curves_array) {
+		NodeCurve* c = new NodeCurve();
+
+		QJsonObject obj = curve_v.toObject();
+
+		QPoint start_pos;
+		start_pos.setX(obj["start_pos_x"].toInt());
+		start_pos.setY(obj["start_pos_y"].toInt());
+
+		QPoint stop_pos;
+		stop_pos.setX(obj["stop_pos_x"].toInt());
+		stop_pos.setY(obj["stop_pos_y"].toInt());
+
+		NodeDataButton* start_btn = widgets[obj["start_widget_idx"].toInt()]->release_in_me(start_pos);
+		NodeDataButton* stop_btn = widgets[obj["stop_widget_idx"].toInt()]->release_in_me(stop_pos);
+		
+		c->start = start_btn;
+		c->stop = stop_btn;
+
+		if (pool->connect_(start_btn->id, stop_btn->id, start_btn->is_adapter)) {
+			start_btn->is_linked = stop_btn->is_linked = true;
+		}
+
+		curves.push_back(c);
+	}
+	
+	update();
+}
+
+void NodeEditor::write_config(QString path)
+{
+	QJsonObject json;
+
+	QJsonArray widgets_array;
+	for (NodeWidget* w : widgets)
+	{
+		QJsonObject obj;
+		w->write(obj);
+		widgets_array.append(obj);
+	}
+	json["widgets"] = widgets_array;
+	json["offset_x"] = offset_x;
+	json["offset_y"] = offset_y;
+	QJsonArray curves_array;
+	for (NodeCurve* c : curves) {
+		c->start_pos = c->get_start_point();
+		c->stop_pos = c->get_stop_point();
+
+		for (int i = 0; i < widgets.size(); i++) {
+			NodeWidget* w = widgets[i];
+			QPoint topLeft = w->mapToGlobal(QPoint(0, 0));
+			QRect rect;
+			rect.setTopLeft(topLeft);
+			rect.setSize(w->size());
+			if (rect.contains(c->start_pos)) {
+				c->start_widget_idx = i;
+			}
+			if (rect.contains(c->stop_pos)) {
+				c->stop_widget_idx = i;
+			}
+		}
+
+		QJsonObject obj;
+		c->write(obj);
+		curves_array.append(obj);
+	}
+	json["connections"] = curves_array;
+
+	QFile save_file(path);
+
+	if (!save_file.open(QIODeviceBase::WriteOnly)) {
+		qWarning() << "node editor config save failed.";
+		return;
+	}
+
+	save_file.write(QJsonDocument(json).toJson());
 }
 
 

@@ -35,6 +35,7 @@ public:
 	int node_widget_width;
 	//
 	int node_button_width;
+	int node_widget_line_height;
 
 	//
 	float current_time;

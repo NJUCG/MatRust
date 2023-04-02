@@ -13,3 +13,7 @@ void NodeDataButtonResponder::release_on_me(QPoint global_pos)
 void NodeDataButtonResponder::update_temp_curve(QPoint)
 {
 }
+
+void NodeDataButtonResponder::remove_connection(int id)
+{
+}

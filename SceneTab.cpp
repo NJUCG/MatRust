@@ -70,7 +70,7 @@ void SceneTab::header()
 	header_layout->setSpacing(0);
 
 	QLabel* header_label = new QLabel();
-	header_label->setText(QString::fromLocal8Bit(string("ÎïÌå").c_str()));
+	header_label->setText(SCENE_TAB_HEADER_TITLE);
 	header_layout->addWidget(header_label);
 
 	header_w->setLayout(header_layout);

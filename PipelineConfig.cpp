@@ -9,8 +9,8 @@ PipelineConfig::PipelineConfig()
     test = 0;
     temperature = 0;
     growTime = 40;
-    textureWidth = 400;
-    textureHeight = 400;
+    textureWidth = 800;
+    textureHeight = 800;
     generateImage = false;
     diffPath = "diff.png";
 

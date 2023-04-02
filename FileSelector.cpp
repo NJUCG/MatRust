@@ -6,10 +6,10 @@ FileSelector::FileSelector()
 	addComponent();
 }
 
-void FileSelector::set_name(string name)
+void FileSelector::set_name(QString name)
 {
 	if (name_tag) {
-		name_tag->setText((QString::fromLocal8Bit(name.c_str())));
+		name_tag->setText(name);
 	}
 }
 
@@ -53,7 +53,7 @@ void FileSelector::mousePressEvent(QMouseEvent* e)
 	rect.setSize(normal_label->size());
 	if (rect.contains(e->globalPos())) {
 		QString* t = new QString();
-		*t = QFileDialog::getOpenFileName(nullptr, "Ñ¡ÔñÄ£ĞÍ", ".", "*.obj");
+		*t = QFileDialog::getOpenFileName(nullptr, OJBECT_TAB_SELECT_MODEL, ".", "*.obj");
 		normal_label->setText(*t);
 		if (event_name != "") {
 			EventAdapter::shared->push_data(t);

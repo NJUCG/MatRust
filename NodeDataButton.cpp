@@ -29,16 +29,24 @@ void NodeDataButton::on_click()
 
 void NodeDataButton::mousePressEvent(QMouseEvent* e)
 {
-	is_linking = true;
-	if (responder)
-		responder->start_linking(button_index);
+	if (!is_linked) {
+		is_linking = true;
+		if (responder)
+			responder->start_linking(button_index);
+	}
 }
 
 void NodeDataButton::mouseReleaseEvent(QMouseEvent* e)
 {
-	is_linking = false;
-	if (responder)
-		responder->release_on_me(e->globalPos());
+	if (!is_linked) {
+		is_linking = false;
+		if (responder)
+			responder->release_on_me(e->globalPos());
+	}
+	else {
+		if (responder)
+			responder->remove_connection(button_index);
+	}
 }
 
 void NodeDataButton::mouseMoveEvent(QMouseEvent* e)

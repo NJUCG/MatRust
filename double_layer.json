@@ -1,0 +1,82 @@
+{
+    "connections": [
+        {
+            "start_pos_x": 1248,
+            "start_pos_y": 397,
+            "start_widget_idx": 2,
+            "stop_pos_x": 1567,
+            "stop_pos_y": 515,
+            "stop_widget_idx": 0
+        },
+        {
+            "start_pos_x": 1198,
+            "start_pos_y": 1331,
+            "start_widget_idx": 1,
+            "stop_pos_x": 1567,
+            "stop_pos_y": 605,
+            "stop_widget_idx": 0
+        },
+        {
+            "start_pos_x": 1178,
+            "start_pos_y": 844,
+            "start_widget_idx": 3,
+            "stop_pos_x": 1567,
+            "stop_pos_y": 560,
+            "stop_widget_idx": 0
+        }
+    ],
+    "offset_x": -47,
+    "offset_y": 246,
+    "widgets": [
+        {
+            "loc_x": 599,
+            "loc_y": 479,
+            "type": "layer_machine"
+        },
+        {
+            "color_b": 47,
+            "color_g": 206,
+            "color_r": 95,
+            "grow spd": "sc * 0.8",
+            "init seed": 3,
+            "loc_x": -10,
+            "loc_y": 935,
+            "metallic": 0.09000000357627869,
+            "name": "硫化层",
+            "part per sec": " 10 / ( sc + 0.01 ) * ( oc + 0.01 ) * ( rh + 0.01 )",
+            "roughness": 0.9900000095367432,
+            "transmittance": -0.6399999856948853,
+            "type": "DPD"
+        },
+        {
+            "bias height": 7,
+            "block width": 5,
+            "color_b": 0,
+            "color_g": 0,
+            "color_r": 0,
+            "cutoff height": 8,
+            "loc_x": 40,
+            "loc_y": 1,
+            "metallic": 0,
+            "name": "氧化层",
+            "roughness": 0.800000011920929,
+            "transmittance": -0.23000000417232513,
+            "type": "perlin"
+        },
+        {
+            "color_b": 49,
+            "color_g": 121,
+            "color_r": 27,
+            "grow spd": "sc * 1.2",
+            "init seed": 10,
+            "loc_x": -30,
+            "loc_y": 448,
+            "metallic": 0.3100000023841858,
+            "name": "轻硫化层",
+            "part per sec": " 200 / ( sc + 0.01 ) * ( oc + 0.01 ) * ( rh + 0.01 )",
+            "roughness": 0.7599999904632568,
+            "transmittance": -0.33000001311302185,
+            "type": "DPD"
+        }
+    ]
+}

@@ -14,7 +14,6 @@ void Layer::accept_rules(PipelineConfig* config)
 {
 	int w = config->textureWidth;
 	int h = config->textureHeight;
-
 	units = vector<vector<RustUnit>>(h, vector<RustUnit>(w, RustUnit()));
 }
 

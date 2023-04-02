@@ -17,17 +17,17 @@ using namespace std;
 class FloatSliderBar:public QSlider, public NodeDataResponder
 {
 public:
-	FloatSliderBar(FloatSliderBarResponder* responder,string title, float min, float max, float delta = 100);
+	FloatSliderBar(FloatSliderBarResponder* responder,QString title, float min, float max, float delta = 100);
 	float d_value();
-	void on_streamed(void*) override;
-	void value_changed(void*) override;
-	void on_cutoff(void*) override;
+	void on_streamed(void*,int) override;
+	void value_changed(void*,int) override;
+	void on_cutoff(void*,int) override;
 	void set_node_data(NodeData<float>*);
 protected:
 	NodeData<float>* node_data = nullptr;
 	FloatSliderBarResponder* responder;
 	QLabel* name_label, *value_label;
-	string title;
+	QString title;
 	float delta;
 	bool streamed = false;
 	void init();

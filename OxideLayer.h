@@ -15,7 +15,7 @@ public:
      * 操作厚度用这个。
      */
     vector<vector<float>> pattern;
-    float cutOffHeight = 0;
+    float cutOffHeight = 10;
     float biasHeight = 10;
 
 	OxideLayer();

@@ -14,6 +14,10 @@
 
 #include"CurvatureHelper.h"
 
+#include"CustomPerlinLayer.h"
+
+#include"CustomDPDLayer.h"
+
 enum PipelineState {
 	Occupied,
 	Open
@@ -30,10 +34,15 @@ public:
 	PipelineManager();
 
 	PipelineManager(PipelineManagerResponder*);
+
 	void frame_consumer(float) override;
 	void update_current(float) override;
 	void register_layer(Layer*);
 	void start_pipeline(PipelineConfig* config = nullptr);
+	void clear_pipeline();
+	void pause_pipeline();
+	void continue_pipeline();
+
 	void prepare_layers();
 	void dispatch_rules();
 
@@ -45,12 +54,11 @@ public:
 protected:
 	vector<Layer*> layers;
 	vector<vector<vector<RustUnit>>> units;
-
 	PipelineManagerResponder* responder;
 	PipelineConfig* config = nullptr;
 
 	float current_time = 0.0f;
 	void merge_layers();
 	float getTransmittance(FilmComposition composite, float thick);
-
+	float getTransmittance(float ac, float thick);
 };

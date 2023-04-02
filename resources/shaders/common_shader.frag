@@ -5,8 +5,10 @@ in vec3 WorldPos;
 in vec3 Normal;
 
 // material parameters
-//uniform float metallic;
-//uniform float roughness;
+uniform bool is_pipeline_on;
+
+uniform float i_metallic;
+uniform float i_roughness;
 uniform float ao;
 
 uniform sampler2D material_texture_diffuse0;
@@ -88,8 +90,15 @@ void main()
     vec3 F0 = vec3(0.04);
     vec4 metallic4 = texture(metallicMap,TexCoords);
     vec4 roughness4 = texture(roughnessMap,TexCoords);
+
     float metallic = metallic4.z;
     float roughness = roughness4.z;
+
+    if(!is_pipeline_on){
+        metallic = i_metallic;
+        roughness = i_roughness;
+    }
+
     F0 = mix(F0, albedo, metallic);
     // reflectance equation
     vec3 Lo = vec3(0.0f);

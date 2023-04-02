@@ -50,6 +50,7 @@ inline void FloatEdit::set_value(float new_value, bool respond)
 	if (responder && respond) {
 		responder->on_value_changed(name, value);
 	}
+	update();
 }
 
 void FloatEdit::addComponent()

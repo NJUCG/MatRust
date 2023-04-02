@@ -15,6 +15,7 @@ public:
 	QPoint center();
 	int button_index = -1;
 	string value_type;
+	bool is_linked = false;
 protected:
 	NodeDataButtonResponder* responder;
 	NodePool* pool;

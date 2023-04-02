@@ -4,6 +4,7 @@
 #include"SceneTabEntry.h"
 #include"EventAdapter.h"
 #include"ObjectData.h"
+#include"StringHelper.h"
 
 class SceneTab: public QWidget, public SceneTabEntryResponder, public EventResponder
 {

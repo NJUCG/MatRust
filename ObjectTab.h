@@ -4,6 +4,8 @@
 #include"FloatEdit.h"
 #include"LightData.h"
 #include"FileSelector.h"
+#include"StringHelper.h"
+#include"StringHelper.h"
 
 class ObjectTab: public QWidget, public FloatEditResponder, public EventResponder, public FileSelectorResponder
 {
@@ -38,7 +40,7 @@ protected:
 	void clear_properties();
 
 	void header(string type);
-	void add_property(string, string, string unit, float);
+	void add_property(QString, string, string unit, float,float min = -100,float max = 100);
 	void deactivate_property(string);
 	void activate_property(string);
 };
