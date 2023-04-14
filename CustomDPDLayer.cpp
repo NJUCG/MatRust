@@ -70,8 +70,9 @@ void CustomDPDLayer::rust(double delta)
             units[i][j].thickness = dpd.output[i][j];
             units[i][j].roughness = 0.8f;
             units[i][j].metallic = 0.1f;
-            if (units[i][j].thickness > 0) {
-                int k = 0;
+            if (units[i][j].thickness > 0 && !units[i][j].has_disturb) {
+                units[i][j].has_disturb = true;
+                //units[i][j].normal_disturb = MyRandom::sphere_0_1();
             }
         }
     }
@@ -79,5 +80,5 @@ void CustomDPDLayer::rust(double delta)
 
 float CustomDPDLayer::curveTwister(float c)
 {
-    return pow(c, 10);
+    return pow(c, 2);
 }

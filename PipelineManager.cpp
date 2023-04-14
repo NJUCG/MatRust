@@ -168,6 +168,8 @@ void PipelineManager::merge_layers()
             color = color + config->backTexture[i][j] * lightIntensity;
             color.w = 255;
             diffData[i][j] = color;
+
+
         }
     }
     output->diffuse_map = bind4Map(diffData);
@@ -217,6 +219,51 @@ void PipelineManager::merge_layers()
         }
     }
     output->metallic_map = bind4Map(diffData);
+
+    for (int i = 0; i < config->textureHeight; i++) {
+        for (int j = 0; j < config->textureWidth; j++) {
+            /*vec3 disturb(0, 0, 0);
+            for (int k = layerSize - 1; k >= 0; k--) {
+                RustUnit unit = units[k][i][j];
+                if (unit.has_disturb) {
+                    disturb += unit.normal_disturb;
+                }
+            }
+            if (disturb.r * disturb.r + disturb.g * disturb.g + disturb.b * disturb.b > 1) {
+                disturb = glm::normalize(disturb);
+            }
+            float d = 1.5f;
+            diffData[i][j] = vec4(disturb.r * d, disturb.g * d, disturb.b * d, 0);*/
+            diffData[i][j] = vec4(0, 0, 0, 0);
+            for (int k = layerSize - 1; k >= 0; k--) {
+                RustUnit unit = units[k][i][j];
+                if (unit.has_disturb) {
+                    diffData[i][j] = vec4(255, 255, 255, 255);
+                    break;
+                }
+            }
+        }
+    }
+    output->normal_disturb_map = bind4Map(diffData);
+
+    float max_depth = 50;
+    vector<vector<float>> depth_vec(config->textureHeight, vector<float>(config->textureWidth, 0));
+    for (int i = 0; i < config->textureHeight; i++) {
+        for (int j = 0; j < config->textureWidth; j++) {
+            for (int k = layerSize - 1; k >= 0; k--) {
+                RustUnit unit = units[k][i][j];
+                depth_vec[i][j] += unit.thickness;
+            }
+            //max_depth = std::max(max_depth, depth_vec[i][j]);
+        }
+    }
+    for (int i = 0; i < config->textureHeight; i++) {
+        for (int j = 0; j < config->textureWidth; j++) {
+            float d = 255 * depth_vec[i][j] / max_depth;
+            diffData[i][j] = vec4(d, d, d, 0);
+        }
+    }
+    output->depth_map = bind4Map(diffData);
 
     if (config->generateImage) {
         config->generateImage = false;

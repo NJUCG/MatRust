@@ -3,6 +3,7 @@ out vec4 FragColor;
 in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
+in mat3 TBN;
 
 // material parameters
 uniform bool is_pipeline_on;
@@ -14,7 +15,9 @@ uniform float ao;
 uniform sampler2D material_texture_diffuse0;
 uniform sampler2D metallicMap;
 uniform sampler2D roughnessMap;
-
+uniform sampler2D depthMap;
+uniform float heightScale;
+uniform bool use_depth;
 
 // lights, max for 4
 uniform vec3 lightPositions[4];
@@ -35,23 +38,31 @@ float DistributionGGX(vec3 N, vec3 H, float roughness)
     float nom   = a2;
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
     denom = PI * denom * denom;
-
     return nom / denom;
 }
 // ----------------------------------------------------------------------------
 float Distribution(vec3 N,vec3 half_v,float roughness){
+    /*
     float ag=roughness;
     float s_ag=ag*ag;
-    float cosTheta=dot(half_v,N);
+    float cosTheta= dot(half_v,N);
     float xcosTheta=cosTheta;
-    if(xcosTheta<0){
-        xcosTheta=0;
+    if(xcosTheta < 0){
+        xcosTheta = abs(xcosTheta);
     }
     float s_cosTheta=cosTheta*cosTheta;
     float s_tanTheta=(1 - s_cosTheta) / s_cosTheta;
     float d_nominator=ag*ag*xcosTheta;
     float d_denominator= PI * s_cosTheta * s_cosTheta*(s_ag+s_tanTheta)*(s_ag + s_tanTheta);
+    */
+    float ag=roughness * roughness;
+    float s_ag=ag*ag;
+    float cosTheta= max(dot(half_v, N),0.0); 
+    float s_cosTheta= cosTheta*cosTheta;
 
+    float d_nominator= s_ag;
+    float d_deno_2 = s_cosTheta * (s_ag - 1) + 1;
+    float d_denominator= PI *  d_deno_2 * d_deno_2;
     return d_nominator/d_denominator;
 }
 // ----------------------------------------------------------------------------
@@ -81,15 +92,62 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
 // ----------------------------------------------------------------------------
+
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
+{ 
+    // number of depth layers
+    const float minLayers = 8;
+    const float maxLayers = 32;
+    float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));  
+    // calculate the size of each layer
+    float layerDepth = 1.0 / numLayers;
+    // depth of current layer
+    float currentLayerDepth = 0.0;
+    // the amount to shift the texture coordinates per layer (from vector P)
+    vec2 P = viewDir.xy / viewDir.z * heightScale; 
+    vec2 deltaTexCoords = P / numLayers;
+  
+    // get initial values
+    vec2  currentTexCoords     = texCoords;
+    float currentDepthMapValue = texture(depthMap, currentTexCoords).r;
+      
+    while(currentLayerDepth < currentDepthMapValue)
+    {
+        // shift texture coordinates along direction of P
+        currentTexCoords -= deltaTexCoords;
+        // get depthmap value at current texture coordinates
+        currentDepthMapValue = texture(depthMap, currentTexCoords).r;  
+        // get depth of next layer
+        currentLayerDepth += layerDepth;  
+    }
+    
+    return currentTexCoords;
+}
+
+
 void main()
 {
     vec3 N = normalize(Normal);
     vec3 V = normalize(camPos - WorldPos);
-    vec4 t = texture(material_texture_diffuse0,TexCoords);
+    vec2 texCoords;
+    vec3 t_camPos = TBN * camPos;
+    vec3 t_worldPos = TBN * WorldPos;
+    if(use_depth){
+        V = normalize(t_camPos - t_worldPos);
+        N = TBN * N;
+        texCoords = ParallaxMapping(TexCoords, V);
+        if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
+            discard;
+    }else{
+        texCoords = TexCoords;
+    }
+
+    vec4 t = texture(material_texture_diffuse0,texCoords);
     vec3 albedo = vec3(t.xyz);
     vec3 F0 = vec3(0.04);
-    vec4 metallic4 = texture(metallicMap,TexCoords);
-    vec4 roughness4 = texture(roughnessMap,TexCoords);
+
+    vec4 metallic4 = texture(metallicMap,texCoords);
+    vec4 roughness4 = texture(roughnessMap,texCoords);
 
     float metallic = metallic4.z;
     float roughness = roughness4.z;
@@ -105,32 +163,49 @@ void main()
     for(int i = 0; i < 4; ++i)
     {
         // calculate per-light radiance
-        vec3 L = normalize(lightPositions[i] - WorldPos);
+        vec3 L;
+        if(use_depth){
+            L = normalize(TBN * lightPositions[i] - t_worldPos);
+        }else{
+            L = normalize(lightPositions[i] - WorldPos);
+        }
         vec3 H = normalize(V + L);
-        float distance    = length(lightPositions[i] - WorldPos);
+        float distance;
+        if(use_depth){
+            distance = length(TBN * lightPositions[i] - t_worldPos);
+        }else{
+            distance = length(lightPositions[i] - WorldPos);
+        }
         float attenuation = 1.0 / (distance * distance);
         vec3 radiance     = lightColors[i] * attenuation;
 
         // cook-torrance brdf
         float NDF = Distribution(N, H, roughness);
         float G   = GeometrySmith(N, V, L, roughness);
-        vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
+        vec3 F    = fresnelSchlick(clamp(dot(H, V), 0.0,1.0), F0);
 
         vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
         kD *= 1.0 - metallic;
 
         vec3 numerator    = NDF * G * F;
-        float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.0001;
-        vec3 specular     = numerator / denominator;
+
+        float nvDot = max(dot(N,V),1.0);//clamp(dot(N,V), 0.0, 1.0);
+        float nlDot = max(dot(N,L),1.0);//clamp(dot(N,L), 0.0, 1.0);
+
+        float denominator = 4.0 * nvDot * nlDot + 0.0001;
+        vec3 specular = clamp(numerator / denominator, 0.0, 1.0);
 
         // add to outgoing radiance Lo
-        float NdotL = max(dot(N, L), 0.0);
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+        float NdotL = max(abs(dot(N, L)), 0.0);
+        //Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+        //Lo += specular;
+        //Lo = vec3(denominator);
+        Lo = vec3(NDF);
     }
 
     vec3 ambient = vec3(0.03) * albedo * ao;
-    vec3 color = ambient + Lo;
+    vec3 color = Lo + ambient;
 
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0/2.2));

@@ -35,6 +35,8 @@ UIModel::UIModel() {
 
 	canvas_view_rotate_sensitivity = 0.1f;
 
+	depth_index = 6;
+	normal_disturb_index = 7;
 	metallic_index = 8;
 	roughness_index = 9;
 

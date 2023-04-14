@@ -20,6 +20,8 @@ void NodeEditor::init()
 	widgets = vector<NodeWidget*>();
 	curves = vector<NodeCurve*>();
 	EventAdapter::shared->register_event("combine_config_event_node_editor", this);
+	EventAdapter::shared->register_event("load_archive_event_node_editor", this);
+	EventAdapter::shared->register_event("save_archive_event_node_editor", this);
 }
 
 void NodeEditor::addComponent()
@@ -240,6 +242,7 @@ void NodeEditor::update_widgets(QPoint delta)
 	}
 }
 
+
 void NodeEditor::start_linking(NodeDataButton* button)
 {
 	is_curving = true;
@@ -365,6 +368,14 @@ void NodeEditor::on_trigger(string e)
 		}
 		
 		EventAdapter::shared->push_data(c);
+	}
+	else if (e == "load_archive_event_node_editor") {
+		QString* p = (QString*)EventAdapter::shared->pop_data();
+		read_config(*p);
+	}
+	else if (e == "save_archive_event_node_editor") {
+		QString* p = (QString*)EventAdapter::shared->pop_data();
+		write_config(*p);
 	}
 }
 

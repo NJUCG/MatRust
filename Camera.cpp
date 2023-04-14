@@ -79,43 +79,36 @@ void Camera::Move(Camera_Movement direction, float delta) {
         Position = Position - Front * delta;
 }
 void Camera::camera_rotate(bool isClockWise, bool isHorizontal, float delta) {
-    vec4 currentDelta(Front.x, Front.y, Front.z, 1);
+    vec4 currentDelta(Front.x, Front.y, Front.z, 0);
     currentDelta = currentDelta * 2.0f;
+    currentDelta.z = 1.0f;
     vec3 temp = Position + vec3(currentDelta);
     mat4 rotate(1);
     if (isClockWise) {
         if (isHorizontal) {
-            rotate = glm::rotate(rotate, radians(delta), WorldUp);
+            rotate = glm::rotate(rotate, radians(delta), Up);
         }
         else {
-            rotate = glm::rotate(rotate, radians(delta), WorldRight);
+            rotate = glm::rotate(rotate, radians(delta), Right);
         }
         currentDelta = rotate * currentDelta;
-        
-        /*
-        qDebug() << "r0 " << " " << rotate[0][0] << " " << rotate[0][1] << " " << rotate[0][2] << " " << rotate[0][3];
-        qDebug() << "r1 " << " " << rotate[1][0] << " " << rotate[1][1] << " " << rotate[1][2] << " " << rotate[1][3];
-        qDebug() << "r2 " << " " << rotate[2][0] << " " << rotate[2][1] << " " << rotate[2][2] << " " << rotate[2][3];
-        qDebug() << "r3 " << " " << rotate[3][0] << " " << rotate[3][1] << " " << rotate[3][2] << " " << rotate[3][3];
-        */
-
         Position = temp - vec3(currentDelta);
         vec4 t2(Front.x, Front.y, Front.z, 0);
         t2 = rotate * t2;
         Front = vec3(t2.x, t2.y, t2.z);
         if ((Front - WorldUp).length() > 0.1f) {
-            Right = normalize(cross(Front, WorldUp));
+            Right = normalize(cross(Front, Up));
         }
         else {
-            Right = normalize(cross(Front, WorldDown));
+            Right = normalize(cross(Front, -Up));
         }
     }
     else {
         if (isHorizontal) {
-            rotate = glm::rotate(rotate, radians(-delta), WorldUp);
+            rotate = glm::rotate(rotate, radians(-delta), Up);
         }
         else {
-            rotate = glm::rotate(rotate, radians(-delta), WorldRight);
+            rotate = glm::rotate(rotate, radians(-delta), Right);
         }
         currentDelta = rotate * currentDelta;
         Position = temp - vec3(currentDelta);
@@ -123,12 +116,13 @@ void Camera::camera_rotate(bool isClockWise, bool isHorizontal, float delta) {
         t2 = rotate * t2;
         Front = vec3(t2);
         if ((Front-WorldUp).length() > 0.1f) {
-            Right = normalize(cross(Front, WorldUp));
+            Right = normalize(cross(Front, Up));
         }
         else {
-            Right = normalize(cross(Front, WorldDown));
+            Right = normalize(cross(Front, -Up));
         }
     }
+    // qDebug() << Right.x << "," << Right.y << "," << Right.z;
 }
 
 mat4 Camera::GetViewMatrix()

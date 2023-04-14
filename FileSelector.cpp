@@ -13,6 +13,13 @@ void FileSelector::set_name(QString name)
 	}
 }
 
+void FileSelector::set_normal(QString name)
+{
+	if (normal_label) {
+		normal_label->setText(name);
+	}
+}
+
 void FileSelector::init()
 {
 	setStyleSheet(CssLoader::load_css("file_selector_style.css"));

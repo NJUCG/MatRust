@@ -88,7 +88,7 @@ void ObjectTab::switch_tab_style(string style, ObjectData* data)
 		spacing->setFixedHeight(line_height);
 
 		QWidget* selector_container = new QWidget();
-
+		 
 		QHBoxLayout* container_layout = new QHBoxLayout();
 		container_layout->setContentsMargins(0, 0, 0, 0);
 		container_layout->setSpacing(0);
@@ -99,6 +99,9 @@ void ObjectTab::switch_tab_style(string style, ObjectData* data)
 		mesh_selector->set_name(OBJECT_TAB_OBJECT_MODEL_PATH);
 		mesh_selector->event_name = "selected_mesh_changed";
 		mesh_selector->tag = "mesh_path";
+		if (data->has_path) {
+			mesh_selector->set_normal(QString::fromStdString(data->path));
+		}
 
 		container_layout->addWidget(mesh_selector);
 
@@ -175,6 +178,14 @@ void ObjectTab::on_trigger(string name)
 		ObjectData* obj = (ObjectData*)EventAdapter::shared->pop_data();
 		set_object(obj);
 	}
+	else if (name == "load_archive_event_obj") {
+		QString* p = (QString*)EventAdapter::shared->pop_data();
+		load_config(*p);
+	}
+	else if (name == "save_archive_event_obj") {
+		QString* p = (QString*)EventAdapter::shared->pop_data();
+		save_config(*p);
+	}
 }
 
 void ObjectTab::init()
@@ -183,6 +194,8 @@ void ObjectTab::init()
 	local_data = unordered_map<string, FloatEdit*>();
 	label_data = unordered_map<string, QLabel*>();
 	EventAdapter::shared->register_event("selected_object_changed", this);
+	EventAdapter::shared->register_event("load_archive_event_obj", this);
+	EventAdapter::shared->register_event("save_archive_event_obj", this);
 }
 
 void ObjectTab::addComponent()
@@ -331,4 +344,52 @@ void ObjectTab::activate_property(string name)
 		local_data[name]->setVisible(true);
 		label_data[name]->setVisible(true);
 	}
+}
+
+void ObjectTab::load_config(QString path)
+{
+	QFile load_file(path);
+
+	if (!load_file.open(QIODeviceBase::ReadOnly)) {
+		qWarning() << "config file read failed.";
+		return;
+	}
+
+	QByteArray save_data = load_file.readAll();
+	QJsonDocument load_doc(QJsonDocument::fromJson(save_data));
+
+	QJsonObject json = load_doc.object();
+	
+	ObjectData* data = new ObjectData();
+	data->type = "mesh";
+
+	data->path = json["model_path"].toString().toStdString();
+
+	data->loc.x = json["loc_x"].toDouble();
+	data->loc.y = json["loc_y"].toDouble();
+	data->loc.z = json["loc_z"].toDouble();
+
+	data->rot.x = json["rot_x"].toDouble();
+	data->rot.y = json["rot_y"].toDouble();
+	data->rot.z = json["rot_z"].toDouble();
+
+	data->scl.x = json["scl_x"].toDouble();
+	data->scl.y = json["scl_y"].toDouble();
+	data->scl.z = json["scl_z"].toDouble();
+
+	set_object(data);
+}
+
+void ObjectTab::save_config(QString path)
+{
+	QJsonObject json;
+
+	QFile save_file(path);
+
+	if (!save_file.open(QIODeviceBase::WriteOnly)) {
+		qWarning() << "node editor config save failed.";
+		return;
+	}
+
+	save_file.write(QJsonDocument(json).toJson());
 }

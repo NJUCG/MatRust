@@ -110,6 +110,12 @@ void Shader::setMat4(const std::string& name, glm::mat4 value) const
     f->glUniformMatrix4fv(f->glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
+void Shader::setMat3(const std::string& name, glm::mat3 value) const
+{
+    QOpenGLFunctions_3_3_Core* f = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_3_3_Core>(QOpenGLContext::currentContext());
+    f->glUniformMatrix3fv(f->glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+}
+
 void Shader::setVec(const std::string& name,int size, float* value) const
 {
     QOpenGLFunctions_3_3_Core* f = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_3_3_Core>(QOpenGLContext::currentContext());

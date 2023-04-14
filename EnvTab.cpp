@@ -24,11 +24,8 @@ void EnvTab::on_trigger(string e)
 		config->cc = arguments["cc"]->value;
 		config->temperature = arguments["temperature"]->value;
 		
-		float m = arguments["metallic"]->value;
-		float r = arguments["roughness"]->value;
-
-		config->metallic = vector<vector<float>>(config->textureHeight, vector<float>(config->textureWidth, m));
-		config->roughness = vector<vector<float>>(config->textureHeight, vector<float>(config->textureWidth, r));
+		config->temp_metallic = arguments["metallic"]->value;
+		config->temp_roughness = arguments["roughness"]->value;
 
 		EventAdapter::shared->push_data(config);
 	}
@@ -37,6 +34,14 @@ void EnvTab::on_trigger(string e)
 		EventAdapter::shared->trigger_event("model_back_metallic_changed");
 		EventAdapter::shared->push_data(new float(arguments["roughness"]->value));
 		EventAdapter::shared->trigger_event("model_back_roughness_changed");
+	}
+	else if (e == "load_archive_event_env_tab") {
+		QString* p = (QString*)EventAdapter::shared->pop_data();
+		load_config(*p);
+	}
+	else if (e == "save_archive_event_env_tab") {
+		QString* p = (QString*)EventAdapter::shared->pop_data();
+		save_config(*p);
 	}
 }
 
@@ -67,6 +72,8 @@ void EnvTab::init()
 	body_widgets = unordered_map<int, QWidget*>();
 	EventAdapter::shared->register_event("combine_config_event_env_tab", this);
 	EventAdapter::shared->register_event("new_mesh_loaded", this);
+	EventAdapter::shared->register_event("load_archive_event_env_tab", this);
+	EventAdapter::shared->register_event("save_archive_event_env_tab", this);
 
 	setStyleSheet(CssLoader::load_css("env_tab.css"));
 
@@ -147,7 +154,6 @@ void EnvTab::header(QString header)
 
 	head->setLayout(header_layout);
 	
-	
 	layout->addWidget(head);
 }
 
@@ -221,6 +227,52 @@ void EnvTab::space()
 	int line_height = UIModel::get()->control_panel_line_height;
 	space->setFixedHeight(line_height);
 	body_layout->addWidget(space);
+}
+
+void EnvTab::load_config(QString path)
+{
+	QFile load_file(path);
+
+	if (!load_file.open(QIODeviceBase::ReadOnly)) {
+		qWarning() << "config file read failed.";
+		return;
+	}
+
+	QByteArray save_data = load_file.readAll();
+	QJsonDocument load_doc(QJsonDocument::fromJson(save_data));
+
+	QJsonObject json = load_doc.object();
+
+	arguments["rh"]->set_value(json["rh"].toDouble(), false);
+	arguments["oc"]->set_value(json["oc"].toDouble(), false);
+	arguments["sc"]->set_value(json["sc"].toDouble(), false);
+	arguments["cc"]->set_value(json["cc"].toDouble(), false);
+	arguments["temperature"]->set_value(json["temperature"].toDouble(), false);
+	arguments["metallic"]->set_value(json["metallic"].toDouble(), false);
+	arguments["roughness"]->set_value(json["roughness"].toDouble(), false);
+
+	update();
+}
+
+void EnvTab::save_config(QString path)
+{
+	QJsonObject json;
+	json["rh"] = arguments["rh"]->value;
+	json["oc"] = arguments["oc"]->value;
+	json["sc"] = arguments["sc"]->value;
+	json["cc"] = arguments["cc"]->value;
+	json["temperature"] = arguments["temperature"]->value;
+	json["metallic"] = arguments["metallic"]->value;
+	json["roughness"] = arguments["roughness"]->value;
+
+	QFile save_file(path);
+
+	if (!save_file.open(QIODeviceBase::WriteOnly)) {
+		qWarning() << "node editor config save failed.";
+		return;
+	}
+
+	save_file.write(QJsonDocument(json).toJson());
 }
 
 

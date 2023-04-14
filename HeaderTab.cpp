@@ -6,7 +6,7 @@ HeaderTab::HeaderTab()
 	addComponent();
 }
 
-HeaderTab::HeaderTab(string tab_name)
+HeaderTab::HeaderTab(QString tab_name)
 {
 	this->tab_name = tab_name;
 	init();
@@ -39,7 +39,7 @@ void HeaderTab::addComponent()
 	QLabel* tab = new QLabel();
 
 	tab->setAlignment(Qt::AlignCenter);
-	tab->setText(tab_name.c_str());
+	tab->setText(tab_name);
 
 	tab_layout->addWidget(tab);
 
@@ -48,10 +48,12 @@ void HeaderTab::addComponent()
 
 void HeaderTab::expand()
 {
+
 }
 
 void HeaderTab::shrink()
 {
+
 }
 
 void HeaderTab::enterEvent(QEnterEvent* e)
@@ -78,8 +80,16 @@ void HeaderTab::leaveEvent(QEvent* e)
 
 void HeaderTab::mousePressEvent(QMouseEvent*)
 {
+	/*
 	if (state != HEADER_TAB_SELECTED) {
 		expand();
 		state = HEADER_TAB_SELECTED;
+	}
+	*/
+	if (tab_name == HEADER_LOAD_ARCHIVE) {
+		Archive::load_config(QFileDialog::getExistingDirectory(nullptr, "archive", "."));
+	}
+	else if (tab_name == HEADER_SAVE_ARCHIVE) {
+		Archive::save_config(QFileDialog::getExistingDirectory(nullptr, "archive", "."));
 	}
 }

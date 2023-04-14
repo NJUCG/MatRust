@@ -419,6 +419,12 @@ int strings_test() {
 
     return 0;
 }
+//
+// 材质rounding
+// demo
+// github结构
+// 整体加载
+//
 int main(int argc, char *argv[]){
     EventAdapter::init_event_adapter();
     AlgArgAnalyzer::init_analyzer();

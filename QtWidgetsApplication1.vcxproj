@@ -55,7 +55,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <IncludePath>D:\rust\CRust\CRustDependency\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\rust\CRust\QtWidgetsApplication1\QtWidgetsApplication1\Header\Util;D:\rust\CRust\QtWidgetsApplication1\QtWidgetsApplication1\Header\Core\Sampler;D:\rust\CRust\QtWidgetsApplication1\QtWidgetsApplication1\Header\Core\Noise;D:\rust\CRust\QtWidgetsApplication1\QtWidgetsApplication1\Header\Core;D:\rust\CRust\QtWidgetsApplication1\QtWidgetsApplication1\Header\Core\Layers;D:\rust\CRust\QtWidgetsApplication1\QtWidgetsApplication1\Header;D:\rust\CRust\QtWidgetsApplication1\QtWidgetsApplication1\Header\UI;D:\rust\CRust\QtWidgetsApplication1\QtWidgetsApplication1\Header\UI\NodeEditorWidgets;D:\rust\CRust\CRustDependency\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\rust\CRust\CRustDependency\lib;$(LibraryPath)</LibraryPath>
     <ExternalIncludePath>D:\rust\CRust\CRustDependency\include;D:\rust\CRust\CRustDependency\stb-master\stb-master;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
@@ -94,6 +94,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AlgArgAnalyzer.cpp" />
+    <ClCompile Include="Archive.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="CanvasBackGround.cpp" />
@@ -200,6 +201,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\CRustDependency\stb-master\stb-master\stb_image.h" />
     <ClInclude Include="AlgArgAnalyzer.h" />
+    <ClInclude Include="Archive.h" />
     <ClInclude Include="bezier.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CanvasBackGround.h" />
@@ -333,6 +335,8 @@
     <None Include="player_widget.css" />
     <None Include="resources\shaders\common_shader.frag" />
     <None Include="resources\shaders\common_shader.vert" />
+    <None Include="resources\shaders\example_shader.frag" />
+    <None Include="resources\shaders\example_shader.vert" />
     <None Include="resources\shaders\grid_shader.frag" />
     <None Include="resources\shaders\grid_shader.vert" />
     <None Include="resources\shaders\tri_shader.frag" />

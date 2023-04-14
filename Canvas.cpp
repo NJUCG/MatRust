@@ -36,9 +36,16 @@ void Canvas::on_trigger(string name)
     }
     else if (name == "combine_config_event_canvas") {
         PipelineConfig* c = (PipelineConfig*)EventAdapter::shared->pop_data();
-        
-        c->backTexture = vector<vector<vec4>>(c->textureHeight, vector<vec4>(c->textureWidth, vec4(255, 80, 60, 255)));
-        c->curvature = CurvatureHelper::generate("resources/models/stranger/curve.png");
+
+        c->backTexture = model_itself->get_diffuse();
+
+        c->textureHeight = c->backTexture.size();
+        c->textureWidth = c->backTexture[0].size();
+
+        c->curvature = CurvatureHelper::generate(model_itself->directory + "/" + "curve.png");
+
+        c->metallic = vector<vector<float>>(c->textureHeight, vector<float>(c->textureWidth, c->temp_metallic));
+        c->roughness = vector<vector<float>>(c->textureHeight, vector<float>(c->textureWidth, c->temp_roughness));
 
         is_pipeline_on = true;
 
@@ -51,6 +58,14 @@ void Canvas::on_trigger(string name)
     else if (name == "model_back_metallic_changed") {
         float m = *((float*)EventAdapter::shared->pop_data());
         i_metallic = m;
+    }
+    else if (name == "load_archive_event_canvas") {
+        QString* p = (QString*)EventAdapter::shared->pop_data();
+        load_config(*p);
+    }
+    else if (name == "save_archive_event_canvas") {
+        QString* p = (QString*)EventAdapter::shared->pop_data();
+        save_config(*p);
     }
 }
 
@@ -83,7 +98,7 @@ void Canvas::init()
     EventAdapter::shared->trigger_event("add_object_to_tab");
     EventAdapter::shared->push_data(obj);
     EventAdapter::shared->trigger_event("selected_object_changed");
-    object_list[obj->name] = obj;
+    object_list[obj->tag] = obj;
 
     this->scr_width = m->src_width;
     this->scr_height = m->src_height;
@@ -114,6 +129,9 @@ void Canvas::init()
     EventAdapter::shared->register_event("model_back_roughness_changed", this);
     EventAdapter::shared->register_event("model_back_metallic_changed", this);
 
+    EventAdapter::shared->register_event("load_archive_event_canvas", this);
+    EventAdapter::shared->register_event("save_archive_event_canvas", this);
+
     init_light();
 
 }
@@ -124,8 +142,8 @@ void Canvas::addComponent()
 void Canvas::init_light()
 {
     int t = 16;
-    vec3 lightIntensity(t * 6, t * 6, t * 6);
-    vec3 lightPos(0, init_loc.y + 6, init_loc.z + 3);
+    vec3 lightIntensity(t , t , t);
+    vec3 lightPos(0, init_loc.y, init_loc.z + 3);
     LightData* lght = new LightData();
     lght->name = SCENE_TAB_LIGHT_TITLE_0.toStdString();
     lght->light_name = "lightPosition[0]";
@@ -156,7 +174,7 @@ void Canvas::init_light()
     lights_data.push_back(lght);
     object_list[lght->name] = lght;
 
-    lightPos = vec3(init_loc.x - 2, 0, init_loc.z);
+    lightPos = vec3(init_loc.x - 3, 0, init_loc.z);
 
     lght = new LightData();
     lght->name = SCENE_TAB_LIGHT_TITLE_2.toStdString();
@@ -173,7 +191,7 @@ void Canvas::init_light()
     lights_data.push_back(lght);
     object_list[lght->name] = lght;
 
-    lightPos = vec3(init_loc.x + 2, 0, init_loc.z);
+    lightPos = vec3(init_loc.x + 3, 0, init_loc.z);
 
     lght = new LightData();
     lght->name = SCENE_TAB_LIGHT_TITLE_3.toStdString();
@@ -234,10 +252,35 @@ void Canvas::render_output()
         f->glBindTexture(GL_TEXTURE_2D, PipelineManager::shared->output->roughness_map);
     }
     f->glActiveTexture(GL_TEXTURE0);
+
+    int normal_disturb_map = PipelineManager::shared->output->normal_disturb_map;
+    if (normal_disturb_map > 0) {
+        shader->setBool("use_disturb", true);
+        f->glActiveTexture(GL_TEXTURE0 + UIModel::get()->normal_disturb_index);
+        shader->setInt("normal_disturb_map", UIModel::get()->normal_disturb_index);
+        f->glBindTexture(GL_TEXTURE_2D, normal_disturb_map);
+    }
+    else {
+        shader->setBool("use_disturb", false);
+    }
+
+    int depth_map = PipelineManager::shared->output->depth_map;
+    if (!is_pipeline_on || depth_map < 0) {
+        shader->setBool("use_depth", false);
+    }
+    else {
+        shader->setBool("use_depth", false);
+        shader->setFloat("heightScale", 0.05f);
+        f->glActiveTexture(GL_TEXTURE0 + UIModel::get()->depth_index);
+        shader->setInt("depthMap", UIModel::get()->depth_index);
+        f->glBindTexture(GL_TEXTURE_2D, depth_map);
+    }
+
+    shader->setBool("use_normal_map", false);
 }
 void Canvas::init_scene() {
     QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
-    shader = new Shader("resources/shaders/common_shader.vert", "resources/shaders/common_shader.frag");
+    shader = new Shader("resources/shaders/example_shader.vert", "resources/shaders/example_shader.frag");
     grid_shader = new Shader("resources/shaders/grid_shader.vert", "resources/shaders/grid_shader.frag");
 }
 void Canvas::draw_scene() {
@@ -254,31 +297,35 @@ void Canvas::draw_scene() {
     //准备相机
     mat4 projection;
     if (is_ortho) {
-        projection = glm::ortho(-direct_zoom_controller, direct_zoom_controller, -direct_zoom_controller, direct_zoom_controller, 0.1f, 45.0f);
+        // qDebug() << direct_zoom_controller;
+        projection = glm::ortho(-direct_zoom_controller, direct_zoom_controller, -direct_zoom_controller, direct_zoom_controller, 0.01f, 15.0f);
     }
     else {
-        projection = glm::perspective(radians(direct_zoom_controller), (float)width() / (float)height(), 0.1f, 45.0f);
+        projection = glm::perspective(radians(direct_zoom_controller), (float)width() / (float)height(), 0.1f, 15.0f);
     }
     mat4 view = camera->GetViewMatrix();
     mat4 model_m(1);
     ObjectData* object_dat = object_list["object"];
+
     if (object_dat != nullptr) {
+        vec3 model_loc = vec3(object_dat->loc.x, object_dat->loc.y, object_dat->loc.z);
         model_m = glm::translate(model_m, vec3(object_dat->loc.x, object_dat->loc.y, object_dat->loc.z));
         model_m = glm::scale(model_m, vec3(object_dat->scl.x, object_dat->scl.y, object_dat->scl.z));
+        model_m = glm::rotate(model_m, glm::radians(object_dat->rot.x), vec3(1, 0, 0));
+        model_m = glm::rotate(model_m, glm::radians(object_dat->rot.y), vec3(0, 1, 0));
+        model_m = glm::rotate(model_m, glm::radians(object_dat->rot.z), vec3(0, 0, 1));
     }
     else {
         model_m = glm::translate(model_m, init_loc);
         model_m = glm::scale(model_m, vec3(0.2f, 0.2f, 0.2f));
     }
-
-    model_m = glm::rotate(model_m, glm::radians(-90.0f), vec3(0, 1, 0));
     
     f->glEnable(GL_DEPTH_TEST);
     f->glEnable(GL_BLEND);
     f->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     grid_shader->use();
-    grid_shader->setMat4("model", model_m);
+    grid_shader->setMat4("model", model_m); 
     grid_shader->setMat4("view", view);
     grid_shader->setMat4("projection", projection);
     grid_shader->setFloat("near", 0.1f);
@@ -291,12 +338,17 @@ void Canvas::draw_scene() {
 
     shader->use();
     set_up_light();
+
     shader->setFloat("ao", 1.0f);
     shader->setMat4("model", model_m);
+    shader->setMat3("normal_matrix", glm::transpose(glm::inverse(glm::mat3(model_m))));
     shader->setMat4("view", view);
     shader->setMat4("projection", projection);
     shader->setVec3("camPos", camera->Position);
     shader->setBool("is_pipeline_on", is_pipeline_on);
+
+    //
+    shader->setVec3("albedo", vec3(1, 0.2, 0.2));
 
     render_output();
 
@@ -342,7 +394,6 @@ void Canvas::mouseMoveEvent(QMouseEvent* e)
         QPoint delta = e->globalPos() - prev_cursor;
         prev_cursor = e->globalPos();
         if (view_state == CANVAS_VIEW_MOVE) {
-            //qDebug() << delta.x() << " " << delta.y();
             camera->Move(LEFT, ((float)delta.x()) * move_sensitivity);
             camera->Move(UP, ((float)delta.y()) * move_sensitivity);
             update();
@@ -391,6 +442,79 @@ float Canvas::zoom_project()
 void Canvas::frame_consumer(float delta)
 {
     update();
+}
+
+void Canvas::load_config(QString path)
+{
+    QFile load_file(path);
+
+    if (!load_file.open(QIODeviceBase::ReadOnly)) {
+        qWarning() << "config file read failed.";
+        return;
+    }
+
+    QByteArray save_data = load_file.readAll();
+    QJsonDocument load_doc(QJsonDocument::fromJson(save_data));
+
+    QJsonObject json = load_doc.object();
+    ObjectData* object_dat = object_list["object"];
+
+    if (!object_dat) {
+        object_dat = new ObjectData();
+    }
+
+    model_path = json["model_path"].toString().toStdString();
+
+    object_dat->name = SCENE_TAB_OBJECT_TITLE.toStdString();
+    object_dat->tag = "object";
+    object_dat->type = "mesh";
+    object_dat->path = model_path;
+    object_dat->has_path = true;
+
+    object_dat->loc.x = json["loc_x"].toDouble();
+    object_dat->loc.y = json["loc_y"].toDouble();
+    object_dat->loc.z = json["loc_z"].toDouble();
+    object_dat->rot.x = json["rot_x"].toDouble();
+    object_dat->rot.y = json["rot_y"].toDouble();
+    object_dat->rot.z = json["rot_z"].toDouble();
+    object_dat->scl.x = json["scl_x"].toDouble();
+    object_dat->scl.y = json["scl_y"].toDouble();
+    object_dat->scl.z = json["scl_z"].toDouble();
+
+    object_list[object_dat->tag] = object_dat;
+
+    EventAdapter::shared->push_data(object_dat);
+    EventAdapter::shared->trigger_event("selected_object_changed");
+
+    should_load = true;
+    update();
+}
+
+void Canvas::save_config(QString path)
+{
+    QJsonObject json;
+    json["model_path"] = QString::fromStdString(model_path);
+
+    ObjectData* object_dat = object_list["object"];
+
+    json["loc_x"] = object_dat->loc.x;
+    json["loc_y"] = object_dat->loc.y;
+    json["loc_z"] = object_dat->loc.z;
+    json["rot_x"] = object_dat->rot.x;
+    json["rot_y"] = object_dat->rot.y;
+    json["rot_z"] = object_dat->rot.z;
+    json["scl_x"] = object_dat->scl.x;
+    json["scl_y"] = object_dat->scl.y;
+    json["scl_z"] = object_dat->scl.z;
+
+    QFile save_file(path);
+
+    if (!save_file.open(QIODeviceBase::WriteOnly)) {
+        qWarning() << "node editor config save failed.";
+        return;
+    }
+
+    save_file.write(QJsonDocument(json).toJson());
 }
 
 

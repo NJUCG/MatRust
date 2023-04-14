@@ -385,6 +385,9 @@
     <ClCompile Include="NodeEditorData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Archive.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -702,6 +705,9 @@
     <ClInclude Include="NodeEditorData.h">
       <Filter>Header Files\UI\NodeEditorWidgets</Filter>
     </ClInclude>
+    <ClInclude Include="Archive.h">
+      <Filter>Header Files\uitl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="TimeMachineIdentifier.h">
@@ -825,6 +831,12 @@
     </None>
     <None Include="strings.json">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\example_shader.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="resources\shaders\example_shader.vert">
+      <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
