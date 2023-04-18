@@ -11,7 +11,7 @@
 #include"TimeMachineResponder.h"
 #include"EventAdapter.h"
 using namespace std;
-class TimeMachineIdentifier: public QWidget
+class TimeMachineIdentifier: public QWidget, EventResponder
 
 {
 	Q_OBJECT
@@ -19,16 +19,17 @@ public:
 	TimeMachineIdentifier(float start_time = 0, float stop_time = 20, float step = 1);
 	void register_responder(TimeMachineResponder*);
 	~TimeMachineIdentifier();
+	void on_trigger(string) override;
 	float current_time;
+	float start_time;
+	float stop_time;
+	
 	QTimer* timer;
 
 	void play();
 	void pause();
 	void clear();
 protected:
-
-	float start_time;
-	float stop_time;
 	float step;
 	float width_dist;
 	float dist_per_unit;

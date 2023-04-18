@@ -420,6 +420,7 @@ void NodeEditor::read_config(QString path)
 
 	offset_x = json["offset_x"].toDouble();
 	offset_y = json["offset_y"].toDouble();
+	int t = widgets_array.size();
 
 	for (const QJsonValue &widget_v : widgets_array) {
 		QJsonObject obj = widget_v.toObject();

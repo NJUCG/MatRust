@@ -388,6 +388,9 @@
     <ClCompile Include="Archive.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="BakeTab.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -708,6 +711,12 @@
     <ClInclude Include="Archive.h">
       <Filter>Header Files\uitl</Filter>
     </ClInclude>
+    <ClInclude Include="BakeTab.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BakeInfo.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="TimeMachineIdentifier.h">
@@ -837,6 +846,9 @@
     </None>
     <None Include="resources\shaders\example_shader.vert">
       <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="bake_tab.css">
+      <Filter>Resource Files\styles</Filter>
     </None>
   </ItemGroup>
 </Project>

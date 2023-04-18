@@ -3,6 +3,7 @@
 #include<set>
 #include "DPDPatch.h"
 #include<qdebug.h>
+
 using namespace std;
 
 class DPD {
@@ -31,6 +32,7 @@ public:
             for (int j = 0; j < w; j++) {
                 if (t < latticePrefix[i][j]) {
                     DPDPatch* patch = new DPDPatch();
+                    patch->patch_time = rand_() * 3;
                     patch->outlineX.push_back(j);
                     patch->outlineY.push_back(i);
                     output[i][j] = 0.001f;

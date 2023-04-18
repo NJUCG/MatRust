@@ -67,6 +67,14 @@ void Canvas::on_trigger(string name)
         QString* p = (QString*)EventAdapter::shared->pop_data();
         save_config(*p);
     }
+    else if (name == "bake_info_changed") {
+        BakeInfo* info = (BakeInfo*)EventAdapter::shared->pop_data();
+        if (this->info) {
+            delete this->info;
+        }
+        this->info = info;
+        update();
+    }
 }
 
 void Canvas::time_up()
@@ -132,6 +140,11 @@ void Canvas::init()
     EventAdapter::shared->register_event("load_archive_event_canvas", this);
     EventAdapter::shared->register_event("save_archive_event_canvas", this);
 
+    EventAdapter::shared->register_event("bake_info_changed", this);
+
+    info = new BakeInfo();
+    info->use_disturb = info->use_depth = false;
+
     init_light();
 
 }
@@ -141,7 +154,7 @@ void Canvas::addComponent()
 }
 void Canvas::init_light()
 {
-    int t = 16;
+    int t = 8;
     vec3 lightIntensity(t , t , t);
     vec3 lightPos(0, init_loc.y, init_loc.z + 3);
     LightData* lght = new LightData();
@@ -254,7 +267,7 @@ void Canvas::render_output()
     f->glActiveTexture(GL_TEXTURE0);
 
     int normal_disturb_map = PipelineManager::shared->output->normal_disturb_map;
-    if (normal_disturb_map > 0) {
+    if (normal_disturb_map > 0 && info->use_disturb) {
         shader->setBool("use_disturb", true);
         f->glActiveTexture(GL_TEXTURE0 + UIModel::get()->normal_disturb_index);
         shader->setInt("normal_disturb_map", UIModel::get()->normal_disturb_index);
@@ -265,11 +278,11 @@ void Canvas::render_output()
     }
 
     int depth_map = PipelineManager::shared->output->depth_map;
-    if (!is_pipeline_on || depth_map < 0) {
+    if (!is_pipeline_on || depth_map < 0 || !info->use_depth) {
         shader->setBool("use_depth", false);
     }
     else {
-        shader->setBool("use_depth", false);
+        shader->setBool("use_depth", true);
         shader->setFloat("heightScale", 0.05f);
         f->glActiveTexture(GL_TEXTURE0 + UIModel::get()->depth_index);
         shader->setInt("depthMap", UIModel::get()->depth_index);
@@ -280,7 +293,7 @@ void Canvas::render_output()
 }
 void Canvas::init_scene() {
     QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
-    shader = new Shader("resources/shaders/example_shader.vert", "resources/shaders/example_shader.frag");
+    shader = new Shader("resources/shaders/common_shader.vert", "resources/shaders/common_shader.frag");
     grid_shader = new Shader("resources/shaders/grid_shader.vert", "resources/shaders/grid_shader.frag");
 }
 void Canvas::draw_scene() {

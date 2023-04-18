@@ -17,6 +17,7 @@
 #include<qimage.h>
 #include<qapplication.h>
 #include"StringHelper.h"
+#include"BakeInfo.h"
 
 #define CANVAS_VIEW_NONE 0
 #define CANVAS_VIEW_ROTATE 0x1
@@ -47,6 +48,7 @@ protected:
 
     Model* model_itself = nullptr;
     Camera* camera = nullptr;
+    BakeInfo* info = nullptr;
     vec3 init_loc;
     int scr_width, scr_height;
     bool setted = false;
@@ -61,8 +63,6 @@ protected:
     void addComponent();
     void init_light();
     void set_up_light();
-
-
     
     // äÖÈ¾Ä£¿é
     int metallic_index, roughness_index;

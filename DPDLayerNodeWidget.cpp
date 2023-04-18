@@ -37,6 +37,12 @@ void DPDLayerNodeWidget::value_changed(void* v, int id)
 	else if (id == data_cache["init seed"]) {
 		config_cache->addition_properties["init seed"] = v;
 	}
+	else if (id == data_cache["randomizer"]) {
+		config_cache->addition_properties["randomizer"] = v;
+	}
+	else if (id == data_cache["diffuse spd"]) {
+		config_cache->addition_properties["diffuse spd"] = v;
+	}
 	pool->set_value<LayerConfig*>(config_id, config_cache);
 }
 
@@ -48,7 +54,8 @@ void DPDLayerNodeWidget::read(const QJsonObject& obj)
 	pool->set_value<QString>(data_cache["part per sec"], obj["part per sec"].toString());
 	pool->set_value<QString>(data_cache["grow spd"], obj["grow spd"].toString());
 	pool->set_value<float>(data_cache["init seed"], obj["init seed"].toDouble());
-
+	pool->set_value<float>(data_cache["randomizer"], obj["randomizer"].toDouble());
+	pool->set_value<float>(data_cache["diffuse spd"], obj["diffuse spd"].toDouble());
 	pool->set_value<QString>(data_cache["name"], obj["name"].toString());
 
 	QColor color;
@@ -65,10 +72,12 @@ void DPDLayerNodeWidget::write(QJsonObject& json)
 	json["transmittance"] = pool->get_value<float>(data_cache["transmittance"]);
 	json["roughness"] = pool->get_value<float>(data_cache["roughness"]);
 	json["metallic"] = pool->get_value<float>(data_cache["metallic"]);
+	json["randomizer"] = pool->get_value<float>(data_cache["randomizer"]);
 	int t0 = data_cache["part per sec"];
 	json["part per sec"] = pool->get_value<QString>(data_cache["part per sec"]);
 	json["grow spd"] = pool->get_value<QString>(data_cache["grow spd"]);
 	json["init seed"] = pool->get_value<float>(data_cache["init seed"]);
+	json["diffuse spd"] = pool->get_value<float>(data_cache["diffuse spd"]);
 
 	json["name"] = pool->get_value<QString>(data_cache["name"]);
 	QColor color = pool->get_value<QColor>(data_cache["color"]);
@@ -121,6 +130,8 @@ void DPDLayerNodeWidget::body()
 	new_float_argument(NODE_EDITOR_NODE_WIDGET_ENTRY_TRANSMITTANCE, "transmittance",false, false, -100.0f, 0.0f);
 	new_float_argument(NODE_EDITOR_NODE_WIDGET_ENTRY_ROUGHNESS, "roughness",false, false);
 	new_float_argument(NODE_EDITOR_NODE_WIDGET_ENTRY_METALLIC, "metallic", false, false);
+	new_float_argument(NODE_EDITOR_NODE_WIDGET_ENTRY_DPD_RANDOMIZER, "randomizer", false, false, 1, 20, 1.0f);
+	new_float_argument(NODE_EDITOR_NODE_WIDGET_ENTRY_DIFFUSE_SPD, "diffuse spd", false, false, 1, 20, 1.0f);
 
 	new_line_edit(" 200 / ( sc + 0.01 ) * ( oc + 0.01 ) * ( rh + 0.01 )","part per sec", false, false, true, NODE_EDITOR_NODE_WIDGET_ENTRY_PART_PER_SEC);
 	new_line_edit("sc * 0.8", "grow spd", false, false, true, NODE_EDITOR_NODE_WIDGET_ENTRY_GROW_SPD);
@@ -140,10 +151,12 @@ void DPDLayerNodeWidget::body()
 	pool->get_data<QString>(data_cache["part per sec"])->add_responder(this);
 	pool->get_data<QString>(data_cache["grow spd"])->add_responder(this);
 	pool->get_data<float>(data_cache["init seed"])->add_responder(this);
+	pool->get_data<float>(data_cache["diffuse spd"])->add_responder(this);
 
 	pool->get_data<float>(data_cache["transmittance"])->add_responder(this);
 	pool->get_data<float>(data_cache["roughness"])->add_responder(this);
 	pool->get_data<float>(data_cache["metallic"])->add_responder(this);
+	pool->get_data<float>(data_cache["randomizer"])->add_responder(this);
 	pool->get_data<string>(data_cache["name"])->add_responder(this);
 	pool->get_data<QColor>(data_cache["color"])->add_responder(this);
 }

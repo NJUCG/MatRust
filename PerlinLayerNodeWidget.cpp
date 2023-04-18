@@ -37,6 +37,9 @@ void PerlinLayerNodeWidget::value_changed(void* v,int id)
 	else if (id == data_cache["cutoff height"]) {
 		config_cache->addition_properties["cutoff height"] = v;
 	}
+	else if (id == data_cache["diffuse spd"]) {
+		config_cache->addition_properties["diffuse spd"] = v;
+	}
 	pool->set_value<LayerConfig*>(config_id, config_cache);
 }
 
@@ -48,6 +51,7 @@ void PerlinLayerNodeWidget::read(const QJsonObject& obj)
 	pool->set_value<float>(data_cache["bias height"], obj["bias height"].toDouble());
 	pool->set_value<float>(data_cache["cutoff height"], obj["cutoff height"].toDouble());
 	pool->set_value<float>(data_cache["block width"], obj["block width"].toDouble());
+	pool->set_value<float>(data_cache["diffuse spd"], obj["diffuse spd"].toDouble());
 
 	pool->set_value<QString>(data_cache["name"], obj["name"].toString());
 
@@ -68,6 +72,7 @@ void PerlinLayerNodeWidget::write(QJsonObject& json)
 	json["bias height"] = pool->get_value<float>(data_cache["bias height"]);
 	json["cutoff height"] = pool->get_value<float>(data_cache["cutoff height"]);
 	json["block width"] = pool->get_value<float>(data_cache["block width"]);
+	json["diffuse spd"] = pool->get_value<float>(data_cache["diffuse spd"]);
 
 	json["name"] = pool->get_value<QString>(data_cache["name"]);
 	QColor color = pool->get_value<QColor>(data_cache["color"]);
@@ -123,6 +128,8 @@ void PerlinLayerNodeWidget::body()
 	new_float_argument(NODE_EDITOR_NODE_WIDGET_ENTRY_BIAS_HEIGHT, "bias height", false, false, 1, 100, 1.0f);
 	new_float_argument(NODE_EDITOR_NODE_WIDGET_ENTRY_CUTOFF_HEIGHT, "cutoff height", false, false, 1, 100, 1.0f);
 	new_float_argument(NODE_EDITOR_NODE_WIDGET_ENTRY_BLOCK_WIDTH, "block width", false, false, 1, 100, 1.0f);
+	new_float_argument(NODE_EDITOR_NODE_WIDGET_ENTRY_DIFFUSE_SPD, "diffuse spd", false, false, 1, 20, 1.0f);
+
 
 	new_line_edit(NODE_EDITOR_NODE_WIDGET_ENTRY_DEFAULT_NAME, "name", false, false, true, NODE_EDITOR_NODE_WIDGET_ENTRY_NAME);
 
@@ -138,6 +145,7 @@ void PerlinLayerNodeWidget::body()
 	pool->get_data<float>(data_cache["transmittance"])->add_responder(this);
 	pool->get_data<float>(data_cache["roughness"])->add_responder(this);
 	pool->get_data<float>(data_cache["metallic"])->add_responder(this);
+	pool->get_data<float>(data_cache["diffuse spd"])->add_responder(this);
 
 	pool->get_data<float>(data_cache["bias height"])->add_responder(this);
 	pool->get_data<float>(data_cache["cutoff height"])->add_responder(this);

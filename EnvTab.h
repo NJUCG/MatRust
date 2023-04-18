@@ -18,7 +18,7 @@ public:
     float rh, cc, oc, sc, temperature;
     float metallic, roughness;
 };
-
+    
 class EnvTab : public EventResponder, public QWidget, public FloatEditResponder
 {
 public:

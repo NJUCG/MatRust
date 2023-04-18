@@ -37,6 +37,7 @@ void CustomPerlinLayer::accept_rules(PipelineConfig* config)
 		for (int j = 0; j < config->textureWidth; j++)
 		{
 			RustUnit& unit = units[i][j];
+			unit.diffuse_spd = *((float*)addition_config->addition_properties["diffuse spd"]);
 			unit.color = addition_config->color;
 			unit.thickness = 0;
 			unit.composition = FilmComposition::Custom;

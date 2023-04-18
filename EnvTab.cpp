@@ -127,23 +127,20 @@ void EnvTab::header(QString header)
 	QHBoxLayout* header_layout = new QHBoxLayout();
 	header_layout->setContentsMargins(0,0,0,0);
 
-	QPushButton* header_icon = new QPushButton();
-	header_icon->setObjectName("header_icon");
-	header_icon->setFixedWidth(model->control_panel_header_icon_width);
-	header_icon->setCheckable(true);
-	header_icon->setChecked(true);
-	int cur_widget = widget_id;
-	connect(header_icon, &QPushButton::clicked, [this, header_icon, cur_widget]()->void {
-		if (!header_icon->isChecked()) {
-			shrink_panel(cur_widget);
-		}
-		else {
-			expand_panel(cur_widget);
-		}
-		});
-	
-	header_layout->addWidget(header_icon); 
+	QPushButton* icon_btn = new QPushButton();
+	icon_btn->setObjectName("header_icon");
+	icon_btn->setStyleSheet("background-color:transparent;color:transparent;border:solid 0px;");
 
+	string icon_loc = "resources/ui/icons/env.png";
+
+	QIcon* icon = new QIcon((icon_loc.c_str()));
+
+	icon_btn->setIcon(*icon);
+	icon_btn->setIconSize(QSize(model->control_selector_icon_width, model->control_selector_icon_height));
+	icon_btn->setFixedSize(QSize(model->control_selector_button_width, model->control_selector_button_height));
+	icon_btn->setEnabled(false);
+
+	header_layout->addWidget(icon_btn);
 
 	QLabel* value_label = new QLabel();
 	value_label->setText(header);
@@ -170,7 +167,6 @@ void EnvTab::body()
 void EnvTab::end_body()
 {
 	body_layout->addWidget(new QWidget());
-	
 	body_widgets[widget_id] = body_widget;
 	body_layouts[widget_id] = body_layout;
 
@@ -186,10 +182,7 @@ void EnvTab::argument(QString name, string tag, float init_value, float min, flo
 	QHBoxLayout* line_layout = new QHBoxLayout();
 	line_layout->setContentsMargins(0, 0, 0, 0);
 	line_layout->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
-
-	
 	line_layout->addWidget(new QWidget());
-	
 	QLabel* value_label = new QLabel();
 	value_label->setText(name);
 	value_label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);

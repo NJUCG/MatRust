@@ -19,6 +19,24 @@ TimeMachineIdentifier::~TimeMachineIdentifier()
 	delete timer;
 }
 
+void TimeMachineIdentifier::on_trigger(string e)
+{
+	if (e == "start_time_changed") {
+		start_time = *(float*)EventAdapter::shared->pop_data();
+		tag_to_show = ((stop_time - start_time) / step) + 1;
+		interval = (width() - 2 * machine_margin - 40 * tag_to_show) / (tag_to_show - 1);
+		dist_per_unit = (width() - 2 * machine_margin - 40) / (stop_time - start_time);
+		update();
+	}
+	else if (e == "stop_time_changed") {
+		stop_time = *(float*)EventAdapter::shared->pop_data();
+		tag_to_show = ((stop_time - start_time) / step) + 1;
+		interval = (width() - 2 * machine_margin - 40 * tag_to_show) / (tag_to_show - 1);
+		dist_per_unit = (width() - 2 * machine_margin - 40) / (stop_time - start_time);
+		update();
+	}
+}
+
 void TimeMachineIdentifier::play()
 {
 	timer->start(50);
@@ -85,6 +103,10 @@ void TimeMachineIdentifier::init()
 
 		update();
 		});
+
+	EventAdapter::shared->register_event("start_time_changed", this);
+	EventAdapter::shared->register_event("stop_time_changed", this);
+
 }
 
 void TimeMachineIdentifier::addComponent()

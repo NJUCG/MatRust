@@ -54,31 +54,31 @@ void Camera::ProcessMouseMovement(double xoffset, double yoffset, bool constrain
 void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 {
     float velocity = MovementSpeed * deltaTime;
-
     if (direction == FORWARD)
-        Position = Position  + Up * velocity;
+        Position = Position  + WorldUp * velocity;
     if (direction == BACKWARD)
-        Position = Position - Up * velocity;
+        Position = Position - WorldUp * velocity;
     if (direction == LEFT)
-        Position = Position - Right * velocity;
+        Position = Position - WorldRight * velocity;
     if (direction == RIGHT)
-        Position = Position + Right * velocity;
+        Position = Position + WorldRight * velocity;
 }
 void Camera::Move(Camera_Movement direction, float delta) {
     if (direction == UP)
-        Position = Position + Up * delta;
+        Position = Position + WorldUp * delta;
     if (direction == DOWN)
-        Position = Position - Up * delta;
+        Position = Position - WorldUp * delta;
     if (direction == LEFT)
-        Position = Position - Right * delta;
+        Position = Position - WorldRight * delta;
     if (direction == RIGHT)
-        Position = Position + Right * delta;
+        Position = Position + WorldRight * delta;
     if (direction == FORWARD)
         Position = Position + Front * delta;
     if (direction == BACKWARD)
         Position = Position - Front * delta;
 }
 void Camera::camera_rotate(bool isClockWise, bool isHorizontal, float delta) {
+    /*
     vec4 currentDelta(Front.x, Front.y, Front.z, 0);
     currentDelta = currentDelta * 2.0f;
     currentDelta.z = 1.0f;
@@ -122,12 +122,46 @@ void Camera::camera_rotate(bool isClockWise, bool isHorizontal, float delta) {
             Right = normalize(cross(Front, -Up));
         }
     }
-    // qDebug() << Right.x << "," << Right.y << "," << Right.z;
+    */
+    mat4 rotate(1);
+    if (isClockWise) {
+        if (isHorizontal) {
+            rotate = glm::rotate(rotate, radians(delta), Up);
+            vec4 temp = vec4(Right, 0);
+            Right = rotate * temp;
+            temp = vec4(Front, 0);
+            Front = rotate * temp;
+        }
+        else {
+            rotate = glm::rotate(rotate, radians(delta), Right);
+            vec4 temp = vec4(Up, 0);
+            Up = rotate * temp;
+            temp = vec4(Front, 0);
+            Front = rotate * temp;
+        }
+    }
+    else {
+        if (isHorizontal) {
+            rotate = glm::rotate(rotate, radians(-delta), Up);
+            vec4 temp = vec4(Right, 0);
+            Right = rotate * temp;
+            temp = vec4(Front, 0);
+            Front = rotate * temp;
+        }
+        else {
+            rotate = glm::rotate(rotate, radians(-delta), Right);
+            vec4 temp = vec4(Up, 0);
+            Up = rotate * temp;
+            temp = vec4(Front, 0);
+            Front = rotate * temp;
+        }
+    }
+    //qDebug() << Up.x << "," << Up.y << "," << Up.z << " / " << Right.x << "," << Right.y << "," << Right.z;
+    //updateCameraVectors();
 }
 
 mat4 Camera::GetViewMatrix()
 {
-    // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     vec3 center = Position + Front;
     return lookAtRH(Position, center, Up);
 }

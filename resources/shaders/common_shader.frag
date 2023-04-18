@@ -57,7 +57,7 @@ float Distribution(vec3 N,vec3 half_v,float roughness){
     */
     float ag=roughness * roughness;
     float s_ag=ag*ag;
-    float cosTheta= max(dot(half_v, N),0.0); 
+    float cosTheta= abs(dot(half_v, N));//max(dot(half_v, N),0.0); 
     float s_cosTheta= cosTheta*cosTheta;
 
     float d_nominator= s_ag;
@@ -181,8 +181,8 @@ void main()
 
         // cook-torrance brdf
         float NDF = Distribution(N, H, roughness);
-        float G   = GeometrySmith(N, V, L, roughness);
-        vec3 F    = fresnelSchlick(clamp(dot(H, V), 0.0,1.0), F0);
+        float G   = 1;//GeometrySmith(N, V, L, roughness);
+        vec3 F    = fresnelSchlick(clamp(dot(H, V),0.0,1.0), F0);
 
         vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
@@ -190,18 +190,22 @@ void main()
 
         vec3 numerator    = NDF * G * F;
 
-        float nvDot = max(dot(N,V),1.0);//clamp(dot(N,V), 0.0, 1.0);
-        float nlDot = max(dot(N,L),1.0);//clamp(dot(N,L), 0.0, 1.0);
+        float nvDot = clamp(abs(dot(N,V)), 0.0, 1.0);//max(dot(N,V),0.0);//clamp(dot(N,V), 0.0, 1.0);
+        float nlDot = clamp(abs(dot(N,V)), 0.0, 1.0);//max(dot(N,L),0.0);//clamp(dot(N,L), 0.0, 1.0);
 
         float denominator = 4.0 * nvDot * nlDot + 0.0001;
-        vec3 specular = clamp(numerator / denominator, 0.0, 1.0);
+        vec3 specular = clamp(numerator, 0.0, 1.0);
 
         // add to outgoing radiance Lo
         float NdotL = max(abs(dot(N, L)), 0.0);
-        //Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+        Lo += (kD * albedo / PI + specular) * radiance * NdotL;
         //Lo += specular;
         //Lo = vec3(denominator);
-        Lo = vec3(NDF);
+        /*if(nvDot <= 0){
+            Lo = vec3(1.0);
+        }else{
+            Lo = vec3(0.0);
+        }*/
     }
 
     vec3 ambient = vec3(0.03) * albedo * ao;

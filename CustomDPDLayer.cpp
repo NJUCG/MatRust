@@ -23,7 +23,7 @@ void CustomDPDLayer::accept_rules(PipelineConfig* p_config)
     w = config->textureWidth;
     h = config->textureHeight;
     lattice = vector<vector<float>>(h, vector<float>(w, 0));
-
+    
     float maxCurvature = 0;
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
@@ -40,6 +40,7 @@ void CustomDPDLayer::accept_rules(PipelineConfig* p_config)
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
             RustUnit unit;
+            unit.diffuse_spd = *((float*)addition_config->addition_properties["diffuse spd"]);
             unit.thickness = 0;
             unit.ac = addition_config->ac;
             unit.composition = FilmComposition::Custom;
@@ -52,8 +53,9 @@ void CustomDPDLayer::accept_rules(PipelineConfig* p_config)
 
     dpd = DPD();
     float initc = *((float*)addition_config->addition_properties["init seed"]);
+    float randomizer = *((float*)addition_config->addition_properties["randomizer"]);
 
-    dpd.setUp(w, h, part_per_sec, grow_spd, lattice, initc);
+    dpd.setUp(w, h, part_per_sec, grow_spd, lattice, initc, randomizer);
     localOutput = dpd.output;
     prepared = true;
 }
@@ -72,7 +74,6 @@ void CustomDPDLayer::rust(double delta)
             units[i][j].metallic = 0.1f;
             if (units[i][j].thickness > 0 && !units[i][j].has_disturb) {
                 units[i][j].has_disturb = true;
-                //units[i][j].normal_disturb = MyRandom::sphere_0_1();
             }
         }
     }

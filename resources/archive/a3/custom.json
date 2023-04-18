@@ -1,0 +1,105 @@
+{
+    "connections": [
+        {
+            "start_pos_x": 1406,
+            "start_pos_y": 498,
+            "start_widget_idx": 2,
+            "stop_pos_x": 1825,
+            "stop_pos_y": 906,
+            "stop_widget_idx": 0
+        },
+        {
+            "start_pos_x": 1158,
+            "start_pos_y": 1335,
+            "start_widget_idx": 3,
+            "stop_pos_x": 1825,
+            "stop_pos_y": 996,
+            "stop_widget_idx": 0
+        },
+        {
+            "start_pos_x": 1580,
+            "start_pos_y": 1743,
+            "start_widget_idx": 1,
+            "stop_pos_x": 1825,
+            "stop_pos_y": 1041,
+            "stop_widget_idx": 0
+        },
+        {
+            "start_pos_x": 1419,
+            "start_pos_y": 1007,
+            "start_widget_idx": 4,
+            "stop_pos_x": 1825,
+            "stop_pos_y": 951,
+            "stop_widget_idx": 0
+        }
+    ],
+    "offset_x": -205,
+    "offset_y": 145,
+    "widgets": [
+        {
+            "loc_x": 699,
+            "loc_y": 769,
+            "type": "layer_machine"
+        },
+        {
+            "color_b": 47,
+            "color_g": 206,
+            "color_r": 95,
+            "grow spd": "sc * 0.8",
+            "init seed": 3,
+            "loc_x": 214,
+            "loc_y": 1246,
+            "metallic": 0.09000000357627869,
+            "name": "硫化层",
+            "part per sec": " 10 / ( sc + 0.01 ) * ( oc + 0.01 ) * ( rh + 0.01 )",
+            "roughness": 0.9900000095367432,
+            "transmittance": -0.6399999856948853,
+            "type": "DPD"
+        },
+        {
+            "bias height": 7,
+            "block width": 20,
+            "color_b": 0,
+            "color_g": 0,
+            "color_r": 0,
+            "cutoff height": 8,
+            "loc_x": 40,
+            "loc_y": 1,
+            "metallic": 0.10999999940395355,
+            "name": "氧化层",
+            "roughness": 0.4000000059604645,
+            "transmittance": -0.10000000149011612,
+            "type": "perlin"
+        },
+        {
+            "color_b": 49,
+            "color_g": 121,
+            "color_r": 27,
+            "grow spd": "sc * 1.6",
+            "init seed": 10,
+            "loc_x": -208,
+            "loc_y": 838,
+            "metallic": 0.3100000023841858,
+            "name": "轻硫化层",
+            "part per sec": " 10 / ( sc + 0.01 ) * ( oc + 0.01 ) * ( rh + 0.01 )",
+            "roughness": 0.7599999904632568,
+            "transmittance": -0.33000001311302185,
+            "type": "DPD"
+        },
+        {
+            "bias height": 6,
+            "block width": 6,
+            "color_b": 18,
+            "color_g": 40,
+            "color_r": 29,
+            "cutoff height": 8,
+            "loc_x": 53,
+            "loc_y": 510,
+            "metallic": 0.05999999865889549,
+            "name": "背景硫化层",
+            "roughness": 0.3799999952316284,
+            "transmittance": -0.10000000149011612,
+            "type": "perlin"
+        }
+    ]
+}

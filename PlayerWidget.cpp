@@ -62,7 +62,6 @@ void PlayerWidget::body()
 	QWidget* body = new QWidget();
 	body_layout = new QVBoxLayout();
 
-
 	time_machine = new TimeMachineIdentifier();
 	body_layout->addWidget(time_machine);
 

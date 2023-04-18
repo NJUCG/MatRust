@@ -23,7 +23,7 @@ void ControllerSelector::addComponent()
 	QWidget* margin = new QWidget();
 	addPanelButton("bake", layout);
 	addPanelButton("env", layout);
-	addPanelButton("engine-30", layout);
+	// addPanelButton("engine-30", layout);
 	addPanelButton("object-30", layout);
 	addPanelButton("layer-30", layout);
 	layout->addWidget(margin);

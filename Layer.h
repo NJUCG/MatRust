@@ -21,6 +21,7 @@ public:
     float roughness;
 
     float ac;
+    float diffuse_spd = 10;
     FilmComposition composition = None;
 };
 

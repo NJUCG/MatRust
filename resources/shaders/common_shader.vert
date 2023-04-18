@@ -55,7 +55,7 @@ void main()
              Normal = normal_matrix * (aNormal + vec3(random(s),random(2 * s),random(3 * s))/d);
         }else{
              N = normalize(mat3(model) * aNormal);
-             Normal = normal_matrix * aNormal;
+             Normal = mat3(model) * aNormal;
         }
     }
     TBN = transpose(mat3(T, B, N));
