@@ -391,40 +391,22 @@
     <ClCompile Include="BakeTab.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UI\DisplayPanel.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
       <Filter>Header Files\uitl</Filter>
     </ClInclude>
-    <ClInclude Include="ControllPanel.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="ControllerSelector.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="CssLoader.h">
       <Filter>Header Files\uitl</Filter>
-    </ClInclude>
-    <ClInclude Include="UIModel.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="ControllSelectorDelegate.h">
-      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="TabOption.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TabEntry.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="SimpleEntry.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ControlTabDelegate.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="FloatEdit.h">
-      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="FloatMiddleButton.h">
       <Filter>Header Files</Filter>
@@ -444,56 +426,11 @@
     <ClInclude Include="EnvTab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ControllTabResponder.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeData.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="NodePool.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeObject.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="node_pool_header.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="IdGenerator.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeWidgetResponder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FloatProgressBarResponder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FloatScrollBar.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeDataButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeDataButtonResponder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeCurve.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bezier.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeDataAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeDataResponder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FloatScrollNodeDataResponder.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerWidget.h">
-      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="Header.h">
       <Filter>Header Files</Filter>
@@ -519,38 +456,14 @@
     <ClInclude Include="..\..\CRustDependency\stb-master\stb-master\stb_image.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="stb_header.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="CanvasBackGround.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TimeMachineResponder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PipelineConfig.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="PipelineManager.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="PipelineManagerResponder.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="PipelineOutput.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Perlin.h">
-      <Filter>Header Files\Core\Noise</Filter>
-    </ClInclude>
     <ClInclude Include="PerlinBackGroundI.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageHelper.h">
-      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="ColorHelper.h">
       <Filter>Header Files</Filter>
@@ -560,12 +473,6 @@
     </ClInclude>
     <ClInclude Include="CurvatureHelper.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DPD.h">
-      <Filter>Header Files\Core\Noise</Filter>
-    </ClInclude>
-    <ClInclude Include="DPDPatch.h">
-      <Filter>Header Files\Core\Noise</Filter>
     </ClInclude>
     <ClInclude Include="SceneTab.h">
       <Filter>Header Files</Filter>
@@ -615,12 +522,6 @@
     <ClInclude Include="LayerTab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NodeEditorPanelResponder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomComboBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LabeledComboBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -630,74 +531,11 @@
     <ClInclude Include="MyRandom.h">
       <Filter>Header Files\uitl</Filter>
     </ClInclude>
-    <ClInclude Include="_3DBlueNoiseSampler.h">
-      <Filter>Header Files\Core\Sampler</Filter>
-    </ClInclude>
     <ClInclude Include="MeshProperty.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NodeLineEditor.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeWidgetLabel.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeWidget.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomLayerNodeWidget.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeWidgetPalette.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="LayerMachineNodeWidget.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeEditor.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomLayer.h">
-      <Filter>Header Files\Core\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="OxideLayer.h">
-      <Filter>Header Files\Core\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="SulfurLayer.h">
-      <Filter>Header Files\Core\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="AlgArgAnalyzer.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="RuleWrapper.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomLayerBuilder.h">
-      <Filter>Header Files\Core\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomPerlinLayer.h">
-      <Filter>Header Files\Core\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="LayerConfig.h">
-      <Filter>Header Files\Core\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="PerlinLayerNodeWidget.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeEditorPanel.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeWidgetLayerConfigLabel.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomDPDLayer.h">
-      <Filter>Header Files\Core\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="DPDLayerNodeWidget.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
     </ClInclude>
     <ClInclude Include="string_defs.h">
       <Filter>Source Files\util\JsonHelper</Filter>
@@ -705,26 +543,282 @@
     <ClInclude Include="StringHelper.h">
       <Filter>Source Files\util\JsonHelper</Filter>
     </ClInclude>
-    <ClInclude Include="NodeEditorData.h">
-      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
-    </ClInclude>
     <ClInclude Include="Archive.h">
       <Filter>Header Files\uitl</Filter>
     </ClInclude>
-    <ClInclude Include="BakeTab.h">
+    <ClInclude Include="Header\Core\Layers\CustomDPDLayer.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\Layers\CustomLayer.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\Layers\CustomLayerBuilder.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\Layers\CustomPerlinLayer.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\Layers\LayerConfig.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\Layers\OxideLayer.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\Layers\SulfurLayer.h">
+      <Filter>Header Files\Core\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\Noise\DPD.h">
+      <Filter>Header Files\Core\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\Noise\DPDPatch.h">
+      <Filter>Header Files\Core\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\Noise\Perlin.h">
+      <Filter>Header Files\Core\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\Sampler\_3DBlueNoiseSampler.h">
+      <Filter>Header Files\Core\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\AlgArgAnalyzer.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\Camera.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\ImageHelper.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\PipelineConfig.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\PipelineManager.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\PipelineManagerResponder.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Core\PipelineOutput.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\CustomComboBox.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\CustomLayerNodeWidget.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\DPDLayerNodeWidget.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\LayerMachineNodeWidget.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeCurve.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeData.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeDataAdapter.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeDataButton.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeDataButtonResponder.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeDataResponder.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeEditor.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeEditorData.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeEditorPanel.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeEditorPanelResponder.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeLineEditor.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeObject.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodePool.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeWidget.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeWidgetLabel.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeWidgetLayerConfigLabel.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeWidgetPalette.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\NodeWidgetResponder.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeEditorWidgets\PerlinLayerNodeWidget.h">
+      <Filter>Header Files\UI\NodeEditorWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\BakeInfo.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="BakeInfo.h">
+    <ClInclude Include="Header\UI\BakeTab.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="TimeMachineIdentifier.h">
+    <ClInclude Include="Header\UI\bezier.h">
       <Filter>Header Files\UI</Filter>
-    </QtMoc>
-    <QtMoc Include="Canvas.h">
+    </ClInclude>
+    <ClInclude Include="Header\UI\ControllerSelector.h">
       <Filter>Header Files\UI</Filter>
-    </QtMoc>
+    </ClInclude>
+    <ClInclude Include="Header\UI\ControllPanel.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\ControllSelectorDelegate.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\ControllTabResponder.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\ControlTabDelegate.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\EngineTab.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\EnvTab.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\FileSelector.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\FileSelectorResponder.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\FloatEdit.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\FloatEditLabel.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\FloatEditLineEdit.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\FloatEditPushButton.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\FloatEditResponder.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\FloatMiddleButton.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\FloatProgressBarResponder.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\FloatScrollBar.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\FloatScrollNodeDataResponder.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\Header.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\HeaderTab.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\HeaderTabEntry.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\HeaderTabResponder.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\IdGenerator.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\LabeledComboBox.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\LabeledComboBoxResponder.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\LayerTab.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\node_pool_header.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeWidgetLabel.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\NodeWidgetLayerConfigLabel.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\ObjectData.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\ObjectTab.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\PlayerWidget.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\SceneTab.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\SceneTabEntry.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\SceneTabEntryResponder.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\Separator.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\SeparatorContainer.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\SeparatorResponder.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\SimpleEntry.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\StackedWidget.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\stb_header.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\SulfurLayerNodeWidget.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\TabEntry.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\TabOption.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\TimeMachineResponder.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\UIModel.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\DisplayPanel.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\tri_shader.frag">
@@ -850,5 +944,13 @@
     <None Include="bake_tab.css">
       <Filter>Resource Files\styles</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Header\UI\Canvas.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
+    <QtMoc Include="Header\UI\TimeMachineIdentifier.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

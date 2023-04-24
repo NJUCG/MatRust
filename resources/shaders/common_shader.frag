@@ -201,11 +201,12 @@ void main()
         Lo += (kD * albedo / PI + specular) * radiance * NdotL;
         //Lo += specular;
         //Lo = vec3(denominator);
-        /*if(nvDot <= 0){
+        if(dot(N,V) <= 0){
             Lo = vec3(1.0);
         }else{
             Lo = vec3(0.0);
-        }*/
+        }
+        Lo = V;
     }
 
     vec3 ambient = vec3(0.03) * albedo * ao;

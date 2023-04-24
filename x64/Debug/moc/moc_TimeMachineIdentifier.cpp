@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../../../TimeMachineIdentifier.h"
+#include "../../../Header/UI/TimeMachineIdentifier.h"
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'TimeMachineIdentifier.h' doesn't include <QObject>."
@@ -115,8 +115,6 @@ void *TimeMachineIdentifier::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_TimeMachineIdentifier.stringdata0))
         return static_cast<void*>(this);
-    if (!strcmp(_clname, "EventResponder"))
-        return static_cast< EventResponder*>(this);
     return QWidget::qt_metacast(_clname);
 }
 
