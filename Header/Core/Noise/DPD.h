@@ -3,7 +3,6 @@
 #include<set>
 #include "DPDPatch.h"
 #include<qdebug.h>
-
 using namespace std;
 
 class DPD {
@@ -24,15 +23,16 @@ public:
     vector<DPDPatch*> patches;
     int maxPatch = 1000;
     int initSeed = 2;
+    int patch_randomizer = 3;
     float latticeMax = 0;
     vector<vector<float>> latticePrefix;
     void addSeed() {
         float t = (float)(rand_() * latticeMax);
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++) {
+        for (int i = 10; i < h - 10; i++) {
+            for (int j = 10; j < w - 10; j++) {
                 if (t < latticePrefix[i][j]) {
                     DPDPatch* patch = new DPDPatch();
-                    patch->patch_time = rand_() * 3;
+                    patch->patch_time = rand_() * patch_randomizer;
                     patch->outlineX.push_back(j);
                     patch->outlineY.push_back(i);
                     output[i][j] = 0.001f;
@@ -49,6 +49,7 @@ public:
             for (int j = 0; j < w; j++) {
                 if (t < latticePrefix[i][j]) {
                     DPDPatch* patch = new DPDPatch();
+                    patch->patch_time = rand_() * 10;
                     patch->outlineX.push_back(j);
                     patch->outlineY.push_back(i);
                     output[i][j] = 0.001f;
@@ -58,7 +59,7 @@ public:
             }
         }
     }
-    void setUp(int w, int h, float seedTimer, float growSpd, vector<vector<float>> lattice, int initSeed) {
+    void setUp(int w, int h, float seedTimer, float growSpd, vector<vector<float>> lattice, int initSeed, int patch_randomizer = 3) {
         this->lattice = lattice;
         this->growSpd = growSpd;
         this->w = w;
@@ -66,6 +67,7 @@ public:
         this->initSeed = initSeed;
         this->seedTimer = seedTimer;
         this->seedGate = seedTimer;
+        this->patch_randomizer = patch_randomizer;
         output = vector<vector<float>>(h, vector<float>(w, 0));
         latticePrefix = vector<vector<float>>(h, vector<float>(w, 0));
         for (int i = 0; i < h; i++) {
@@ -93,37 +95,39 @@ public:
         int pl = patches.size();
         for (int i = 0; i < pl;i++) {
             DPDPatch* patch = patches[i];
-            int os = patch->outlineX.size();
-            for (int j = 0; j < os; j++) {
-                int x = patch->outlineX[j];
-                int y = patch->outlineY[j];
-                int nearByCount = 0;
-                for (int k = 0; k < 8; k++) {
-                    int nx = (x + dx[k] + w) % w;
-                    int ny = (y + dy[k] + h) % h;
-                    //qDebug() << x <<"," << dx[k] <<","<<y<<","<<dy[k]<<","<<ny << "," << nx << "," << h << "," << w;
-                    if (output[ny][nx] > 0) {
-                        nearByCount++;
+            for (int t = 0; t < patch->patch_time; t++) {
+                int os = patch->outlineX.size();
+                for (int j = 0; j < os; j++) {
+                    int x = patch->outlineX[j];
+                    int y = patch->outlineY[j];
+                    int nearByCount = 0;
+                    for (int k = 0; k < 8; k++) {
+                        int nx = (x + dx[k] + w) % w;
+                        int ny = (y + dy[k] + h) % h;
+                        if (output[ny][nx] > 0 || ny < 10 && ny > h - 10 && nx < 10 && nx > w - 10) {
+                            nearByCount++;
+                        }
+                        else if (ny >= 10 && ny <= h - 10 && nx >= 10 && nx <= w - 10 && output[ny][nx] <= 0 && rand_() < lattice[ny][nx]) {
+                            nearByCount++;
+                            output[ny][nx] = 0.001f;
+                            patch->outlineX.push_back(nx);
+                            patch->outlineY.push_back(ny);
+                        }
+
                     }
-                    else if (output[ny][nx] <= 0 && rand_() < lattice[ny][nx]) {
-                        nearByCount++;
-                        output[ny][nx] = 0.001f;
-                        patch->outlineX.push_back(nx);
-                        patch->outlineY.push_back(ny);
+                    if (nearByCount == 8) {
+                        toRemove.insert(j);
                     }
                 }
-                if (nearByCount == 8) {
-                    toRemove.insert(j);
+                for (set<int>::iterator index = toRemove.begin(); index != toRemove.end(); index++) {
+                    int idx = *index;
+                    vector<int> outline_x = patch->outlineX;
+                    vector<int> outline_y = patch->outlineY;
+                    outline_x.erase(outline_x.begin() + idx);
+                    outline_y.erase(outline_y.begin() + idx);
                 }
+                toRemove.clear();
             }
-            for (set<int>::iterator index = toRemove.begin(); index != toRemove.end();index++){
-                int idx = *index;
-                vector<int> outline_x = patch->outlineX;
-                vector<int> outline_y = patch->outlineY;
-                outline_x.erase(outline_x.begin() + idx);
-                outline_y.erase(outline_y.begin() + idx);
-            }
-            toRemove.clear();
         }
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {

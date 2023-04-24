@@ -9,6 +9,7 @@
 #include"ObjectTab.h"
 #include"EngineTab.h"
 #include"LayerTab.h"
+#include"BakeTab.h"
 #include"qlayout.h"
 #include <QtWidgets/qstackedlayout.h>
 using namespace std;
