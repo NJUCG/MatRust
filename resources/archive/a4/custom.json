@@ -1,36 +1,44 @@
 {
     "connections": [
         {
-            "start_pos_x": 1548,
-            "start_pos_y": 814,
-            "start_widget_idx": 3,
-            "stop_pos_x": 1891,
-            "stop_pos_y": 63,
+            "start_pos_x": 1362,
+            "start_pos_y": 767,
+            "start_widget_idx": 1,
+            "stop_pos_x": 1623,
+            "stop_pos_y": 1160,
             "stop_widget_idx": 0
         },
         {
-            "start_pos_x": 1237,
-            "start_pos_y": 243,
+            "start_pos_x": 1033,
+            "start_pos_y": 1196,
             "start_widget_idx": 2,
-            "stop_pos_x": 1891,
-            "stop_pos_y": 18,
+            "stop_pos_x": 1623,
+            "stop_pos_y": 1205,
+            "stop_widget_idx": 0
+        },
+        {
+            "start_pos_x": 1344,
+            "start_pos_y": 1767,
+            "start_widget_idx": 3,
+            "stop_pos_x": 1623,
+            "stop_pos_y": 1250,
             "stop_widget_idx": 0
         }
     ],
-    "offset_x": -324,
-    "offset_y": 905,
+    "offset_x": -120,
+    "offset_y": -48,
     "widgets": [
         {
-            "loc_x": 646,
-            "loc_y": 596,
+            "loc_x": 582,
+            "loc_y": 830,
             "type": "layer_machine"
         },
         {
             "bias height": 35,
             "block width": 42,
-            "color_b": 43,
-            "color_g": 43,
-            "color_r": 43,
+            "color_b": 12,
+            "color_g": 12,
+            "color_r": 13,
             "cutoff height": 32,
             "diffuse spd": 10,
             "loc_x": 81,

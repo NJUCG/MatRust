@@ -11,6 +11,7 @@
 #include"LayerTab.h"
 #include"BakeTab.h"
 #include"qlayout.h"
+#include"OutputTab.h"
 #include <QtWidgets/qstackedlayout.h>
 using namespace std;
 enum ControlTabType {
@@ -26,9 +27,11 @@ public:
 	void value_changed(ControlTabParam arg, float newValue) override;
 protected:
 	unordered_map<string, QWidget*> tabs_dict;
+	unordered_map<string, ControllTabWidgetResponder*> responders_dict;
 	UIModel* model;
-	QWidget* container;
-	QWidget* current_tab;
+	QWidget* container = nullptr;
+	QWidget* current_tab = nullptr;
+	ControllTabWidgetResponder* current_responder = nullptr;
 	QVBoxLayout* layout;
 	void init();
 	void addComponent();

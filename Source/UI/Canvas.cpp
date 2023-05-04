@@ -75,6 +75,10 @@ void Canvas::on_trigger(string name)
         this->info = info;
         update();
     }
+    else if (name == "save_output") {
+        QString path = *((QString*)(EventAdapter::shared->pop_data()));
+        PipelineManager::shared->save_output(path);
+    }
 }
 
 void Canvas::time_up()
@@ -141,6 +145,7 @@ void Canvas::init()
     EventAdapter::shared->register_event("save_archive_event_canvas", this);
 
     EventAdapter::shared->register_event("bake_info_changed", this);
+    EventAdapter::shared->register_event("save_output", this);
 
     info = new BakeInfo();
     info->use_disturb = info->use_depth = false;
@@ -267,7 +272,12 @@ void Canvas::render_output()
     f->glActiveTexture(GL_TEXTURE0);
 
     int normal_disturb_map = PipelineManager::shared->output->normal_disturb_map;
+    int noise_map = PipelineManager::shared->output->normal_noise_map;
     if (normal_disturb_map > 0 && info->use_disturb) {
+        f->glActiveTexture(GL_TEXTURE0 + UIModel::get()->noise_index);
+        shader->setInt("noise_map", UIModel::get()->noise_index);
+        f->glBindTexture(GL_TEXTURE_2D, noise_map);
+
         shader->setBool("use_disturb", true);
         f->glActiveTexture(GL_TEXTURE0 + UIModel::get()->normal_disturb_index);
         shader->setInt("normal_disturb_map", UIModel::get()->normal_disturb_index);
@@ -288,7 +298,6 @@ void Canvas::render_output()
         shader->setInt("depthMap", UIModel::get()->depth_index);
         f->glBindTexture(GL_TEXTURE_2D, depth_map);
     }
-
     shader->setBool("use_normal_map", false);
 }
 void Canvas::init_scene() {

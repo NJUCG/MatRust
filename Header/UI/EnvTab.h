@@ -1,5 +1,4 @@
 #pragma once
-#include <qwidget.h>
 #include<qlayout.h>
 #include"CssLoader.h"
 #include"UIModel.h"
@@ -11,6 +10,7 @@
 #include"EventAdapter.h"
 #include"PipelineConfig.h"
 #include"StringHelper.h"
+#include"ControllTabWidgetResponder.h"
 using namespace std;
 
 class EnvData {
@@ -19,7 +19,7 @@ public:
     float metallic, roughness;
 };
 
-class EnvTab : public EventResponder, public QWidget, public FloatEditResponder
+class EnvTab : public QWidget, public EventResponder, public FloatEditResponder, public ControllTabWidgetResponder
 {
 public:
     EnvTab();

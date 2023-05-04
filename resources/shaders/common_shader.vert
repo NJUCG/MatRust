@@ -34,29 +34,13 @@ void main()
     vec3 N;
 
     if(use_normal_map){
-        if(use_disturb && texture(normal_disturb_map, TexCoords).r > 0){
-               vec3 base_normal = texture(material_texture_normal0, TexCoords).xyz;
-               float s = aPos.x * aPos.y * aPos.z;
-               float d = 10.0f;
-               base_normal = normalize(base_normal * 2.0 -1.0) + vec3(random(s),random(2 * s),random(3 * s))/d;
-               N = normalize(mat3(model) * base_normal);
-               Normal = normal_matrix * base_normal;
-        }
-        else{
                Normal = texture(material_texture_normal0, TexCoords).xyz;
                N = normalize(mat3(model) * Normal);
                Normal = normal_matrix * normalize(Normal * 2.0 -1.0);
-        }
     }else{
-        if(use_disturb && texture(normal_disturb_map, TexCoords).r > 0){
-             float s = aPos.x * aPos.y * aPos.z;
-             float d = 10.0f;
-             N = normalize(mat3(model) * (aNormal + vec3(random(s),random(2 * s),random(3 * s))/d));
-             Normal = normal_matrix * (aNormal + vec3(random(s),random(2 * s),random(3 * s))/d);
-        }else{
              N = normalize(mat3(model) * aNormal);
              Normal = mat3(model) * aNormal;
-        }
+        
     }
     TBN = transpose(mat3(T, B, N));
     gl_Position =  projection * view * vec4(WorldPos, 1.0);

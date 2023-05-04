@@ -56,6 +56,7 @@ public:
 	int roughness_index;
 	int normal_disturb_index;
 	int depth_index;
+	int noise_index;
 
 	//
 	int scene_entry_unit_offset;

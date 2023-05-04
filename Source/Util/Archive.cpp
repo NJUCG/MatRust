@@ -51,3 +51,7 @@ void Archive::load_config(QString path)
 	EventAdapter::shared->push_data(&bake_config_path);
 	EventAdapter::shared->trigger_event("load_archive_event_bake_tab");
 }
+
+void Archive::save_output(QString path)
+{
+}

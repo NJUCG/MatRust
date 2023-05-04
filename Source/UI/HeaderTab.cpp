@@ -92,4 +92,9 @@ void HeaderTab::mousePressEvent(QMouseEvent*)
 	else if (tab_name == HEADER_SAVE_ARCHIVE) {
 		Archive::save_config(QFileDialog::getExistingDirectory(nullptr, "archive", "."));
 	}
+	else if (tab_name == HEADER_SAVE_OUTPUT) {
+		QString path = QFileDialog::getExistingDirectory(nullptr, "archive", ".");
+		EventAdapter::shared->push_data(&path);
+		EventAdapter::shared->trigger_event("save_output");
+	}
 }

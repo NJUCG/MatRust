@@ -100,8 +100,16 @@
 
 #define HEADER_LOAD_ARCHIVE StringHelper::fetch("HEADER_LOAD_ARCHIVE")
 #define HEADER_SAVE_ARCHIVE StringHelper::fetch("HEADER_SAVE_ARCHIVE")
+#define HEADER_SAVE_OUTPUT StringHelper::fetch("HEADER_SAVE_OUTPUT")
 
 #define BAKE_TAB_HEADER StringHelper::fetch("BAKE_TAB_HEADER")
 #define BAKE_TAB_USE_DISTURB StringHelper::fetch("BAKE_TAB_USE_DISTURB")
 #define BAKE_TAB_USE_DEPTH StringHelper::fetch("BAKE_TAB_USE_DEPTH")
 #define BAKE_TAB_TIME StringHelper::fetch("BAKE_TAB_TIME")
+
+#define OUTPUT_TAB_HEADER StringHelper::fetch("OUTPUT_TAB_HEADER")
+#define OUTPUT_TAB_DIFFUSE StringHelper::fetch("OUTPUT_TAB_DIFFUSE")
+#define OUTPUT_TAB_ROUGHNESS StringHelper::fetch("OUTPUT_TAB_ROUGHNESS")
+#define OUTPUT_TAB_METALLIC StringHelper::fetch("OUTPUT_TAB_METALLIC")
+#define OUTPUT_TAB_HEIGHT StringHelper::fetch("OUTPUT_TAB_HEIGHT")
+#define OUTPUT_TAB_NORMAL_DISTURB StringHelper::fetch("OUTPUT_TAB_NORMAL_DISTURB")

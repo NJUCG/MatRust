@@ -11,8 +11,8 @@
 #include"BakeInfo.h"
 #include"StringHelper.h"
 #include"FloatEdit.h"
-
-class BakeTab:public EventResponder, public QWidget, FloatEditResponder
+#include"ControllTabWidgetResponder.h"
+class BakeTab: public QWidget, public EventResponder, public FloatEditResponder, public ControllTabWidgetResponder
 {
 public:
 	BakeTab();

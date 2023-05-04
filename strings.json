@@ -78,5 +78,12 @@
   "BAKE_TAB_HEADER": "渲染配置",
   "BAKE_TAB_USE_DISTURB": "法线扰动",
   "BAKE_TAB_USE_DEPTH": "高度图",
-  "BAKE_TAB_TIME": "生长时间"
+  "BAKE_TAB_TIME": "生长时间",
+  "HEADER_SAVE_OUTPUT": "保存材质",
+  "OUTPUT_TAB_HEADER": "输出",
+  "OUTPUT_TAB_DIFFUSE": "漫反射纹理",
+  "OUTPUT_TAB_ROUGHNESS": "粗糙度纹理",
+  "OUTPUT_TAB_METALLIC": "金属度纹理",
+  "OUTPUT_TAB_HEIGHT": "高度纹理",
+  "OUTPUT_TAB_NORMAL_DISTUR": "法线扰动纹理"
 }

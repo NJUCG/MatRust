@@ -7,6 +7,7 @@ in mat3 TBN;
 
 // material parameters
 uniform bool is_pipeline_on;
+uniform bool use_disturb;
 
 uniform float i_metallic;
 uniform float i_roughness;
@@ -16,6 +17,8 @@ uniform sampler2D material_texture_diffuse0;
 uniform sampler2D metallicMap;
 uniform sampler2D roughnessMap;
 uniform sampler2D depthMap;
+uniform sampler2D normal_disturb_map;
+uniform sampler2D noise_map;
 uniform float heightScale;
 uniform bool use_depth;
 
@@ -120,14 +123,17 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
         // get depth of next layer
         currentLayerDepth += layerDepth;  
     }
-    
     return currentTexCoords;
 }
-
 
 void main()
 {
     vec3 N = normalize(Normal);
+    if(use_disturb && texture(normal_disturb_map, TexCoords).r > 0){
+         //N = (N + (vec3(texture(noise_map, TexCoords)) * 2 - 1) * 0.1f) / 1.1f;   
+        vec3 disturb = vec3(texture(noise_map, TexCoords));
+        N = (N * 50 + disturb) / 51; 
+    }
     vec3 V = normalize(camPos - WorldPos);
     vec2 texCoords;
     vec3 t_camPos = TBN * camPos;
@@ -201,12 +207,7 @@ void main()
         Lo += (kD * albedo / PI + specular) * radiance * NdotL;
         //Lo += specular;
         //Lo = vec3(denominator);
-        if(dot(N,V) <= 0){
-            Lo = vec3(1.0);
-        }else{
-            Lo = vec3(0.0);
-        }
-        Lo = V;
+
     }
 
     vec3 ambient = vec3(0.03) * albedo * ao;
@@ -215,5 +216,8 @@ void main()
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0/2.2));
 
+    //FragColor = texture(noise_map, TexCoords);
+    //FragColor = vec4(N, 1.0);
     FragColor = vec4(color, 1.0);
+
 }

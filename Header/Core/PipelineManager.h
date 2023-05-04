@@ -1,9 +1,7 @@
 #pragma once
-
 #include <QOpenGLExtraFunctions>
 #include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLVersionFunctionsFactory>
-
 #include "Layer.h"
 #include"PipelineManagerResponder.h"
 #include "TimeMachineResponder.h"
@@ -11,12 +9,11 @@
 #include"UIModel.h"
 #include"OxideLayer.h"
 #include"SulfurLayer.h"
-
 #include"CurvatureHelper.h"
-
 #include"CustomPerlinLayer.h"
-
 #include"CustomDPDLayer.h"
+#include"EventAdapter.h"
+#include"ImageHelper.h"
 
 enum PipelineState {
 	Occupied,
@@ -28,13 +25,9 @@ class PipelineManager: public TimeMachineResponder
 public:
 	static PipelineManager* shared;
 	static void init_pipeline();
-
 	void register_responder(PipelineManagerResponder*);
-
 	PipelineManager();
-
 	PipelineManager(PipelineManagerResponder*);
-
 	void frame_consumer(float) override;
 	void update_current(float) override;
 	void register_layer(Layer*);
@@ -42,15 +35,13 @@ public:
 	void clear_pipeline();
 	void pause_pipeline();
 	void continue_pipeline();
-
 	void prepare_layers();
 	void dispatch_rules();
-
 	PipelineState state = Open;
-
 	PipelineOutput* output = nullptr;
 	void generate_rust(double);
 	static int bind4Map(vector<vector<vec4>>);
+	void save_output(QString);
 protected:
 	vector<Layer*> layers;
 	vector<vector<vector<RustUnit>>> units;

@@ -21,6 +21,7 @@
 #include<qcolordialog.h>
 #include"AlgArgAnalyzer.h"
 #include"StringHelper.h"
+#include"NormalDisturbHelper.h"
 
 // fov 调整
 // 环境光
@@ -35,8 +36,13 @@
 
 // 两套参数调节：物理环境，艺术设计
 // 规律输入
-
+// roughness 增加阈值
 // 添加readme, 记得加<a target="_blank" href="https://icons8.com/icon/95809/plus-math">Plus Math</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+// 随机数
+// 4张图新窗口
+// 整体UI布局
+// 金属度和粗糙度弄成灰度图
 
 int mainWindow(int argc,char* argv[]){
     QApplication a(argc, argv);
@@ -253,6 +259,14 @@ int cssLoader_test() {
     string t = CssLoader::load_css("controller_panel_style.css").toStdString();
     return 0;
 }
+int random_test() {
+    int w, h;
+    w = h = 400;
+    int wavelength = 10;
+    NormalDisturbHelper helper(w, h, wavelength);
+    helper.generate_pattern("test_pat.png");
+    return 0;
+}
 int entry_test(int argc, char* argv[]) {
     QApplication a(argc, argv);
     QWidget* w = new QWidget();
@@ -432,4 +446,5 @@ int main(int argc, char *argv[]){
     //return analyzer_test();
     return mainWindow(argc, argv);
     //return strings_test();
+    //return random_test();
 }

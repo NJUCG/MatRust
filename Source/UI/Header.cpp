@@ -19,6 +19,7 @@ void Header::addComponent()
 
 	add_tab(new HeaderTab(HEADER_LOAD_ARCHIVE));
 	add_tab(new HeaderTab(HEADER_SAVE_ARCHIVE));
+	add_tab(new HeaderTab(HEADER_SAVE_OUTPUT));
 
 	top_layout->addWidget(new QWidget());
 	setLayout(top_layout);

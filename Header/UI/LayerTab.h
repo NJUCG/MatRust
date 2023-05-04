@@ -1,8 +1,8 @@
 #pragma once
-#include<qwidget.h>
 #include"NodeEditor.h"
+#include"ControllTabWidgetResponder.h"
 
-class LayerTab: public QWidget
+class LayerTab: public QWidget, public ControllTabWidgetResponder
 {
 public:
 	LayerTab();

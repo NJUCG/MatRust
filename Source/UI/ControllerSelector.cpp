@@ -26,6 +26,7 @@ void ControllerSelector::addComponent()
 	// addPanelButton("engine-30", layout);
 	addPanelButton("object-30", layout);
 	addPanelButton("layer-30", layout);
+	addPanelButton("output-30", layout);
 	layout->addWidget(margin);
 	for (int i = 0; i < item_count; i++) {
 		layout->setStretch(i, 1);

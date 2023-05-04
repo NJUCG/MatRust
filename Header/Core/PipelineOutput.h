@@ -7,5 +7,6 @@ public:
     int roughness_map = -1;
     int normal_disturb_map = -1;
     int depth_map = -1;
+    int normal_noise_map = -1;
 };
 

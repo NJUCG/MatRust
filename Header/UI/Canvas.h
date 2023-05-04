@@ -18,6 +18,7 @@
 #include<qapplication.h>
 #include"StringHelper.h"
 #include"BakeInfo.h"
+#include"ImageHelper.h"
 
 #define CANVAS_VIEW_NONE 0
 #define CANVAS_VIEW_ROTATE 0x1

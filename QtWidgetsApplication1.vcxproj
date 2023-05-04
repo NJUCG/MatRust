@@ -165,6 +165,7 @@
     <ClCompile Include="Source\UI\NodeEditorWidgets\PerlinLayerNodeWidget.cpp" />
     <ClCompile Include="Source\UI\ObjectData.cpp" />
     <ClCompile Include="Source\UI\ObjectTab.cpp" />
+    <ClCompile Include="Source\UI\OutputTab.cpp" />
     <ClCompile Include="Source\UI\PlayerWidget.cpp" />
     <ClCompile Include="Source\UI\SceneTab.cpp" />
     <ClCompile Include="Source\UI\SceneTabEntry.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="Header\UI\ControllPanel.h" />
     <ClInclude Include="Header\UI\ControllSelectorDelegate.h" />
     <ClInclude Include="Header\UI\ControllTabResponder.h" />
+    <ClInclude Include="Header\UI\ControllTabWidgetResponder.h" />
     <ClInclude Include="Header\UI\ControlTabDelegate.h" />
     <ClInclude Include="Header\UI\DisplayPanel.h" />
     <ClInclude Include="Header\UI\EngineTab.h" />
@@ -280,6 +282,7 @@
     <ClInclude Include="Header\UI\node_pool_header.h" />
     <ClInclude Include="Header\UI\ObjectData.h" />
     <ClInclude Include="Header\UI\ObjectTab.h" />
+    <ClInclude Include="Header\UI\OutputTab.h" />
     <ClInclude Include="Header\UI\PlayerWidget.h" />
     <ClInclude Include="Header\UI\SceneTab.h" />
     <ClInclude Include="Header\UI\SceneTabEntry.h" />
@@ -311,6 +314,8 @@
     <ClInclude Include="Header\Util\MeshProperty.h" />
     <ClInclude Include="Header\Util\Model.h" />
     <ClInclude Include="Header\Util\MyRandom.h" />
+    <ClInclude Include="Header\Util\NormalDisturbHelper.h" />
+    <ClInclude Include="Header\Util\OutputHelper.h" />
     <ClInclude Include="Header\Util\PerlinBackGroundI.h" />
     <ClInclude Include="Header\Util\RuleWrapper.h" />
     <ClInclude Include="Header\Util\Shader.h" />
@@ -343,6 +348,7 @@
     <None Include="node_widget_palette_style.css" />
     <None Include="obejct_tab.css" />
     <None Include="our_father.css" />
+    <None Include="output_tab_style.css" />
     <None Include="player_widget.css" />
     <None Include="resources\shaders\common_shader.frag" />
     <None Include="resources\shaders\common_shader.vert" />

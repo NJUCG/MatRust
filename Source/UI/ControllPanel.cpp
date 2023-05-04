@@ -10,6 +10,7 @@ void ControllPanel::init()
 {
 	model = UIModel::get();
 	tabs_dict = unordered_map<string, QWidget*>();
+	responders_dict = unordered_map<string, ControllTabWidgetResponder*>();
 	current_tab = 0;
 	setMinimumWidth(model->control_tab_width);
 	setStyleSheet(CssLoader::load_css("controller_panel_style.css"));
@@ -52,17 +53,33 @@ void ControllPanel::addComponent()
 	layer_tab->setObjectName("layer_tab");
 	layout->addWidget(layer_tab);
 
+	OutputTab* output_tab = new OutputTab();
+	output_tab->setObjectName("output_tab");
+	layout->addWidget(output_tab);
+
 	tabs_dict["bake"] = bake_tab;
+	responders_dict["bake"] = bake_tab;
+
 	tabs_dict["env"] = env_tab;
+	responders_dict["env"] = env_tab;
+
 	tabs_dict["object-30"] = obj_tab;
+	responders_dict["object-30"] = obj_tab;
+
 	tabs_dict["layer-30"] = layer_tab;
+	responders_dict["layer-30"] = layer_tab;
+
+	tabs_dict["output-30"] = output_tab;
+	responders_dict["output-30"] = output_tab;
 
 	container->setLayout(layout);
 	current_tab = obj_tab;
+	current_responder = obj_tab;
 
 	bake_tab->hide();
 	env_tab->hide();
 	layer_tab->hide();
+	output_tab->hide();
 	
 	top_layout->addWidget(container);
 	
@@ -72,12 +89,18 @@ void ControllPanel::addComponent()
 void ControllPanel::switchTo(string type)
 {
 	current_tab->hide();
+	current_responder->on_exit();
+
 	current_tab = tabs_dict[type];
+	current_responder = responders_dict[type];
+	current_responder->on_switch_to();
+	
 	current_tab->show();
 }
 
 void ControllPanel::value_changed(ControlTabParam arg, float newValue)
 {
+	
 }
 
 

@@ -8,6 +8,7 @@
 #include"EventAdapter.h"
 #include"Archive.h"
 #include"StringHelper.h"
+#include"OutputHelper.h"
 
 #define HEADER_TAB_IDLE 0
 #define HEADER_TAB_HOVER 1

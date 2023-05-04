@@ -1,13 +1,13 @@
 #pragma once
-#include"qwidget.h"
 #include"EventAdapter.h"
 #include"FloatEdit.h"
 #include"LightData.h"
 #include"FileSelector.h"
 #include"StringHelper.h"
 #include"StringHelper.h"
+#include"ControllTabWidgetResponder.h"
 
-class ObjectTab: public QWidget, public FloatEditResponder, public EventResponder, public FileSelectorResponder
+class ObjectTab: public QWidget, public FloatEditResponder, public EventResponder, public FileSelectorResponder, public ControllTabWidgetResponder
 {
 public:
 	ObjectTab();
