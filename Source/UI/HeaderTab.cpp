@@ -87,14 +87,22 @@ void HeaderTab::mousePressEvent(QMouseEvent*)
 	}
 	*/
 	if (tab_name == HEADER_LOAD_ARCHIVE) {
-		Archive::load_config(QFileDialog::getExistingDirectory(nullptr, "archive", "."));
+		QString path = QFileDialog::getExistingDirectory(nullptr, "archive", ".");
+		if (path != "") {
+			Archive::load_config(path);
+		}
 	}
 	else if (tab_name == HEADER_SAVE_ARCHIVE) {
-		Archive::save_config(QFileDialog::getExistingDirectory(nullptr, "archive", "."));
+		QString path = QFileDialog::getExistingDirectory(nullptr, "archive", ".");
+		if (path != "") {
+			Archive::save_config(path);
+		}
 	}
 	else if (tab_name == HEADER_SAVE_OUTPUT) {
 		QString path = QFileDialog::getExistingDirectory(nullptr, "archive", ".");
-		EventAdapter::shared->push_data(&path);
-		EventAdapter::shared->trigger_event("save_output");
+		if (path != "") {
+			EventAdapter::shared->push_data(&path);
+			EventAdapter::shared->trigger_event("save_output");
+		}
 	}
 }

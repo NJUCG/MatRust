@@ -9,6 +9,12 @@
 #include<qlabel.h>
 #include<unordered_map>
 #include"ControllTabWidgetResponder.h"
+#include"PipelineConfig.h"
+#include"ImgDrawer.h"
+#include"ExpandableNode.h"
+#include<qfiledialog.h>
+#include"ScalableContainer.h"
+#include<qcheckbox.h>
 using namespace std;
 
 class OutputTab: public QWidget, public EventResponder, public ControllTabWidgetResponder
@@ -16,7 +22,8 @@ class OutputTab: public QWidget, public EventResponder, public ControllTabWidget
 public:
 	OutputTab();
 	void on_trigger(string) override;
-	void on_switch_to() override;
+	void on_switch_to(int, int) override;
+	void resizeEvent(QResizeEvent*) override;
 protected:
 	void init();
 	void addComponent();
@@ -26,6 +33,7 @@ protected:
 	void end_body();
 
 	bool is_growing = false;
+	PipelineConfig* config = nullptr;
 	void show_growth();
 	void hide_growth();
 	
@@ -33,6 +41,10 @@ protected:
 	QVBoxLayout* body_layout = nullptr;
 	QVBoxLayout* top_layout = nullptr;
 
-	unordered_map<string, QLabel*> imgs;
+	unordered_map<string, ImgDrawer*> imgs;
+
+	QIcon repeat_icon;
+	QIcon stretch_icon;
+	QIcon save_icon;
 };
 

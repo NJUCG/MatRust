@@ -79,6 +79,11 @@ void Canvas::on_trigger(string name)
         QString path = *((QString*)(EventAdapter::shared->pop_data()));
         PipelineManager::shared->save_output(path);
     }
+    else if (name == "save_custom_img") {
+        vector<vector<vec4>>* dat = (vector<vector<vec4>>*)(EventAdapter::shared->pop_data());
+        QString path = *((QString*)(EventAdapter::shared->pop_data()));
+        PipelineManager::shared->save_pic(path, dat);
+    }
 }
 
 void Canvas::time_up()
@@ -146,6 +151,8 @@ void Canvas::init()
 
     EventAdapter::shared->register_event("bake_info_changed", this);
     EventAdapter::shared->register_event("save_output", this);
+
+    EventAdapter::shared->register_event("save_custom_img", this);
 
     info = new BakeInfo();
     info->use_disturb = info->use_depth = false;

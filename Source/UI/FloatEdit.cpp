@@ -32,7 +32,6 @@ void FloatEdit::init()
 	sensitivity = 1.0f;
 	setMouseTracking(false);
 	setStyleSheet(CssLoader::load_css("float_edit_idle.css"));
-	setFixedWidth(200);
 	pages = vector<QWidget*>();
 }
 
@@ -53,9 +52,19 @@ inline void FloatEdit::set_value(float new_value, bool respond)
 	update();
 }
 
+void FloatEdit::set_unit(string unit)
+{
+	this->unit = unit;
+	value_label->setText(get_value().c_str());
+	middle_button->setText(get_value().c_str());
+}
+
 void FloatEdit::addComponent()
 {
+	setObjectName("top");
+
 	hover_mode = new QWidget();
+	hover_mode->setObjectName("hover_mode");
 
 	QVBoxLayout* top_layout = new QVBoxLayout();
 	top_layout->setContentsMargins(0, 0, 0, 0);
@@ -67,11 +76,14 @@ void FloatEdit::addComponent()
 
 	int height = UIModel::get()->float_edit_height;
 
+	int icon_width = 7;
 	left_button = new FloatEditPushButton(this);
-	left_button->setFixedWidth(UIModel::get()->float_edit_arrow_width
-	);
+	left_button->setIcon(QIcon("resources/ui/icons/left_arrow-100.png"));
+	left_button->setIconSize(QSize(icon_width, icon_width));
+	left_button->setFixedWidth(UIModel::get()->float_edit_arrow_width);
 	left_button->setObjectName("left_button");
 	left_button->setFixedHeight(height);
+	left_button->setStyleSheet(CssLoader::load_css("float_edit_left_btn_style.css"));
 	connect(left_button, &QPushButton::clicked, [this]()->void {
 		set_value(value - step);
 	});
@@ -82,12 +94,17 @@ void FloatEdit::addComponent()
 	middle_button->setText(get_value().c_str());
 	middle_button->setObjectName("middle_button");
 	middle_button->setFixedHeight(height);
+	middle_button->setStyleSheet("border-radius:0px");
+
 	layout->addWidget(middle_button);
 
 	right_button = new FloatEditPushButton(this);
 	right_button->setFixedWidth(UIModel::get()->float_edit_arrow_width);
+	right_button->setIcon(QIcon("resources/ui/icons/right_arrow-100.png"));
+	right_button->setIconSize(QSize(icon_width, icon_width));
 	right_button->setObjectName("right_button");
 	right_button->setFixedHeight(height);
+	right_button->setStyleSheet(CssLoader::load_css("float_edit_right_btn_style.css"));
 	layout->addWidget(right_button);
 	connect(right_button, &QPushButton::clicked, [this]()->void {
 		set_value(value + step);
@@ -129,7 +146,7 @@ void FloatEdit::addComponent()
 	hover_mode->blockSignals(true);
 	editor->blockSignals(true);
 
-	setCurrentIndex(0);
+	//setCurrentIndex(1);
 
 	setLayout(top_layout);
 }
@@ -149,7 +166,7 @@ void FloatEdit::switchTo(EditorState state)
 
 void FloatEdit::enterEvent(QEnterEvent* event)
 {
-	int k = 0;
+
 }
 
 void FloatEdit::leaveEvent(QEvent* event)
@@ -183,7 +200,7 @@ void FloatEdit::middle_button_mouse_move(QMouseEvent* e)
 void FloatEdit::middle_button_mouse_enter(QEnterEvent* e)
 {
 	enterEvent(e);
-	middle_button->setStyleSheet("background-color:#797979");
+	middle_button->setStyleSheet("background-color:#797979;border-radius:0px;");
 	if (current_state == IDLE) {
 		current_state = HOVER;
 		setCurrentIndex(0);
@@ -210,7 +227,7 @@ void FloatEdit::middle_button_mouse_release(QMouseEvent* e)
 
 void FloatEdit::middle_button_mouse_leave(QEvent*)
 {
-	middle_button->setStyleSheet("background-color:#545454");
+	middle_button->setStyleSheet("background-color:#545454;border-radius:0px;");
 	if (current_state == HOVER) {
 		setCurrentIndex(1);
 		current_state = IDLE;

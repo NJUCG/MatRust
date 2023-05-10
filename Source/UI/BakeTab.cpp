@@ -18,6 +18,11 @@ void BakeTab::on_trigger(string name)
 	}
 }
 
+void BakeTab::on_switch_to(int h, int w)
+{
+
+}
+
 void BakeTab::on_value_changed(string name, float new_value)
 {
 	if (name == "stop_time") {
@@ -47,9 +52,34 @@ void BakeTab::addComponent()
 	top_layout->setContentsMargins(5, 5, 5, 5);
 
 	header();
+
+	illusion_widget = new QWidget();
+	
+	illusion_layout = new QVBoxLayout();
+	illusion_layout->setContentsMargins(0, 0, 0, 0);
+	illusion_layout->setSpacing(5);
+
 	new_checkbox(BAKE_TAB_USE_DISTURB, "use_disturb");
 	new_checkbox(BAKE_TAB_USE_DEPTH, "use_depth");
+	
+	illusion_widget->setLayout(illusion_layout);
+
+	ExpandableNode* illusion_node = new ExpandableNode("Illusion", illusion_widget);
+	
+	top_layout->addWidget(illusion_node);
+	
+	settings_widget = new QWidget();
+	settings_layout = new QVBoxLayout();
+	settings_layout->setContentsMargins(0, 0, 0, 0);
+	settings_layout->setSpacing(0);
+
 	argument(BAKE_TAB_TIME, "stop_time", 20.0f, 5, 50, 0.1);
+
+	settings_widget->setLayout(settings_layout);
+
+	ExpandableNode* settings_node = new ExpandableNode("Illusion", settings_widget);
+
+	top_layout->addWidget(settings_node);
 
 	top_layout->addWidget(new QWidget());
 
@@ -61,10 +91,10 @@ void BakeTab::header()
 	QWidget* header_widget = new QWidget();
 
 	QHBoxLayout* header_layout = new QHBoxLayout();
-	header_layout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-	header_layout->setContentsMargins(0, 0, 0, 0);
-	header_layout->setSpacing(0);
-
+	header_layout->setAlignment(Qt::AlignLeft);
+	header_layout->setContentsMargins(5, 0, 5, 0);
+	header_layout->setSpacing(5);
+	
 	header_widget->setStyleSheet("background-color:transparent;color:white;");
 
 	UIModel* model = UIModel::get();
@@ -77,8 +107,8 @@ void BakeTab::header()
 	QIcon* icon = new QIcon((icon_loc.c_str()));
 
 	icon_btn->setIcon(*icon);
-	icon_btn->setIconSize(QSize(model->control_selector_icon_width, model->control_selector_icon_height));
-	icon_btn->setFixedSize(QSize(model->control_selector_button_width, model->control_selector_button_height));
+	icon_btn->setIconSize(QSize(20, 20));
+	icon_btn->setFixedSize(QSize(20, 20));
 	icon_btn->setEnabled(false);
 
 	header_layout->addWidget(icon_btn);
@@ -98,22 +128,19 @@ void BakeTab::header()
 void BakeTab::new_checkbox(QString label, string tag)
 {
 	int line_height = UIModel::get()->control_panel_line_height;
+	int comp_width = UIModel::get()->control_panel_single_component_width;
 
 	QWidget* line_widget = new QWidget();
 	line_widget->setFixedHeight(line_height);
 
 	QHBoxLayout* line_layout = new QHBoxLayout();
 	line_layout->setContentsMargins(0, 0, 0, 0);
-	line_layout->setSpacing(5);
-
-	line_layout->addWidget(new QWidget());
+	line_layout->setSpacing(0);
 
 	QLabel* lab = new QLabel(label);
 	lab->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	line_layout->addWidget(lab);
 
 	QCheckBox* checkbox = new QCheckBox();
-	checkbox->setFixedWidth(20);
 	checkbox->setTristate(false);
 	widgets_cache[tag] = checkbox;
 
@@ -126,10 +153,13 @@ void BakeTab::new_checkbox(QString label, string tag)
 		}
 		trigger_bake();
 	});
-	line_layout->addWidget(checkbox);
+
+	StretchContainer* c = new StretchContainer(lab, checkbox, 4, 6);
+	line_layout->addWidget(c);
+
 	line_widget->setLayout(line_layout);
 
-	top_layout->addWidget(line_widget);
+	illusion_layout->addWidget(line_widget);
 }
 
 void BakeTab::trigger_bake()
@@ -205,27 +235,29 @@ void BakeTab::argument(QString name, string tag, float init_value, float min, fl
 
 	QHBoxLayout* line_layout = new QHBoxLayout();
 	line_layout->setContentsMargins(0, 0, 0, 0);
-	line_layout->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
-	line_layout->addWidget(new QWidget());
+	//line_layout->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
+
+	//line_layout->addWidget(new QWidget());
+
 	QLabel* value_label = new QLabel();
 	value_label->setText(name);
-	value_label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	line_layout->addWidget(value_label);
-
+	value_label->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
+	
 	FloatEdit* editor = new FloatEdit();
 	editor->set_min_value(min);
 	editor->set_max_value(max);
 	editor->set_value(init_value);
 	editor->step = step;
-	editor->unit = "s";
+	editor->set_unit("s");
 	editor->sensitivity = sensitivity;
 	data_cache[tag] = new float(editor->value);
 	widgets_cache[tag] = editor;
-	editor->setFixedWidth(UIModel::get()->control_panel_edit_width);
 	editor->responder = this;
 	editor->name = tag;
-	line_layout->addWidget(editor);
-	line->setLayout(line_layout);
 
-	top_layout->addWidget(line);
+	StretchContainer* container = new StretchContainer(value_label, editor, 4, 6);
+	line_layout->addWidget(container);
+
+	line->setLayout(line_layout);
+	settings_layout->addWidget(line);
 }

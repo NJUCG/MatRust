@@ -93,7 +93,7 @@ void ControllPanel::switchTo(string type)
 
 	current_tab = tabs_dict[type];
 	current_responder = responders_dict[type];
-	current_responder->on_switch_to();
+	current_responder->on_switch_to(height(),width());
 	
 	current_tab->show();
 }

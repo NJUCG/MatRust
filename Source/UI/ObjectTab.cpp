@@ -301,7 +301,7 @@ void ObjectTab::add_property(QString prefix, string data_tag, string unit, float
 	FloatEdit* edit = new FloatEdit();
 	edit->set_min_value(min);
 	edit->set_max_value(max);
-	edit->unit = unit;
+	edit->set_unit(unit);
 	edit->set_value(init_data);
 	edit->responder = this;
 	edit->name = data_tag;

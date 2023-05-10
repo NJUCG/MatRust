@@ -12,14 +12,24 @@
 #include"StringHelper.h"
 #include"FloatEdit.h"
 #include"ControllTabWidgetResponder.h"
+#include"ExpandableNode.h"
+#include"StretchContainer.h"
+
 class BakeTab: public QWidget, public EventResponder, public FloatEditResponder, public ControllTabWidgetResponder
 {
 public:
 	BakeTab();
 	void on_trigger(string) override;
+	void on_switch_to(int, int) override;
 	void on_value_changed(string name, float new_value) override;
 protected:
 	QVBoxLayout* top_layout = nullptr;
+	
+	QWidget* illusion_widget = nullptr;
+	QVBoxLayout* illusion_layout = nullptr;
+
+	QWidget* settings_widget = nullptr;
+	QVBoxLayout* settings_layout = nullptr;
 
 	unordered_map<string, void*> data_cache;
 	unordered_map<string, QWidget*> widgets_cache;

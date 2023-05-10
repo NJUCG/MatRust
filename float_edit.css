@@ -3,7 +3,7 @@ QWidget{
     border-radius:4px;
 }
 QPushButton#left_button{
-    background-image: url("resources/ui/icons/left_arrow.png");
+    background-image: url("resources/ui/icons/left_arrow_30.png");
     background-repeat: no-repeat;
     background-position: center;
 
@@ -13,7 +13,7 @@ QPushButton#left_button{
     border-bottom-right-radius:0px;
 }
 QPushButton#right_button {
-    background-image: url("resources/ui/icons/right_arrow.png");
+    background-image: url("resources/ui/icons/right_arrow_30.png");
     background-repeat: no-repeat;
     background-position: center;
 

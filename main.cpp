@@ -22,6 +22,8 @@
 #include"AlgArgAnalyzer.h"
 #include"StringHelper.h"
 #include"NormalDisturbHelper.h"
+#include"ImgDrawer.h"
+#include"ExpandableNode.h"
 
 // fov 调整
 // 环境光
@@ -47,9 +49,11 @@
 int mainWindow(int argc,char* argv[]){
     QApplication a(argc, argv);
     QWidget* w = new QWidget();
+    w->setWindowTitle("Ruster");
+    w->setWindowIcon(QIcon("resources/ui/icons/icon-black-30.png"));
+
     PipelineManager::init_pipeline();
     _3DBlueNoiseSampler::init_samplers();
-
 
     w->setStyleSheet(CssLoader::load_css("our_father.css"));
 
@@ -57,15 +61,21 @@ int mainWindow(int argc,char* argv[]){
 
     // 绘制画布
     QVBoxLayout* top_layout = new QVBoxLayout();
+    top_layout->setContentsMargins(0, 0, 0, 0);
+    top_layout->setSpacing(spacing);
+
     Header* header = new Header();
     header->setFixedHeight(UIModel::get()->header_height);
+    top_layout->addWidget(header);
+
+    QLabel* blank_separator = new QLabel();
+    blank_separator->setFixedHeight(4);
+    blank_separator->setStyleSheet("background-color:black;");
+
+    top_layout->addWidget(blank_separator);
 
     SceneTab* scene = new SceneTab();
     ControllPanel* control = new ControllPanel();
-
-    top_layout->addWidget(header);
-    top_layout->setContentsMargins(0, 0, 0, 0);
-    top_layout->setSpacing(spacing);
 
     SeparatorContainer* container = new SeparatorContainer();
     container->setStyleSheet("background-color:black;");
@@ -144,20 +154,9 @@ int mainWindow(int argc,char* argv[]){
     
     w->setLayout(top_layout);
     w->show();
-    w->resize(800, 600);
+    w->setWindowState(Qt::WindowMaximized);
 
     separator->init(left_container, right_container, true);
-
-    //Model* model = new Model();
-
-    //model->loadModel("D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/stranger/stranger.obj");
-    //model->release_model();
-    //model->loadModel("D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/space_ship/space_ship.obj");
-    //"resources/models/99 - intergalactic_spaceship - obj/Intergalactic_Spaceship-(Wavefront).obj"
-    // "resources/models/plane/plane.obj"
-    // "resources/models/stranger/stranger.obj"
-    // "D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1/resources/models/stranger/stranger.obj"
-    //canvas->setModel(model);
 
     player->register_timer(canvas);
 
@@ -433,6 +432,118 @@ int strings_test() {
 
     return 0;
 }
+int img_drawer_test(int argc, char* argv[]) {
+    QApplication a(argc, argv);
+    QWidget* w = new QWidget();
+    w->setGeometry(0, 0, 600, 400);
+    w->setStyleSheet("background-color:orange");
+    QVBoxLayout* layout = new QVBoxLayout();
+
+    int iw = 200;
+    int ih = 200;
+    vector<vector<vec4>> img(ih, vector<vec4>(iw, vec4()));
+    for (int i = 0; i < ih; i++) {
+        for (int j = 0; j < iw; j++) {
+            img[i][j] = vec4(i, j, 100, 255);
+        }
+    }
+
+    layout->addWidget(new ImgDrawer(200, 200, &img));
+
+    w->setLayout(layout);
+
+    w->show();
+    return a.exec();
+}
+int expandable_node_test(int argc, char* argv[]) {
+    QApplication a(argc, argv);
+    QWidget* w = new QWidget();
+    w->setGeometry(0, 0, 600, 400);
+    w->setStyleSheet("background-color:orange");
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->setAlignment(Qt::AlignTop);
+
+    int iw = 200;
+    int ih = 200;
+    vector<vector<vec4>> img(ih, vector<vec4>(iw, vec4()));
+    for (int i = 0; i < ih; i++) {
+        for (int j = 0; j < iw; j++) {
+            img[i][j] = vec4(i, j, 100, 255);
+        }
+    }
+
+    QWidget* drawer = new ImgDrawer(200, 200, &img);
+
+    QLabel* la = new QLabel("noew");
+    la->setFixedHeight(50);
+
+    ExpandableNode* node = new ExpandableNode("Test", drawer);
+    
+    layout->addWidget(node);
+
+    QWidget* drawer2 = new ImgDrawer(200, 200, &img);
+    drawer2->setFixedHeight(200);
+
+    QLabel* la2 = new QLabel("noesdafw");
+    la2->setFixedHeight(50);
+
+    ExpandableNode* node2 = new ExpandableNode("Test2", la2);
+
+    layout->addWidget(node2);
+
+    layout->addWidget(new QWidget());
+
+    w->setLayout(layout);
+
+    w->show();
+    return a.exec();
+}
+int animation_test(int argc, char* argv[]) {
+    QApplication a(argc, argv);
+    QWidget* w = new QWidget();
+    w->setGeometry(0, 0, 600, 400);
+    w->setStyleSheet("background-color:orange");
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->setAlignment(Qt::AlignTop);
+
+    int iw = 200;
+    int ih = 200;
+    vector<vector<vec4>> img(ih, vector<vec4>(iw, vec4()));
+    for (int i = 0; i < ih; i++) {
+        for (int j = 0; j < iw; j++) {
+            img[i][j] = vec4(i, j, 100, 255);
+        }
+    }
+    
+    QPropertyAnimation* animator = new QPropertyAnimation();
+    QWidget* c = new QWidget();
+    QVBoxLayout* lay = new QVBoxLayout();
+    c->setLayout(lay);
+
+    QLabel* la = new QLabel("noew");
+    la->setStyleSheet("background-color:black;color:white;");
+    animator->setTargetObject(la);
+    animator->setPropertyName("geometry");
+    animator->setEasingCurve(QEasingCurve::Linear);
+
+    lay->addWidget(la);
+    layout->addWidget(c);
+
+    QPushButton* btn = new QPushButton();
+    QObject::connect(btn, &QPushButton::clicked, [animator]() {
+        animator->setDuration(1000);
+        animator->setStartValue(QRect());
+        animator->setEndValue(QRect(0,0,100,200));
+        animator->start();
+        });
+    layout->addWidget(btn);
+    layout->addWidget(new QWidget());
+
+    w->setLayout(layout);
+
+    w->show();
+    return a.exec();
+}
 //
 // 材质rounding
 // demo
@@ -447,4 +558,7 @@ int main(int argc, char *argv[]){
     return mainWindow(argc, argv);
     //return strings_test();
     //return random_test();
+    //return expandable_node_test(argc, argv);
+    //return animation_test(argc, argv);
+    //return img_drawer_test(argc, argv);
 }

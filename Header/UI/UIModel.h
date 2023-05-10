@@ -19,8 +19,10 @@ public:
 	int control_panel_header_height;
 	int control_panel_header_icon_width;
 	int control_panel_line_height;
+	int control_panel_single_component_width;
 	int control_panel_edit_width;
 	int node_widget_header_height;
+
 
 	//entry的参数
 	//子节点的偏移
@@ -71,6 +73,8 @@ public:
 
 	//
 	int header_height;
+	//
+	int control_panel_init_width;
 
 private:
 	static UIModel* model;

@@ -400,6 +400,18 @@
     <ClCompile Include="Source\UI\OutputTab.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UI\ImgDrawer.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI\ExpandableNode.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI\ScalableContainer.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI\StretchContainer.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CRustDependency\stb-master\stb-master\stb_image.h">
@@ -750,6 +762,18 @@
     <ClInclude Include="Header\UI\ControllTabWidgetResponder.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Header\UI\ImgDrawer.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\ExpandableNode.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\ScalableContainer.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\UI\StretchContainer.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\tri_shader.frag">
@@ -879,6 +903,15 @@
       <Filter>Resource Files\styles</Filter>
     </None>
     <None Include="output_tab_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="expandable_node_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="float_edit_left_btn_style.css">
+      <Filter>Resource Files\styles</Filter>
+    </None>
+    <None Include="float_edit_right_btn_style.css">
       <Filter>Resource Files\styles</Filter>
     </None>
   </ItemGroup>

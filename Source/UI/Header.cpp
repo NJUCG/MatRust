@@ -17,6 +17,13 @@ void Header::addComponent()
 	top_layout->setContentsMargins(2, 2, 2, 2);
 	top_layout->setSpacing(5);
 
+	QPushButton* icon = new QPushButton();
+	icon->setIcon(QIcon("resources/ui/icons/icon-30.png"));
+	icon->setFixedSize(20, 20);
+	icon->setEnabled(false);
+	icon->setFlat(true);
+	top_layout->addWidget(icon);
+
 	add_tab(new HeaderTab(HEADER_LOAD_ARCHIVE));
 	add_tab(new HeaderTab(HEADER_SAVE_ARCHIVE));
 	add_tab(new HeaderTab(HEADER_SAVE_OUTPUT));

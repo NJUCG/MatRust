@@ -9,9 +9,9 @@ UIModel::UIModel() {
 	control_selector_icon_height = control_selector_icon_width = 18 * factor;
 	control_selector_button_height = control_selector_button_width = 25 * factor;
 	node_left_offset = 10 * factor;
-	float_edit_height = 20 * factor;
-	float_edit_arrow_width = 15 * factor;
-	control_panel_header_height = 20 * factor;
+	float_edit_height = 20;
+	float_edit_arrow_width = 15;
+	control_panel_header_height = 20;
 	control_panel_header_icon_width = 20 * factor;
 	control_panel_line_height = control_panel_header_height;
 	control_panel_edit_width = 80 * factor;
@@ -53,9 +53,11 @@ UIModel::UIModel() {
 
 	selector_width = 400;
 
-	header_height = 50;
+	header_height = 30;
 
 	node_widget_line_height = 20;
+
+	control_panel_single_component_width = 120;
 }
 UIModel* UIModel::get()
 {

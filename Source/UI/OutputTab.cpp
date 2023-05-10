@@ -6,17 +6,58 @@ OutputTab::OutputTab()
 	addComponent();
 }
 
-void OutputTab::on_trigger(string)
+void OutputTab::on_trigger(string e)
+{
+	if (e == "merge_layers_finished") {
+		imgs["diffuse"]->update();
+		imgs["roughness"]->update();
+		imgs["metallic"]->update();
+		imgs["normal_disturb"]->update();
+		imgs["height"]->update();
+	}
+	else if (e == "pipeline_started") {
+		config = (PipelineConfig*)EventAdapter::shared->pop_data();
+	}
+	else if (e == "diffuse_data_inited") {
+		imgs["diffuse"]->reset_img(config->textureHeight, config->textureWidth, (vector<vector<vec4>>*)(EventAdapter::shared->pop_data()));
+	}
+	else if (e == "roughness_data_inited") {
+		imgs["roughness"]->reset_img(config->textureHeight, config->textureWidth, (vector<vector<vec4>>*)(EventAdapter::shared->pop_data()));
+	}
+	else if (e == "metallic_data_inited") {
+		imgs["metallic"]->reset_img(config->textureHeight, config->textureWidth, (vector<vector<vec4>>*)(EventAdapter::shared->pop_data()));
+	}
+	else if (e == "normal_disturb_data_inited") {
+		imgs["normal_disturb"]->reset_img(config->textureHeight, config->textureWidth, (vector<vector<vec4>>*)(EventAdapter::shared->pop_data()));
+	}
+	else if (e == "height_data_inited") {
+		imgs["height"]->reset_img(config->textureHeight, config->textureWidth, (vector<vector<vec4>>*)(EventAdapter::shared->pop_data()));
+	}
+}
+
+void OutputTab::on_switch_to(int,int)
 {
 }
 
-void OutputTab::on_switch_to()
+void OutputTab::resizeEvent(QResizeEvent* e)
 {
+	QWidget::resizeEvent(e);
 }
 
 void OutputTab::init()
 {
 	setStyleSheet(CssLoader::load_css("output_tab_style.css"));
+	EventAdapter::shared->register_event("pipeline_started", this);
+	EventAdapter::shared->register_event("merge_layers_finished", this);
+	EventAdapter::shared->register_event("diffuse_data_inited", this);
+	EventAdapter::shared->register_event("roughness_data_inited", this);
+	EventAdapter::shared->register_event("metallic_data_inited", this);
+	EventAdapter::shared->register_event("normal_disturb_data_inited", this);
+	EventAdapter::shared->register_event("height_data_inited", this);
+
+	repeat_icon = QIcon("resources/ui/icons/repeat-30.png");
+	stretch_icon = QIcon("resources/ui/icons/stretch-30.png");
+	save_icon = QIcon("resources/ui/icons/save-30.png");
 }
 
 void OutputTab::addComponent()
@@ -30,10 +71,13 @@ void OutputTab::addComponent()
 	view_mode_layout->setContentsMargins(0, 0, 0, 0);
 	view_mode_layout->setSpacing(5);
 
-
 	view_mode_widget->setLayout(view_mode_layout);
 
-	add_pic("", "");
+	add_pic("Diffuse", "diffuse");
+	add_pic("Roughness", "roughness");
+	add_pic("Metallic", "metallic");
+	add_pic("Normal_Disturb", "normal_disturb");
+	add_pic("Height", "height");
 	end_body();
 	setLayout(top_layout);
 }
@@ -87,23 +131,72 @@ void OutputTab::body()
 
 void OutputTab::add_pic(QString title,string tag)
 {
-	QWidget* line_widget = new QWidget();
-	QHBoxLayout* line_layout = new QHBoxLayout();
-
-	QWidget* pic_container = new QWidget();
-	QVBoxLayout* container_layout = new QVBoxLayout();
-
-	QLabel* pic_widget = new QLabel();
-	pic_widget->setBackgroundRole(QPalette::Base);
-	pic_widget->setScaledContents(true);
-	container_layout->addWidget(pic_widget);
-	imgs[tag] = pic_widget;
+	int line_height = 120;
 	
-	pic_container->setLayout(container_layout);
+	ImgDrawer* pic_widget = new ImgDrawer();
+	pic_widget->setStyleSheet("background-color:black;border-radius:4px;");
+	imgs[tag] = pic_widget;
 
-	line_widget->setLayout(line_layout);
+	QWidget* line_widget = new ScalableContainer(pic_widget);
+	line_widget->setFixedHeight(line_height);
 
-	body_layout->addWidget(line_widget);
+	ExpandableNode* preview_node = new ExpandableNode("preview", line_widget);
+
+	QWidget* wrapper_widget = new QWidget();
+	QVBoxLayout* wrapper_layout = new QVBoxLayout();
+	wrapper_layout->setAlignment(Qt::AlignTop);
+	wrapper_layout->setContentsMargins(0, 0, 0, 0);
+	wrapper_layout->setSpacing(5);
+	
+	QWidget* operators_container = new QWidget();
+	int operators_height = 20;
+	QVBoxLayout* operators_layout = new QVBoxLayout();
+	operators_layout->setContentsMargins(0, 0, 0, 0);
+
+	QPushButton* view_mode_btn = new QPushButton();
+	view_mode_btn->setObjectName("operator");
+	view_mode_btn->setStyleSheet("QPushButton{background-color: #545454;}QPushButton:hover{background-color: #656565;}");
+	view_mode_btn->setText("Switch View Mode");
+	view_mode_btn->setIcon(repeat_icon);
+	view_mode_btn->setFixedHeight(operators_height);
+	view_mode_btn->setMinimumHeight(operators_height);
+	connect(view_mode_btn, &QPushButton::clicked, [=]() {
+		ImgDrawer::Policy policy = pic_widget->switchPolicy();
+		if (policy == ImgDrawer::Policy::Single) {
+			view_mode_btn->setIcon(stretch_icon);
+		}
+		else if (policy == ImgDrawer::Policy::Repeat) {
+			view_mode_btn->setIcon(repeat_icon);
+		}
+		pic_widget->update();
+		});
+	operators_layout->addWidget(view_mode_btn);
+
+	QPushButton* save_btn = new QPushButton();
+	save_btn->setObjectName("operator");
+	save_btn->setStyleSheet("QPushButton{background-color: #545454;}QPushButton:hover{background-color: #656565;}");
+	save_btn->setText("Save Texture");
+	save_btn->setIcon(save_icon);
+	save_btn->setFixedHeight(operators_height);
+	connect(save_btn, &QPushButton::clicked, [=]() {
+		QString f = QFileDialog::getSaveFileName(nullptr, "save", "", "*.png");
+		if (f != "") {
+			pic_widget->save_pic(f);
+		}
+		});
+	operators_layout->addWidget(save_btn);
+
+	operators_container->setLayout(operators_layout);
+
+	wrapper_layout->addWidget(operators_container);
+
+	wrapper_layout->addWidget(preview_node);
+
+	wrapper_widget->setLayout(wrapper_layout);
+
+	ExpandableNode* line_node = new ExpandableNode(title, wrapper_widget);
+	
+	body_layout->addWidget(line_node);
 }
 
 

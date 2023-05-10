@@ -38,8 +38,9 @@ public:
 	float sensitivity;
 	FloatEditResponder* responder = nullptr;
 	string name = "default";
-	string unit = "%";
+	void set_unit(string);
 protected:
+	string unit = "%";
 	QWidget* current_page = nullptr;
 	vector<QWidget*> pages;
 	EditorState current_state;

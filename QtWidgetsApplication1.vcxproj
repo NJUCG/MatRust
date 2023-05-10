@@ -121,6 +121,7 @@
     <ClCompile Include="Source\UI\DisplayPanel.cpp" />
     <ClCompile Include="Source\UI\EngineTab.cpp" />
     <ClCompile Include="Source\UI\EnvTab.cpp" />
+    <ClCompile Include="Source\UI\ExpandableNode.cpp" />
     <ClCompile Include="Source\UI\FileSelector.cpp" />
     <ClCompile Include="Source\UI\FileSelectorResponder.cpp" />
     <ClCompile Include="Source\UI\FloatEdit.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Source\UI\HeaderTabEntry.cpp" />
     <ClCompile Include="Source\UI\HeaderTabResponder.cpp" />
     <ClCompile Include="Source\UI\IdGenerator.cpp" />
+    <ClCompile Include="Source\UI\ImgDrawer.cpp" />
     <ClCompile Include="Source\UI\LabeledComboBox.cpp" />
     <ClCompile Include="Source\UI\LabeledComboBoxResponder.cpp" />
     <ClCompile Include="Source\UI\LayerTab.cpp" />
@@ -167,6 +169,7 @@
     <ClCompile Include="Source\UI\ObjectTab.cpp" />
     <ClCompile Include="Source\UI\OutputTab.cpp" />
     <ClCompile Include="Source\UI\PlayerWidget.cpp" />
+    <ClCompile Include="Source\UI\ScalableContainer.cpp" />
     <ClCompile Include="Source\UI\SceneTab.cpp" />
     <ClCompile Include="Source\UI\SceneTabEntry.cpp" />
     <ClCompile Include="Source\UI\SceneTabEntryResponder.cpp" />
@@ -175,6 +178,7 @@
     <ClCompile Include="Source\UI\SeparatorResponder.cpp" />
     <ClCompile Include="Source\UI\SimpleEntry.cpp" />
     <ClCompile Include="Source\UI\StackedWidget.cpp" />
+    <ClCompile Include="Source\UI\StretchContainer.cpp" />
     <ClCompile Include="Source\UI\SulfurLayerNodeWidget.cpp" />
     <ClCompile Include="Source\UI\TabEntry.cpp" />
     <ClCompile Include="Source\UI\TabOption.cpp" />
@@ -235,6 +239,7 @@
     <ClInclude Include="Header\UI\DisplayPanel.h" />
     <ClInclude Include="Header\UI\EngineTab.h" />
     <ClInclude Include="Header\UI\EnvTab.h" />
+    <ClInclude Include="Header\UI\ExpandableNode.h" />
     <ClInclude Include="Header\UI\FileSelector.h" />
     <ClInclude Include="Header\UI\FileSelectorResponder.h" />
     <ClInclude Include="Header\UI\FloatEdit.h" />
@@ -251,6 +256,7 @@
     <ClInclude Include="Header\UI\HeaderTabEntry.h" />
     <ClInclude Include="Header\UI\HeaderTabResponder.h" />
     <ClInclude Include="Header\UI\IdGenerator.h" />
+    <ClInclude Include="Header\UI\ImgDrawer.h" />
     <ClInclude Include="Header\UI\LabeledComboBox.h" />
     <ClInclude Include="Header\UI\LabeledComboBoxResponder.h" />
     <ClInclude Include="Header\UI\LayerTab.h" />
@@ -284,6 +290,7 @@
     <ClInclude Include="Header\UI\ObjectTab.h" />
     <ClInclude Include="Header\UI\OutputTab.h" />
     <ClInclude Include="Header\UI\PlayerWidget.h" />
+    <ClInclude Include="Header\UI\ScalableContainer.h" />
     <ClInclude Include="Header\UI\SceneTab.h" />
     <ClInclude Include="Header\UI\SceneTabEntry.h" />
     <ClInclude Include="Header\UI\SceneTabEntryResponder.h" />
@@ -293,6 +300,7 @@
     <ClInclude Include="Header\UI\SimpleEntry.h" />
     <ClInclude Include="Header\UI\StackedWidget.h" />
     <ClInclude Include="Header\UI\stb_header.h" />
+    <ClInclude Include="Header\UI\StretchContainer.h" />
     <ClInclude Include="Header\UI\SulfurLayerNodeWidget.h" />
     <ClInclude Include="Header\UI\TabEntry.h" />
     <ClInclude Include="Header\UI\TabOption.h" />
@@ -328,11 +336,14 @@
     <None Include="controller_panel_style.css" />
     <None Include="control_selector.css" />
     <None Include="env_tab.css" />
+    <None Include="expandable_node_style.css" />
     <None Include="file_selector_style.css" />
     <None Include="float_edit.css" />
     <None Include="float_edit_edit.css" />
     <None Include="float_edit_hover.css" />
     <None Include="float_edit_idle.css" />
+    <None Include="float_edit_left_btn_style.css" />
+    <None Include="float_edit_right_btn_style.css" />
     <None Include="float_progressbar.css" />
     <None Include="header.css" />
     <None Include="header_tab_style.css" />

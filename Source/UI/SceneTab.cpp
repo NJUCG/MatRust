@@ -9,7 +9,7 @@ SceneTab::SceneTab()
 void SceneTab::add_property(string type, string name)
 {
 	if (entries.find(name) == entries.end()) {
-		SceneTabEntry* entry = new SceneTabEntry(entries.size() % 2 == 0, 1, type, name, this);
+		SceneTabEntry* entry = new SceneTabEntry(entries.size() % 2 == 0, 2, type, name, this);
 		int c = entries.size() + 1;
 		top_layout->insertWidget(c, entry);
 		entries[name] = entry;
@@ -35,6 +35,9 @@ void SceneTab::on_trigger(string name)
 			}
 			else if (data->type == "light") {
 				add_property("light-30", data->name);
+			}
+			else if (data->type == "blank") {
+				add_property("blank", "");
 			}
 		}
 	}
@@ -62,12 +65,22 @@ void SceneTab::header()
 {
 	QWidget* header_w = new QWidget();
 	
-	QVBoxLayout* header_layout = new QVBoxLayout();
+	QHBoxLayout* header_layout = new QHBoxLayout();
 
 	header_w->setStyleSheet("background-color:#2B2B2B;color:white;");
 
 	header_layout->setContentsMargins(0, 0, 0, 0);
-	header_layout->setSpacing(0);
+	header_layout->setSpacing(5);
+
+	header_layout->addSpacing(UIModel::get()->scene_entry_unit_offset);
+
+	QPushButton* icon_btn = new QPushButton();
+	icon_btn->setIcon(QIcon("resources/ui/icons/box-30.png"));
+	icon_btn->setEnabled(false);
+	icon_btn->setFlat(true);
+	icon_btn->setFixedSize(QSize(UIModel::get()->scene_entry_icon_width, UIModel::get()->scene_entry_icon_width));
+
+	header_layout->addWidget(icon_btn);
 
 	QLabel* header_label = new QLabel();
 	header_label->setText(SCENE_TAB_HEADER_TITLE);

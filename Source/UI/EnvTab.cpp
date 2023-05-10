@@ -99,13 +99,40 @@ void EnvTab::addComponent()
 	// 设置表头
 	header(ENV_TAB_ENV_ARGS_HEADER_TITLE);
 	body();
-	argument(ENV_TAB_ARG_RH, "rh", backup_config->rh, 0, 100, 0.1f);
-	argument(ENV_TAB_ARG_CC, "cc", backup_config->cc, 0, 100, 0.1f);
-	argument(ENV_TAB_ARG_SC, "sc", backup_config->sc, 0, 100, 0.1f);
-	argument(ENV_TAB_ARG_OC, "oc", backup_config->oc, 0, 100, 0.1f);
-	argument(ENV_TAB_ARG_TEMPERATURE, "temperature", backup_config->temperature, 273, 373, 0.1f);
-	argument(ENV_TAB_ARG_ROUGHNESS, "roughness", backup_config->roughness, 0, 1, 0.01f, 0.01f);
-	argument(ENV_TAB_ARG_METALLIC, "metallic", backup_config->metallic, 0, 1, 0.01f, 0.01f);
+
+	concentration_widget = new QWidget();
+	
+	concentration_layout = new QVBoxLayout();
+	concentration_layout->setContentsMargins(0, 0, 0, 0);
+	concentration_layout->setSpacing(5);
+
+	argument(concentration_layout, ENV_TAB_ARG_RH, "rh", backup_config->rh, 0, 100, 0.1f);
+	argument(concentration_layout, ENV_TAB_ARG_CC, "cc", backup_config->cc, 0, 100, 0.1f);
+	argument(concentration_layout, ENV_TAB_ARG_SC, "sc", backup_config->sc, 0, 100, 0.1f);
+	argument(concentration_layout, ENV_TAB_ARG_OC, "oc", backup_config->oc, 0, 100, 0.1f);
+	argument(concentration_layout, ENV_TAB_ARG_TEMPERATURE, "temperature", backup_config->temperature, 273, 373, 0.1f);
+	
+	concentration_widget->setLayout(concentration_layout);
+
+	ExpandableNode* concentration_node = new ExpandableNode("Concentration", concentration_widget);
+
+	body_layout->addWidget(concentration_node);
+	
+	model_widget = new QWidget();
+
+	model_layout = new QVBoxLayout();
+	model_layout->setContentsMargins(0, 0, 0, 0);
+	model_layout->setSpacing(5);
+
+	argument(model_layout, ENV_TAB_ARG_ROUGHNESS, "roughness", backup_config->roughness, 0, 1, 0.01f, 0.01f);
+	argument(model_layout, ENV_TAB_ARG_METALLIC, "metallic", backup_config->metallic, 0, 1, 0.01f, 0.01f);
+	
+	model_widget->setLayout(model_layout);
+
+	ExpandableNode* model_node = new ExpandableNode("Model", model_widget);
+
+	body_layout->addWidget(model_node);
+	
 	end_body();
 
 	layout->addWidget(new QWidget());
@@ -120,34 +147,28 @@ void EnvTab::header(QString header)
 	QWidget* head = new QWidget();
 
 	UIModel* model = UIModel::get();
-	head->setFixedHeight(model->control_panel_header_height);
+	head->setFixedHeight(model->control_selector_button_height);
 
 	head->setObjectName("head");
 
 	QHBoxLayout* header_layout = new QHBoxLayout();
-	header_layout->setContentsMargins(0,0,0,0);
+	header_layout->setContentsMargins(5, 0, 5, 0);
 
 	QPushButton* icon_btn = new QPushButton();
 	icon_btn->setObjectName("header_icon");
 	icon_btn->setStyleSheet("background-color:transparent;color:transparent;border:solid 0px;");
-
-	string icon_loc = "resources/ui/icons/env.png";
-
-	QIcon* icon = new QIcon((icon_loc.c_str()));
+	QIcon* icon = new QIcon("resources/ui/icons/env.png");
 
 	icon_btn->setIcon(*icon);
-	icon_btn->setIconSize(QSize(model->control_selector_icon_width, model->control_selector_icon_height));
-	icon_btn->setFixedSize(QSize(model->control_selector_button_width, model->control_selector_button_height));
+	icon_btn->setIconSize(QSize(20, 20));
+	icon_btn->setFixedSize(QSize(20, 20));
 	icon_btn->setEnabled(false);
 
 	header_layout->addWidget(icon_btn);
 
 	QLabel* value_label = new QLabel();
 	value_label->setText(header);
-	value_label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 	header_layout->addWidget(value_label);
-
-	header_layout->addWidget(new QWidget());
 
 	head->setLayout(header_layout);
 	
@@ -173,7 +194,7 @@ void EnvTab::end_body()
 	widget_id++;
 }
 
-void EnvTab::argument(QString name, string tag, float init_value, float min, float max, float step, float sensitivity)
+void EnvTab::argument(QLayout* layout, QString name, string tag, float init_value, float min, float max, float step, float sensitivity)
 {
 	QWidget* line = new QWidget();
 	int line_height = UIModel::get()->control_panel_line_height;
@@ -181,12 +202,11 @@ void EnvTab::argument(QString name, string tag, float init_value, float min, flo
 
 	QHBoxLayout* line_layout = new QHBoxLayout();
 	line_layout->setContentsMargins(0, 0, 0, 0);
-	line_layout->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
-	line_layout->addWidget(new QWidget());
+	line_layout->setSpacing(0);
+
 	QLabel* value_label = new QLabel();
 	value_label->setText(name);
-	value_label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	line_layout->addWidget(value_label);
+	value_label->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
 	
 	FloatEdit* editor = new FloatEdit();
 	editor->set_min_value(min);
@@ -198,10 +218,14 @@ void EnvTab::argument(QString name, string tag, float init_value, float min, flo
 	editor->setFixedWidth(UIModel::get()->control_panel_edit_width);
 	editor->responder = this;
 	editor->name = tag;
-	line_layout->addWidget(editor);
+
+	StretchContainer* c = new StretchContainer(value_label, editor, 4, 6);
+
+	line_layout->addWidget(c);
+
 	line->setLayout(line_layout);
 	
-	body_layout->addWidget(line);
+	layout->addWidget(line);
 }
 
 void EnvTab::expand_panel(int widget_id)

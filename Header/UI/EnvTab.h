@@ -11,6 +11,9 @@
 #include"PipelineConfig.h"
 #include"StringHelper.h"
 #include"ControllTabWidgetResponder.h"
+#include"StretchContainer.h"
+#include"ExpandableNode.h"
+
 using namespace std;
 
 class EnvData {
@@ -30,6 +33,13 @@ public:
 protected:
     QVBoxLayout* layout = nullptr;
     QVBoxLayout* body_layout = nullptr;
+
+    QWidget* concentration_widget = nullptr;
+    QVBoxLayout* concentration_layout = nullptr;
+
+    QWidget* model_widget = nullptr;
+    QVBoxLayout* model_layout = nullptr;
+
     QWidget* body_widget = nullptr;
     unordered_map<string, FloatEdit*> arguments;
     EnvData* backup_config = nullptr;
@@ -43,7 +53,7 @@ protected:
     void header(QString header);
     void body();
     void end_body();
-    void argument(QString name, string tag, float init_value = 0.0f, float min = 0, float max = 100, float step = 0.1f,float sensitivity = 1.0f);
+    void argument(QLayout* layout, QString name, string tag, float init_value = 0.0f, float min = 0, float max = 100, float step = 0.1f,float sensitivity = 1.0f);
     void expand_panel(int widget_id = 0);
     void shrink_panel(int widget_id = 0);
     void space();

@@ -61,10 +61,43 @@ void PipelineManager::start_pipeline(PipelineConfig* config)
         }
     }
 	this->config = config;
+    if (diffuse_data) {
+        delete diffuse_data;
+    }
+    if (roughness_data) {
+        delete roughness_data;
+    }
+    if (metallic_data) {
+        delete metallic_data;
+    }
+    if (normal_disturb_data) {
+        delete normal_disturb_data;
+    }
+    if (height_data) {
+        delete height_data;
+    }
+    diffuse_data = new vector<vector<vec4>>(config->textureHeight, vector<vec4>(config->textureWidth, vec4()));
+    roughness_data = new vector<vector<vec4>>(config->textureHeight, vector<vec4>(config->textureWidth, vec4()));
+    metallic_data = new vector<vector<vec4>>(config->textureHeight, vector<vec4>(config->textureWidth, vec4()));
+    normal_disturb_data = new vector<vector<vec4>>(config->textureHeight, vector<vec4>(config->textureWidth, vec4()));
+    height_data = new vector<vector<vec4>>(config->textureHeight, vector<vec4>(config->textureWidth, vec4()));
+
 	state = Occupied;
     prepare_layers();
     dispatch_rules();
     output->normal_noise_map = ImageHelper::TextureFromFile("test_pat.png", "D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1");
+    EventAdapter::shared->push_data(config);
+    EventAdapter::shared->trigger_event("pipeline_started");
+    EventAdapter::shared->push_data(diffuse_data);
+    EventAdapter::shared->trigger_event("diffuse_data_inited");
+    EventAdapter::shared->push_data(roughness_data);
+    EventAdapter::shared->trigger_event("roughness_data_inited");
+    EventAdapter::shared->push_data(metallic_data);
+    EventAdapter::shared->trigger_event("metallic_data_inited");
+    EventAdapter::shared->push_data(normal_disturb_data);
+    EventAdapter::shared->trigger_event("normal_disturb_data_inited");
+    EventAdapter::shared->push_data(height_data);
+    EventAdapter::shared->trigger_event("height_data_inited");
 }
 
 void PipelineManager::clear_pipeline()
@@ -75,6 +108,23 @@ void PipelineManager::clear_pipeline()
     layers.clear();
 
     units.clear();
+
+    if (diffuse_data) {
+        delete diffuse_data;
+    }
+    if (roughness_data) {
+        delete roughness_data;
+    }
+    if (metallic_data) {
+        delete metallic_data;
+    }
+    if (normal_disturb_data) {
+        delete normal_disturb_data;
+    }
+    if (height_data) {
+        delete height_data;
+    }
+
 
     state = Open;
 }
@@ -128,7 +178,6 @@ void PipelineManager::generate_rust(double delta)
 
 void PipelineManager::merge_layers()
 {
-    vector<vector<vec4>> diffData = vector<vector<vec4>>(config->textureHeight, vector<vec4>(config->textureWidth, vec4()));
     QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();
     
     for (int i = 0; i < layers.size(); i++) {
@@ -167,10 +216,10 @@ void PipelineManager::merge_layers()
             }
             color = color + config->backTexture[i][j] * lightIntensity;
             color.w = 255;
-            diffData[i][j] = color;
+            (*diffuse_data)[i][j] = color;
         }
     }
-    output->diffuse_map = bind4Map(diffData);
+    output->diffuse_map = bind4Map(*diffuse_data);
 
     for (int i = 0; i < config->textureHeight; i++) {
         for (int j = 0; j < config->textureWidth; j++) {
@@ -191,10 +240,10 @@ void PipelineManager::merge_layers()
             }
             color = color + vec4(0, 0, config->roughness[i][j], 0) * lightIntensity;
             color.z = color.z * 255;
-            diffData[i][j] = color;
+            (*roughness_data)[i][j] = color;
         }
     }
-    output->roughness_map = bind4Map(diffData);
+    output->roughness_map = bind4Map(*roughness_data);
 
     for (int i = 0; i < config->textureHeight; i++) {
         for (int j = 0; j < config->textureWidth; j++) {
@@ -214,24 +263,24 @@ void PipelineManager::merge_layers()
             }
             color = color + vec4(0, 0, config->metallic[i][j], 0) * lightIntensity;
             color.z = color.z * 255;
-            diffData[i][j] = color;
+            (*metallic_data)[i][j] = color;
         }
     }
-    output->metallic_map = bind4Map(diffData);
+    output->metallic_map = bind4Map(*metallic_data);
 
     for (int i = 0; i < config->textureHeight; i++) {
         for (int j = 0; j < config->textureWidth; j++) {
-            diffData[i][j] = vec4(0, 0, 0, 0);
+            (*normal_disturb_data)[i][j] = vec4(0, 0, 0, 0);
             for (int k = layerSize - 1; k >= 0; k--) {
                 RustUnit unit = units[k][i][j];
                 if (unit.has_disturb) {
-                    diffData[i][j] = vec4(255, 255, 255, 255);
+                    (*normal_disturb_data)[i][j] = vec4(255, 255, 255, 255);
                     break;
                 }
             }
         }
     }
-    output->normal_disturb_map = bind4Map(diffData);
+    output->normal_disturb_map = bind4Map(*normal_disturb_data);
 
     float max_depth = 50;
     vector<vector<float>> depth_vec(config->textureHeight, vector<float>(config->textureWidth, 0));
@@ -247,10 +296,12 @@ void PipelineManager::merge_layers()
     for (int i = 0; i < config->textureHeight; i++) {
         for (int j = 0; j < config->textureWidth; j++) {
             float d = 255 * depth_vec[i][j] / max_depth;
-            diffData[i][j] = vec4(d, d, d, 0);
+            (*height_data)[i][j] = vec4(d, d, d, 0);
         }
     }
-    output->depth_map = bind4Map(diffData);
+    output->depth_map = bind4Map(*height_data);
+
+    EventAdapter::shared->trigger_event("merge_layers_finished");
 
     if (config->generateImage) {
         config->generateImage = false;
@@ -422,8 +473,30 @@ void PipelineManager::save_output(QString dir)
         }
     }
     ImageHelper::save_pic((dir + "/" + "depth.png").toStdString(), diffData, 3, w, h);
-    
+
     delete[] diffData;
+}
+
+void PipelineManager::save_pic(QString loc, vector<vector<vec4>>* data)
+{
+    if (!data) {
+        return;
+    }
+    vector<vector<vec4>> dat = *data;
+    long long int h = dat.size();
+    long long int w = dat[0].size();
+ 
+    unsigned char* diffData = new unsigned char[h * w * 3];
+    int layerSize = layers.size();
+    int idx = 0;
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++) {
+            diffData[idx++] = dat[i][j].r;
+            diffData[idx++] = dat[i][j].g;
+            diffData[idx++] = dat[i][j].b;
+        }
+    }
+    ImageHelper::save_pic(loc.toStdString(), diffData, 3, w, h);
 }
 
 float PipelineManager::getTransmittance(FilmComposition composition, float thickness)

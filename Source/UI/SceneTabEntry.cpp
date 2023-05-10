@@ -59,9 +59,10 @@ void SceneTabEntry::addComponent()
 
 	body_layout = new QHBoxLayout();
 	body_layout->setContentsMargins(0, 0, 0, 0);
-	body_layout->setSpacing(0);
+	body_layout->setSpacing(5);
 
 	icon_container = new QWidget();
+	icon_container->setFixedSize(QSize(UIModel::get()->scene_entry_icon_width, UIModel::get()->scene_entry_icon_width));
 
 	icon_layout = new QVBoxLayout();
 	icon_layout->setContentsMargins(0, 0, 0, 0);
@@ -76,7 +77,7 @@ void SceneTabEntry::addComponent()
 	label_layout->setContentsMargins(0, 0, 0, 0);
 	label_layout->setSpacing(0);
 	label = new QLabel();
-	label->setAlignment(Qt::AlignLeft);
+	label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
 	label_layout->addWidget(label);
 

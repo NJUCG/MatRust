@@ -42,6 +42,7 @@ public:
 	void generate_rust(double);
 	static int bind4Map(vector<vector<vec4>>);
 	void save_output(QString);
+	void save_pic(QString, vector<vector<vec4>>*);
 protected:
 	vector<Layer*> layers;
 	vector<vector<vector<RustUnit>>> units;
@@ -52,4 +53,10 @@ protected:
 	void merge_layers();
 	float getTransmittance(FilmComposition composite, float thick);
 	float getTransmittance(float ac, float thick);
+
+	vector<vector<vec4>>* diffuse_data = nullptr;
+	vector<vector<vec4>>* roughness_data = nullptr;
+	vector<vector<vec4>>* metallic_data = nullptr;
+	vector<vector<vec4>>* normal_disturb_data = nullptr;
+	vector<vector<vec4>>* height_data = nullptr;
 };

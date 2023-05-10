@@ -1,0 +1,10 @@
+QPushButton#left_button {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+    QPushButton#left_button:hover {
+        background-color: #797979;
+    }

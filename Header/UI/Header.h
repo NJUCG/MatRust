@@ -3,6 +3,7 @@
 #include"HeaderTab.h"
 #include"StringHelper.h"
 #include<qwidget.h>
+#include<qpushbutton.h>
 
 class Header:public QWidget
 {
