@@ -12,5 +12,6 @@ public:
 	virtual void on_widget_move();
 	virtual void update_temp_curve(QPoint);
 	virtual void remove_connection(NodeDataButton*);
+	virtual void on_widget_deleted(void*);
 };
 

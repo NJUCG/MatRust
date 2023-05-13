@@ -14,12 +14,55 @@ void PipelineManager::register_responder(PipelineManagerResponder* responder)
 PipelineManager::PipelineManager()
 {
     this->output = new PipelineOutput();
+    noise_data = new vector<vector<vec4>>();
+    EventAdapter::shared->register_event("regenerate_noise_map", this);
+    EventAdapter::shared->register_event("load_noise_map", this);
 }
 
 PipelineManager::PipelineManager(PipelineManagerResponder* responder)
 {
 	this->responder = responder;
 	this->layers = vector<Layer*>();
+    noise_data = new vector<vector<vec4>>();
+    EventAdapter::shared->register_event("regenerate_noise_map", this);
+    EventAdapter::shared->register_event("load_noise_map", this);
+}
+
+void PipelineManager::on_trigger(string e)
+{
+    if (e == "regenerate_noise_map") {
+        if (state == Occupied) {
+            float wavelength = *(float*)EventAdapter::shared->pop_data();
+
+            NormalDisturbHelper helper(config->textureWidth, config->textureHeight, wavelength);
+            helper.generate_pattern("noise.png");
+
+            output->normal_noise_map = ImageHelper::TextureFromFile("noise.png", "D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1");
+            
+            int rgb;
+            ImageHelper::load_pic("noise.png", (*noise_data), rgb);
+            EventAdapter::shared->push_data(noise_data);
+            EventAdapter::shared->trigger_event("noise_inited");
+        }
+        else if(noise_data){
+            float wavelength = *(float*)EventAdapter::shared->pop_data();
+
+            vector<vector<vec4>> n_d = *noise_data;
+            NormalDisturbHelper helper(n_d[0].size(), n_d.size(), wavelength);
+            helper.generate_pattern("noise.png");
+
+            int rgb;
+            ImageHelper::load_pic("noise.png", (*noise_data), rgb);
+            EventAdapter::shared->push_data(noise_data);
+            EventAdapter::shared->trigger_event("noise_inited");
+        }
+    }
+    else if (e == "load_noise_map") {
+        int rgb;
+        ImageHelper::load_pic("noise.png", (*noise_data), rgb);
+        EventAdapter::shared->push_data(noise_data);
+        EventAdapter::shared->trigger_event("noise_inited");
+    }
 }
 
 void PipelineManager::frame_consumer(float msc)
@@ -61,21 +104,6 @@ void PipelineManager::start_pipeline(PipelineConfig* config)
         }
     }
 	this->config = config;
-    if (diffuse_data) {
-        delete diffuse_data;
-    }
-    if (roughness_data) {
-        delete roughness_data;
-    }
-    if (metallic_data) {
-        delete metallic_data;
-    }
-    if (normal_disturb_data) {
-        delete normal_disturb_data;
-    }
-    if (height_data) {
-        delete height_data;
-    }
     diffuse_data = new vector<vector<vec4>>(config->textureHeight, vector<vec4>(config->textureWidth, vec4()));
     roughness_data = new vector<vector<vec4>>(config->textureHeight, vector<vec4>(config->textureWidth, vec4()));
     metallic_data = new vector<vector<vec4>>(config->textureHeight, vector<vec4>(config->textureWidth, vec4()));
@@ -85,9 +113,14 @@ void PipelineManager::start_pipeline(PipelineConfig* config)
 	state = Occupied;
     prepare_layers();
     dispatch_rules();
-    output->normal_noise_map = ImageHelper::TextureFromFile("test_pat.png", "D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1");
+    
+    if(output->normal_noise_map < 0)
+        output->normal_noise_map = ImageHelper::TextureFromFile("noise.png", "D:/rust/CRust/QtWidgetsApplication1/QtWidgetsApplication1");
+    
     EventAdapter::shared->push_data(config);
     EventAdapter::shared->trigger_event("pipeline_started");
+    EventAdapter::shared->pop_data();
+
     EventAdapter::shared->push_data(diffuse_data);
     EventAdapter::shared->trigger_event("diffuse_data_inited");
     EventAdapter::shared->push_data(roughness_data);
@@ -124,7 +157,6 @@ void PipelineManager::clear_pipeline()
     if (height_data) {
         delete height_data;
     }
-
 
     state = Open;
 }
@@ -290,7 +322,6 @@ void PipelineManager::merge_layers()
                 RustUnit unit = units[k][i][j];
                 depth_vec[i][j] += unit.thickness;
             }
-            //max_depth = std::max(max_depth, depth_vec[i][j]);
         }
     }
     for (int i = 0; i < config->textureHeight; i++) {

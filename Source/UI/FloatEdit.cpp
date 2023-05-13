@@ -46,6 +46,7 @@ inline void FloatEdit::set_value(float new_value, bool respond)
 		value = new_value;
 	}
 	middle_button->setText(get_value().c_str());
+	value_label->setText(get_value().c_str());
 	if (responder && respond) {
 		responder->on_value_changed(name, value);
 	}

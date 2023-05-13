@@ -10,6 +10,7 @@
 #include"EventAdapter.h"
 #include"string_defs.h"
 #include"StringHelper.h"
+#include"StretchContainer.h"
 
 class FileSelector: public QWidget
 {

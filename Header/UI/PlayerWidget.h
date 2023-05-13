@@ -4,6 +4,9 @@
 #include"CssLoader.h"
 #include<qboxlayout.h>
 #include<qpushbutton.h>
+#include<qlabel.h>
+#include"StringHelper.h"
+
 class PlayerWidget: public QWidget
 {
 public:
@@ -18,6 +21,9 @@ protected:
 	TimeMachineIdentifier* time_machine;
 
 	QPushButton* play_and_pause_button;
+	QIcon play_icon;
+	QIcon pause_icon;
+	
 	QPushButton* replay_button = new QPushButton();
 
 	void init();

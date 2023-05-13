@@ -29,27 +29,26 @@ void FileSelector::addComponent()
 {
 	top_layout = new QHBoxLayout();
 
-	top_layout->setContentsMargins(0, 0, 0, 0);
-	top_layout->setSpacing(5);
+	top_layout->setContentsMargins(5, 0, 5, 0);
+	top_layout->setSpacing(0);
 
 	name_tag = new QLabel();
 	name_tag->setObjectName("name_tag");
 	name_tag->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 	name_tag->setText("");
 
-	top_layout->addWidget(name_tag);
-
 	normal_label = new QLabel();
 	normal_label->setObjectName("normal_label");
 	normal_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 	normal_label->setText("");
 
-	top_layout->addWidget(normal_label);
+	StretchContainer* c = new StretchContainer(name_tag, normal_label, 4, 6);
+	
+	top_layout->addWidget(c);
 
 	setLayout(top_layout);
 
 	setFixedHeight(UIModel::get()->selector_height);
-	setFixedWidth(UIModel::get()->selector_width);
 }
 
 void FileSelector::mousePressEvent(QMouseEvent* e)
@@ -60,7 +59,7 @@ void FileSelector::mousePressEvent(QMouseEvent* e)
 	rect.setSize(normal_label->size());
 	if (rect.contains(e->globalPos())) {
 		QString* t = new QString();
-		*t = QFileDialog::getOpenFileName(nullptr, OJBECT_TAB_SELECT_MODEL, ".", "*.obj");
+		*t = QFileDialog::getOpenFileName(nullptr, OBJECT_TAB_SELECT_MODEL, ".", "*.obj");
 		normal_label->setText(*t);
 		if (event_name != "") {
 			EventAdapter::shared->push_data(t);

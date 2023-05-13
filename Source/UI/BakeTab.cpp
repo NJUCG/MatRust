@@ -4,6 +4,7 @@ BakeTab::BakeTab()
 {
 	init();
 	addComponent();
+	reload_noise();
 }
 
 void BakeTab::on_trigger(string name)
@@ -15,6 +16,14 @@ void BakeTab::on_trigger(string name)
 	else if (name == "save_archive_event_bake_tab") {
 		QString* p = (QString*)EventAdapter::shared->pop_data();
 		save_config(*p);
+	}
+	else if (name == "pipeline_started") {
+		config = (PipelineConfig*)EventAdapter::shared->top_data();
+	}
+	else if (name == "noise_inited") {
+		vector<vector<vec4>>* data = (vector<vector<vec4>>*)(EventAdapter::shared->pop_data());
+		pic_widget->reset_img((*data).size(), (*data)[0].size(), data);
+		pic_widget->update();
 	}
 }
 
@@ -31,6 +40,15 @@ void BakeTab::on_value_changed(string name, float new_value)
 		float* f = (float*)data_cache["stop_time"];
 		*f = new_value;
 	}
+	else if (name == "noise_wavelength") {
+		float* f = (float*)data_cache["noise_wavelength"];
+		*f = new_value;
+	}
+	else if (name == "disturb_factor") {
+		float* f = (float*)data_cache["disturb_factor"];
+		*f = new_value;
+		trigger_bake();
+	}
 }
 
 void BakeTab::init()
@@ -42,8 +60,13 @@ void BakeTab::init()
 	data_cache["use_disturb"] = new bool(false);
 	data_cache["use_depth"] = new bool(false);
 
+	repeat_icon = QIcon("resources/ui/icons/repeat-30.png");
+	stretch_icon = QIcon("resources/ui/icons/stretch-30.png");
+
 	EventAdapter::shared->register_event("load_archive_event_bake_tab",this);
 	EventAdapter::shared->register_event("save_archive_event_bake_tab", this);
+	EventAdapter::shared->register_event("noise_inited", this);
+	EventAdapter::shared->register_event("pipeline_started", this);
 }
 
 void BakeTab::addComponent()
@@ -60,11 +83,12 @@ void BakeTab::addComponent()
 	illusion_layout->setSpacing(5);
 
 	new_checkbox(BAKE_TAB_USE_DISTURB, "use_disturb");
+	argument(illusion_layout, BAKE_TAB_DISTURB_FACTOR, "disturb_factor", "", 20.0f, 1.0f, 100.0f, 0.1f);
 	new_checkbox(BAKE_TAB_USE_DEPTH, "use_depth");
 	
 	illusion_widget->setLayout(illusion_layout);
 
-	ExpandableNode* illusion_node = new ExpandableNode("Illusion", illusion_widget);
+	ExpandableNode* illusion_node = new ExpandableNode(BAKE_TAB_ILLUSION, illusion_widget);
 	
 	top_layout->addWidget(illusion_node);
 	
@@ -73,13 +97,69 @@ void BakeTab::addComponent()
 	settings_layout->setContentsMargins(0, 0, 0, 0);
 	settings_layout->setSpacing(0);
 
-	argument(BAKE_TAB_TIME, "stop_time", 20.0f, 5, 50, 0.1);
+	argument(settings_layout, BAKE_TAB_TIME, "stop_time", "s", 20.0f, 5, 50, 0.1);
 
 	settings_widget->setLayout(settings_layout);
 
-	ExpandableNode* settings_node = new ExpandableNode("Illusion", settings_widget);
+	ExpandableNode* settings_node = new ExpandableNode(BAKE_TAB_TIME, settings_widget);
 
 	top_layout->addWidget(settings_node);
+
+	noise_widget = new QWidget();
+	noise_layout = new QVBoxLayout();
+	noise_layout->setContentsMargins(0, 0, 0, 0);
+	noise_layout->setSpacing(5);
+
+	argument(noise_layout, BAKE_TAB_WAVE_LENGTH, "noise_wavelength", "", 10.0f, 1, 100, 1.0f);
+
+	QPushButton* noise_btn = new QPushButton();
+	noise_btn->setStyleSheet("QPushButton{background-color: #545454;}QPushButton:hover{background-color: #656565;}");
+	noise_btn->setText(BAKE_TAB_REGENERATE_NOISE);
+	noise_btn->setIcon(QIcon("resources/ui/icons/noise-30.png"));
+	noise_btn->setFixedHeight(20);
+	noise_btn->setMinimumHeight(20);
+	connect(noise_btn, &QPushButton::clicked, [=]() {
+		float* f = (float*)data_cache["noise_wavelength"];
+		EventAdapter::shared->push_data(f);
+		EventAdapter::shared->trigger_event("regenerate_noise_map");
+		});
+	
+	noise_layout->addWidget(noise_btn);
+
+	pic_widget = new ImgDrawer();
+
+	QPushButton* view_mode_btn = new QPushButton();
+	view_mode_btn->setObjectName("operator");
+	view_mode_btn->setStyleSheet("QPushButton{background-color: #545454;}QPushButton:hover{background-color: #656565;}");
+	view_mode_btn->setText(IMG_DRAWER_SWITCH_VIEW_MODE);
+	view_mode_btn->setIcon(repeat_icon);
+	view_mode_btn->setFixedHeight(20);
+	view_mode_btn->setMinimumHeight(20);
+	connect(view_mode_btn, &QPushButton::clicked, [=]() {
+		ImgDrawer::Policy policy = pic_widget->switchPolicy();
+		if (policy == ImgDrawer::Policy::Single) {
+			view_mode_btn->setIcon(stretch_icon);
+		}
+		else if (policy == ImgDrawer::Policy::Repeat) {
+			view_mode_btn->setIcon(repeat_icon);
+		}
+		pic_widget->update();
+		});
+	
+	noise_layout->addWidget(view_mode_btn);
+
+	ScalableContainer* pic_c = new ScalableContainer(pic_widget);
+	pic_c->setFixedHeight(120);
+
+	ExpandableNode* preview_node = new ExpandableNode(IMG_DRAWER_PREVIEW, pic_c);
+
+	noise_layout->addWidget(preview_node);
+
+	noise_widget->setLayout(noise_layout);
+
+	ExpandableNode* noise_node = new ExpandableNode(BAKE_TAB_NOISE, noise_widget);
+	
+	top_layout->addWidget(noise_node);
 
 	top_layout->addWidget(new QWidget());
 
@@ -167,6 +247,7 @@ void BakeTab::trigger_bake()
 	BakeInfo* info = new BakeInfo();
 	info->use_disturb = *((bool*)data_cache["use_disturb"]);
 	info->use_depth = *((bool*)data_cache["use_depth"]);
+	info->disturb_factor = *(float*)data_cache["disturb_factor"];
 
 	EventAdapter::shared->push_data(info);
 	EventAdapter::shared->trigger_event("bake_info_changed");
@@ -179,9 +260,9 @@ void BakeTab::save_config(QString path)
 	json["use_disturb"] = *((bool*)data_cache["use_disturb"]);
 	json["use_depth"] = *((bool*)data_cache["use_depth"]);
 	json["stop_time"] = *((float*)(data_cache["stop_time"]));
+	json["disturb_factor"] = *((float*)(data_cache["disturb_factor"]));
 
 	QFile save_file(path);
-	//qDebug() << "save";
 	if (!save_file.open(QIODeviceBase::WriteOnly)) {
 		qWarning() << "node bake tag config save failed.";
 		return;
@@ -225,9 +306,19 @@ void BakeTab::load_config(QString path)
 	data_cache["stop_time"] = new float(json["stop_time"].toDouble());
 	EventAdapter::shared->push_data(data_cache["stop_time"]);
 	EventAdapter::shared->trigger_event("stop_time_changed");
+
+	editor = (FloatEdit*)(widgets_cache["disturb_factor"]);
+	editor->set_value(json["disturb_factor"].toDouble());
+	data_cache["disturb_factor"] = new float(json["disturb_factor"].toDouble());
+	trigger_bake();
 }
 
-void BakeTab::argument(QString name, string tag, float init_value, float min, float max, float step, float sensitivity)
+void BakeTab::reload_noise()
+{
+	EventAdapter::shared->trigger_event("load_noise_map");
+}
+
+void BakeTab::argument(QLayout* layout, QString name, string tag, string unit,  float init_value, float min, float max, float step, float sensitivity)
 {
 	QWidget* line = new QWidget();
 	int line_height = UIModel::get()->control_panel_line_height;
@@ -235,9 +326,6 @@ void BakeTab::argument(QString name, string tag, float init_value, float min, fl
 
 	QHBoxLayout* line_layout = new QHBoxLayout();
 	line_layout->setContentsMargins(0, 0, 0, 0);
-	//line_layout->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
-
-	//line_layout->addWidget(new QWidget());
 
 	QLabel* value_label = new QLabel();
 	value_label->setText(name);
@@ -248,7 +336,7 @@ void BakeTab::argument(QString name, string tag, float init_value, float min, fl
 	editor->set_max_value(max);
 	editor->set_value(init_value);
 	editor->step = step;
-	editor->set_unit("s");
+	editor->set_unit(unit);
 	editor->sensitivity = sensitivity;
 	data_cache[tag] = new float(editor->value);
 	widgets_cache[tag] = editor;
@@ -259,5 +347,6 @@ void BakeTab::argument(QString name, string tag, float init_value, float min, fl
 	line_layout->addWidget(container);
 
 	line->setLayout(line_layout);
-	settings_layout->addWidget(line);
+	
+	layout->addWidget(line);
 }

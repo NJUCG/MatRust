@@ -14,6 +14,9 @@
 #include"ControllTabWidgetResponder.h"
 #include"ExpandableNode.h"
 #include"StretchContainer.h"
+#include"ImgDrawer.h"
+#include"ScalableContainer.h"
+#include"PipelineConfig.h"
 
 class BakeTab: public QWidget, public EventResponder, public FloatEditResponder, public ControllTabWidgetResponder
 {
@@ -31,12 +34,18 @@ protected:
 	QWidget* settings_widget = nullptr;
 	QVBoxLayout* settings_layout = nullptr;
 
+	PipelineConfig* config = nullptr;
+	QWidget* noise_widget = nullptr;
+	QVBoxLayout* noise_layout = nullptr;
+
+	ImgDrawer* pic_widget = nullptr;
+
 	unordered_map<string, void*> data_cache;
 	unordered_map<string, QWidget*> widgets_cache;
 
 	void init();
 	void addComponent();
-	void argument(QString name, string tag, float init_value = 0, float min = 0, float max = 100, float step = 0.1, float sensitivity = 1);
+	void argument(QLayout* layout, QString name, string tag, string unit, float init_value = 0, float min = 0, float max = 100, float step = 0.1, float sensitivity = 1);
 	void header();
 	void new_checkbox(QString label, string tag);
 
@@ -44,5 +53,10 @@ protected:
 
 	void save_config(QString);
 	void load_config(QString);
+
+	void reload_noise();
+
+	QIcon repeat_icon;
+	QIcon stretch_icon;
 };
 

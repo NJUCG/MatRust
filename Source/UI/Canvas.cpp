@@ -110,7 +110,7 @@ void Canvas::init()
     obj->type = "mesh";
     obj->loc = vec4(init_loc.x, init_loc.y, init_loc.z, 1);
     obj->rot = vec4(0, 0, 0, 0);
-    obj->scl = vec4(1, 1, 1, 1);
+    obj->scl = vec4(100, 100, 100, 0);
     EventAdapter::shared->push_data(obj);
     EventAdapter::shared->trigger_event("add_object_to_tab");
     EventAdapter::shared->push_data(obj);
@@ -289,6 +289,8 @@ void Canvas::render_output()
         f->glActiveTexture(GL_TEXTURE0 + UIModel::get()->normal_disturb_index);
         shader->setInt("normal_disturb_map", UIModel::get()->normal_disturb_index);
         f->glBindTexture(GL_TEXTURE_2D, normal_disturb_map);
+
+        shader->setFloat("normal_disturb_factor", info->disturb_factor);
     }
     else {
         shader->setBool("use_disturb", false);
@@ -301,11 +303,14 @@ void Canvas::render_output()
     else {
         shader->setBool("use_depth", true);
         shader->setFloat("heightScale", 0.05f);
+    }
+    shader->setBool("use_normal_map", false);
+    
+    if ((normal_disturb_map > 0 && info->use_disturb) || (is_pipeline_on && depth_map < 0 && !info->use_depth)) {
         f->glActiveTexture(GL_TEXTURE0 + UIModel::get()->depth_index);
         shader->setInt("depthMap", UIModel::get()->depth_index);
         f->glBindTexture(GL_TEXTURE_2D, depth_map);
     }
-    shader->setBool("use_normal_map", false);
 }
 void Canvas::init_scene() {
     QOpenGLExtraFunctions* f = QOpenGLContext::currentContext()->extraFunctions();

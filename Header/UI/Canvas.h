@@ -57,6 +57,7 @@ protected:
     bool is_pipeline_on = false;
     float i_metallic = 0.0f;
     float i_roughness = 0.0f;
+    float disturb_factor = 20.0f;
 
     unordered_map<string, ObjectData*> object_list;
 

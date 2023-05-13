@@ -16,6 +16,7 @@ public:
 	void deregsiter_event(string, EventResponder*);
 	void trigger_event(string);
 	void push_data(void*);
+	void* top_data();
 	void* pop_data();
 	static void init_event_adapter();
 protected:

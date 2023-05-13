@@ -52,6 +52,9 @@ void FloatSliderBar::init()
 void FloatSliderBar::addComponent()
 {
 	QHBoxLayout* layout = new QHBoxLayout();
+	layout->setContentsMargins(5, 0, 5, 0);
+	layout->setSpacing(0);
+
 	UIModel* model = UIModel::get();
 
 	setFixedHeight(model->float_slider_height);

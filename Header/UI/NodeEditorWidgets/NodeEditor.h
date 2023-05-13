@@ -34,6 +34,7 @@ public:
 	void on_trigger(string) override;
 	void start_linking(NodeDataButton*) override;
 	void remove_connection(NodeDataButton*) override;
+	void on_widget_deleted(void*) override;
 
 	void read_config(QString); 
 	void write_config(QString);

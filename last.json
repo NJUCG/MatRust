@@ -1,0 +1,37 @@
+{
+    "connections": [
+        {
+            "start_pos_x": 258,
+            "start_pos_y": 381,
+            "start_widget_idx": 1,
+            "stop_pos_x": 511,
+            "stop_pos_y": 261,
+            "stop_widget_idx": 0
+        }
+    ],
+    "offset_x": 5,
+    "offset_y": 5,
+    "widgets": [
+        {
+            "loc_x": 511,
+            "loc_y": 221,
+            "type": "layer_machine"
+        },
+        {
+            "bias height": 0,
+            "block width": 0,
+            "color_b": 0,
+            "color_g": 0,
+            "color_r": 0,
+            "cutoff height": 0,
+            "diffuse spd": 0,
+            "loc_x": 18,
+            "loc_y": 116,
+            "metallic": 0,
+            "name": "锈蚀层",
+            "roughness": 0,
+            "transmittance": 0,
+            "type": "perlin"
+        }
+    ]
+}

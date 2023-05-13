@@ -35,6 +35,8 @@ public:
 	int get_node_data(string tag);
 	virtual void read(const QJsonObject&);
 	virtual void write(QJsonObject&);
+
+	void destroy_widget();
 protected:
 	QWidget* wrapper_widget;
 	NodePool* pool;

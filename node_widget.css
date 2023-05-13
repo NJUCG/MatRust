@@ -21,6 +21,11 @@ QLabel#header_dark_green{
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
+QLabel#header_purple {
+    background-color: #A349A4;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
 QPushButton{
     background-color: #545454;
     color: white;

@@ -49,7 +49,9 @@
 int mainWindow(int argc,char* argv[]){
     QApplication a(argc, argv);
     QWidget* w = new QWidget();
-    w->setWindowTitle("Ruster");
+    w->setSizePolicy(QSizePolicy(QSizePolicy::Policy::Ignored, QSizePolicy::Policy::Ignored));
+
+    w->setWindowTitle(APPLICATION_TITLE);
     w->setWindowIcon(QIcon("resources/ui/icons/icon-black-30.png"));
 
     PipelineManager::init_pipeline();
@@ -75,6 +77,8 @@ int mainWindow(int argc,char* argv[]){
     top_layout->addWidget(blank_separator);
 
     SceneTab* scene = new SceneTab();
+    scene->setFixedHeight(250);
+
     ControllPanel* control = new ControllPanel();
 
     SeparatorContainer* container = new SeparatorContainer();
@@ -85,7 +89,6 @@ int mainWindow(int argc,char* argv[]){
     container_layout->setSpacing(spacing);
 
     SeparatorContainer* left_container = new SeparatorContainer();
-    //left_container->setStyleSheet("background-color:gray;border:2px solid blue;");
     
     QVBoxLayout* left_container_layout = new QVBoxLayout();
     
@@ -129,6 +132,7 @@ int mainWindow(int argc,char* argv[]){
     container_layout->addWidget(separator);
 
     QWidget* right_container = new QWidget();
+    right_container->setFixedWidth(500);
     
     QVBoxLayout* right_container_layout = new QVBoxLayout();
     
@@ -263,7 +267,7 @@ int random_test() {
     w = h = 400;
     int wavelength = 10;
     NormalDisturbHelper helper(w, h, wavelength);
-    helper.generate_pattern("test_pat.png");
+    helper.generate_pattern("noise.png");
     return 0;
 }
 int entry_test(int argc, char* argv[]) {
@@ -289,34 +293,19 @@ int layout_test(int argc, char* argv[])
     w->setGeometry(0, 0, 600, 400);
     w->setStyleSheet("background-color:red");
 
-    QVBoxLayout* outer_layout = new QVBoxLayout();
+    QHBoxLayout* top_layout = new QHBoxLayout();
 
-    QWidget* container = new QWidget();
-    container->setStyleSheet("background-color:black");
-    outer_layout->addWidget(container);
+    QWidget* left = new QWidget();
+    left->setStyleSheet("background-color:black;");
+    top_layout->addWidget(left);
 
-    w->setLayout(outer_layout);
-    
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->setSpacing(10);
-    for (int i = 0; i < 6; i++) {
-        QHBoxLayout* hlayout = new QHBoxLayout();
+    QWidget* right = new QWidget();
+    right->setStyleSheet("background-color:white");
+    top_layout->addWidget(right);
 
-        QWidget* w = new QWidget();
-        w->setStyleSheet("QWidget{color:white;background-color:grey}QLabel{background-color:black}");
+    right->setFixedWidth(200);
 
-        hlayout->addStretch(3);
-
-        QLabel* t = new QLabel((string("hello ") + to_string(i)).c_str());
-      
-        t->setParent(w);
-        hlayout->addWidget(t, 7);
-
-        w->setLayout(hlayout);
-        layout->addWidget(w, Qt::AlignRight);
-        
-    }
-    container->setLayout(layout);
+    w->setLayout(top_layout);
 
     w->show();
     return a.exec();
@@ -561,4 +550,5 @@ int main(int argc, char *argv[]){
     //return expandable_node_test(argc, argv);
     //return animation_test(argc, argv);
     //return img_drawer_test(argc, argv);
+    //return layout_test(argc, argv);
 }

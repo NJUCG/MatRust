@@ -14,13 +14,14 @@
 #include"CustomDPDLayer.h"
 #include"EventAdapter.h"
 #include"ImageHelper.h"
+#include"NormalDisturbHelper.h"
 
 enum PipelineState {
 	Occupied,
 	Open
 };
 
-class PipelineManager: public TimeMachineResponder
+class PipelineManager: public TimeMachineResponder, public EventResponder
 {
 public:
 	static PipelineManager* shared;
@@ -28,6 +29,7 @@ public:
 	void register_responder(PipelineManagerResponder*);
 	PipelineManager();
 	PipelineManager(PipelineManagerResponder*);
+	void on_trigger(string) override;
 	void frame_consumer(float) override;
 	void update_current(float) override;
 	void register_layer(Layer*);
@@ -59,4 +61,6 @@ protected:
 	vector<vector<vec4>>* metallic_data = nullptr;
 	vector<vector<vec4>>* normal_disturb_data = nullptr;
 	vector<vector<vec4>>* height_data = nullptr;
+	vector<vector<vec4>>* noise_data = nullptr;
+
 };

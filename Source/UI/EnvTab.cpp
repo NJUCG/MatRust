@@ -114,7 +114,7 @@ void EnvTab::addComponent()
 	
 	concentration_widget->setLayout(concentration_layout);
 
-	ExpandableNode* concentration_node = new ExpandableNode("Concentration", concentration_widget);
+	ExpandableNode* concentration_node = new ExpandableNode(ENV_TAB_ARG_CONCENTRATION, concentration_widget);
 
 	body_layout->addWidget(concentration_node);
 	
@@ -129,7 +129,7 @@ void EnvTab::addComponent()
 	
 	model_widget->setLayout(model_layout);
 
-	ExpandableNode* model_node = new ExpandableNode("Model", model_widget);
+	ExpandableNode* model_node = new ExpandableNode(ENV_TAB_ARG_MODEL_SURFACE, model_widget);
 
 	body_layout->addWidget(model_node);
 	

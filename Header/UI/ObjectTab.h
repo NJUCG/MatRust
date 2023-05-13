@@ -6,6 +6,8 @@
 #include"StringHelper.h"
 #include"StringHelper.h"
 #include"ControllTabWidgetResponder.h"
+#include"ExpandableNode.h"
+#include"StretchContainer.h"
 
 class ObjectTab: public QWidget, public FloatEditResponder, public EventResponder, public FileSelectorResponder, public ControllTabWidgetResponder
 {
@@ -13,7 +15,7 @@ public:
 	ObjectTab();
 	void set_name(string);
 	void set_object(ObjectData*);
-	void set_property(string, float);
+	void set_property(string, string, float);
 	float get_property(string);
 	void on_select_file(string, string) override;
 
@@ -36,16 +38,29 @@ protected:
 
 	void init();
 	void addComponent();
+
+	void add_light_tab();
+	void add_model_tab();
+
 	void clear_layout(QLayout*);
 	void clear_properties();
 
-	void header(string type);
-	void add_property(QString, string, string unit, float,float min = -100,float max = 100);
+	void header(QLayout* layout, string type);
+	void add_property(QLayout*, QString, string, string, string unit, float,float min = -100,float max = 100);
 	void deactivate_property(string);
 	void activate_property(string);
 
 	// ≥÷æ√ªØ
 	void load_config(QString);
 	void save_config(QString);
+
+	// ÷ÿ÷√object tab
+	QWidget* light_tab = nullptr;
+	QVBoxLayout* light_layout = nullptr;
+
+	QWidget* model_tab = nullptr;
+	QVBoxLayout* model_layout = nullptr;
+
+	string current_tab = "mesh";
 };
 

@@ -111,7 +111,7 @@ void TimeMachineIdentifier::init()
 
 void TimeMachineIdentifier::addComponent()
 {
-	setFixedHeight(40);
+	setFixedHeight(20);
 
 }
 
@@ -127,14 +127,14 @@ void TimeMachineIdentifier::paintEvent(QPaintEvent* e)
 	QColor color(165, 165, 165);
 	int h = height();
 	for (float t = start_time; t <= stop_time; t += step) {
-		QRectF rect(start_x, 5, 40, 30);
+		QRectF rect(start_x, 2.5, 40, 15);
 
 		painter.setPen(color);
 		painter.drawText(rect, Qt::AlignHCenter | Qt::AlignVCenter, to_string(t).c_str());
 
 		QLine current_line;
 		current_line.setP1(QPoint(start_x + 40 / 2, h));
-		current_line.setP2(QPoint(start_x + 40 / 2, h - 5));
+		current_line.setP2(QPoint(start_x + 40 / 2, h - 2.5));
 		painter.drawLine(current_line);
 
 		start_x += 40;
@@ -143,7 +143,7 @@ void TimeMachineIdentifier::paintEvent(QPaintEvent* e)
 	// 移动滑块
 	// 获取滑块位置
 	int current_loc = machine_margin + dist_per_unit * (current_time - start_time);
-	QRectF rect(current_loc, 5, 40, 30);
+	QRectF rect(current_loc, 2.5, 40, 15);
 	QPen pen;
 	pen.setWidth(0);
 	QBrush brush;
@@ -154,7 +154,7 @@ void TimeMachineIdentifier::paintEvent(QPaintEvent* e)
 	painter.setBrush(brush);
 	painter.drawRoundedRect(rect, 4, 4);
 
-	QLine line(QPoint(current_loc + 20, h), QPoint(current_loc + 20, h - 5));
+	QLine line(QPoint(current_loc + 20, h), QPoint(current_loc + 20, h - 2.5));
 	pen = QPen();
 	pen.setColor(blue);
 	painter.setPen(pen);

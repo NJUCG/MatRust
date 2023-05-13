@@ -69,7 +69,7 @@ void Separator::mouseMoveEvent(QMouseEvent* e)
 
 void Separator::mousePressEvent(QMouseEvent* e)
 {
-	if (e->button() == Qt::MiddleButton) {
+	if (e->button() == Qt::LeftButton) {
 		in = true;
 		if (x_dir) {
 			before_p = e->globalPos().x();

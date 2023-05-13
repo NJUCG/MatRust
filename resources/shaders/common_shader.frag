@@ -12,6 +12,7 @@ uniform bool use_disturb;
 uniform float i_metallic;
 uniform float i_roughness;
 uniform float ao;
+uniform float normal_disturb_factor;
 
 uniform sampler2D material_texture_diffuse0;
 uniform sampler2D metallicMap;
@@ -132,7 +133,7 @@ void main()
     if(use_disturb && texture(normal_disturb_map, TexCoords).r > 0){
          //N = (N + (vec3(texture(noise_map, TexCoords)) * 2 - 1) * 0.1f) / 1.1f;   
         vec3 disturb = vec3(texture(noise_map, TexCoords));
-        N = (N * 50 + disturb) / 51; 
+        N = (N * normal_disturb_factor + disturb) / (normal_disturb_factor); 
     }
     vec3 V = normalize(camPos - WorldPos);
     vec2 texCoords;

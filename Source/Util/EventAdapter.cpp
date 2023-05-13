@@ -36,6 +36,10 @@ void EventAdapter::init_event_adapter() {
 void EventAdapter::push_data(void* data) {
 	event_stack.push(data);
 }
+void* EventAdapter::top_data()
+{
+	return event_stack.top();
+}
 void* EventAdapter::pop_data() {
 	void* ret = nullptr;
 	if (event_stack.size() > 0) {

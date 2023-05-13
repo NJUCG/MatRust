@@ -13,5 +13,7 @@ protected:
 
 	void init();
 	void addComponent();
+
+	void header();
 };
 

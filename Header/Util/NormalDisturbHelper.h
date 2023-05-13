@@ -59,9 +59,9 @@ public:
         vector<vector<float>> b_pattern = b_perlin->perlinPattern();
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
-                pattern[idx++] = MyRandom::_0_1F() * 255;
-                pattern[idx++] = MyRandom::_0_1F() * 255;
-                pattern[idx++] = MyRandom::_0_1F() * 255;
+                pattern[idx++] = r_pattern[i][j] * 255;//MyRandom::_0_1F() * 255;
+                pattern[idx++] = g_pattern[i][j] * 255;//MyRandom::_0_1F() * 255;
+                pattern[idx++] = b_pattern[i][j] * 255;//MyRandom::_0_1F() * 255;
             }
         }
         ImageHelper::save_pic(path.toStdString(), pattern, 3, w, h);

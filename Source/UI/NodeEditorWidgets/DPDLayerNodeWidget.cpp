@@ -164,5 +164,5 @@ void DPDLayerNodeWidget::body()
 void DPDLayerNodeWidget::prepare_arguments()
 {
 	title = NODE_EDITOR_NODE_WIDGET_DPD_LAYER_TITLE;
-	title_color = string("background-color:#2B652B;");
+	title_color = string("background-color:#A349A4;");
 }

@@ -38,6 +38,7 @@ void LayerMachineNodeWidget::write(QJsonObject& json)
 void LayerMachineNodeWidget::init()
 {
 	NodeWidget::init();
+	type = "layer_machine";
 	prepare_arguments();
 }
 
@@ -72,7 +73,7 @@ void LayerMachineNodeWidget::addComponent()
 void LayerMachineNodeWidget::prepare_arguments()
 {
 	title = NODE_EDITOR_NODE_WIDGET_LAYER_MACHINE_TITLE;
-	title_color = string("background-color:#2B652B;");
+	title_color = string("background-color:#652B2B;");
 }
 
 void LayerMachineNodeWidget::body()

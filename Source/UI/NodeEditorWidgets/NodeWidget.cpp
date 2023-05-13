@@ -63,6 +63,18 @@ void NodeWidget::write(QJsonObject& json)
 	json["loc_y"] = loc_y;
 }
 
+void NodeWidget::destroy_widget()
+{
+	if (responder) {
+		for (NodeDataButton* btn : buttons) {
+			if (btn->is_linked) {
+				responder->remove_connection(btn);
+			}
+		}
+	}
+	responder->on_widget_deleted(this);
+}
+
 void NodeWidget::init()
 {
 	current_height = 0;
@@ -117,15 +129,30 @@ void NodeWidget::header()
 	header_widget->setFixedHeight(model->node_widget_header_height);
 	header_widget->setStyleSheet(title_color.c_str());
 	header_widget->setObjectName("header_widget");
-	QVBoxLayout* layout = new QVBoxLayout();
-	layout->setContentsMargins(5, 0, 0, 0);
+	QHBoxLayout* header_layout = new QHBoxLayout();
+	header_layout->setContentsMargins(5, 0, 0, 0);
 
 	QLabel* value_label = new QLabel();
 	value_label->setObjectName("header_label");
 	value_label->setText(title);
-	layout->addWidget(value_label);
+	header_layout->addWidget(value_label);
 
-	header_widget->setLayout(layout);
+	header_layout->addWidget(new QWidget());
+
+	if (type != "layer_machine") {
+		QPushButton* del_btn = new QPushButton();
+		del_btn->setFixedSize(15, 15);
+		del_btn->setIcon(QIcon("resources/ui/icons/delete-30.png"));
+		del_btn->setIconSize(QSize(15, 15));
+
+		connect(del_btn, &QPushButton::clicked, [=]() {
+			destroy_widget();
+			});
+
+		header_layout->addWidget(del_btn);
+	}
+
+	header_widget->setLayout(header_layout);
 	top_layout->addWidget(header_widget);
 }
 

@@ -18,7 +18,7 @@ UIModel::UIModel() {
 
 	node_widget_header_height = 20;
 
-	float_slider_height = 40;
+	float_slider_height = 20;
 	float_slider_title_label_width = float_slider_value_label_width = 40;
 
 	node_widget_width = 250;
@@ -49,7 +49,7 @@ UIModel::UIModel() {
 
 	header_tab_width = 60;
 
-	selector_height = 25;
+	selector_height = 20;
 
 	selector_width = 400;
 

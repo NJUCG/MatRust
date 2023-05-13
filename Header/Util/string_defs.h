@@ -26,6 +26,8 @@
 #define ENV_TAB_ARG_TEMPERATURE StringHelper::fetch("ENV_TAB_ARG_TEMPERATURE")
 #define ENV_TAB_ARG_ROUGHNESS StringHelper::fetch("ENV_TAB_ARG_ROUGHNESS")
 #define ENV_TAB_ARG_METALLIC StringHelper::fetch("ENV_TAB_ARG_METALLIC")
+#define ENV_TAB_ARG_CONCENTRATION StringHelper::fetch("ENV_TAB_ARG_CONCENTRATION")
+#define ENV_TAB_ARG_MODEL_SURFACE StringHelper::fetch("ENV_TAB_ARG_MODEL_SURFACE")
 
 // 物体检视面板 0x02
 
@@ -35,17 +37,21 @@
 
 // 模型路径tag
 #define OBJECT_TAB_OBJECT_MODEL_PATH StringHelper::fetch("OBJECT_TAB_OBJECT_MODEL_PATH")
-#define OJBECT_TAB_SELECT_MODEL StringHelper::fetch("OJBECT_TAB_SELECT_MODEL")
+#define OBJECT_TAB_SELECT_MODEL StringHelper::fetch("OBJECT_TAB_SELECT_MODEL")
 
 // 位置
+#define OBJECT_TAB_LOC StringHelper::fetch("OBJECT_TAB_LOC")
+
 #define OBJECT_TAB_LOC_X StringHelper::fetch("OBJECT_TAB_LOC_X")
 #define OBJECT_TAB_LOC_Y StringHelper::fetch("OBJECT_TAB_LOC_Y")
 #define OBJECT_TAB_LOC_Z StringHelper::fetch("OBJECT_TAB_LOC_Z")
 
+#define OBJECT_TAB_ROT StringHelper::fetch("OBJECT_TAB_ROT")
 #define OBJECT_TAB_ROT_X StringHelper::fetch("OBJECT_TAB_ROT_X")
 #define OBJECT_TAB_ROT_Y StringHelper::fetch("OBJECT_TAB_ROT_Y")
 #define OBJECT_TAB_ROT_Z StringHelper::fetch("OBJECT_TAB_ROT_Z")
 
+#define OBJECT_TAB_SCL StringHelper::fetch("OBJECT_TAB_SCL")
 #define OBJECT_TAB_SCL_X StringHelper::fetch("OBJECT_TAB_SCL_X")
 #define OBJECT_TAB_SCL_Y StringHelper::fetch("OBJECT_TAB_SCL_Y")
 #define OBJECT_TAB_SCL_Z StringHelper::fetch("OBJECT_TAB_SCL_Z")
@@ -55,6 +61,8 @@
 // 节点面板
 
 // 添加节点面板
+#define LAYER_TAB_TITLE StringHelper::fetch("LAYER_TAB_TITLE")
+
 #define NODE_EDITOR_PANEL_CUSTOM_LAYER StringHelper::fetch("NODE_EDITOR_PANEL_CUSTOM_LAYER")
 #define NODE_EDITOR_PANEL_PERLIN_LAYER StringHelper::fetch("NODE_EDITOR_PANEL_PERLIN_LAYER")
 #define NODE_EDITOR_PANEL_DPD_LAYER StringHelper::fetch("NODE_EDITOR_PANEL_DPD_LAYER")
@@ -104,12 +112,25 @@
 
 #define BAKE_TAB_HEADER StringHelper::fetch("BAKE_TAB_HEADER")
 #define BAKE_TAB_USE_DISTURB StringHelper::fetch("BAKE_TAB_USE_DISTURB")
+#define BAKE_TAB_DISTURB_FACTOR StringHelper::fetch("BAKE_TAB_DISTURB_FACTOR")
 #define BAKE_TAB_USE_DEPTH StringHelper::fetch("BAKE_TAB_USE_DEPTH")
 #define BAKE_TAB_TIME StringHelper::fetch("BAKE_TAB_TIME")
+#define BAKE_TAB_ILLUSION StringHelper::fetch("BAKE_TAB_ILLUSION")
+#define BAKE_TAB_NOISE StringHelper::fetch("BAKE_TAB_NOISE")
+#define BAKE_TAB_WAVE_LENGTH StringHelper::fetch("BAKE_TAB_WAVE_LENGTH")
+#define BAKE_TAB_REGENERATE_NOISE StringHelper::fetch("BAKE_TAB_REGENERATE_NOISE")
 
+#define IMG_DRAWER_SWITCH_VIEW_MODE StringHelper::fetch("IMG_DRAWER_SWITCH_VIEW_MODE")
+#define IMG_DRAWER_PREVIEW StringHelper::fetch("IMG_DRAWER_PREVIEW")
+
+#define OUTPUT_TAB_SAVE StringHelper::fetch("OUTPUT_TAB_SAVE")
 #define OUTPUT_TAB_HEADER StringHelper::fetch("OUTPUT_TAB_HEADER")
 #define OUTPUT_TAB_DIFFUSE StringHelper::fetch("OUTPUT_TAB_DIFFUSE")
 #define OUTPUT_TAB_ROUGHNESS StringHelper::fetch("OUTPUT_TAB_ROUGHNESS")
 #define OUTPUT_TAB_METALLIC StringHelper::fetch("OUTPUT_TAB_METALLIC")
 #define OUTPUT_TAB_HEIGHT StringHelper::fetch("OUTPUT_TAB_HEIGHT")
 #define OUTPUT_TAB_NORMAL_DISTURB StringHelper::fetch("OUTPUT_TAB_NORMAL_DISTURB")
+
+#define PLAYER_TITLE StringHelper::fetch("PLAYER_TITLE")
+
+#define APPLICATION_TITLE StringHelper::fetch("APPLICATION_TITLE")

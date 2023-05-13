@@ -16,7 +16,7 @@ void OutputTab::on_trigger(string e)
 		imgs["height"]->update();
 	}
 	else if (e == "pipeline_started") {
-		config = (PipelineConfig*)EventAdapter::shared->pop_data();
+		config = (PipelineConfig*)EventAdapter::shared->top_data();
 	}
 	else if (e == "diffuse_data_inited") {
 		imgs["diffuse"]->reset_img(config->textureHeight, config->textureWidth, (vector<vector<vec4>>*)(EventAdapter::shared->pop_data()));
@@ -63,6 +63,8 @@ void OutputTab::init()
 void OutputTab::addComponent()
 {
 	top_layout = new QVBoxLayout();
+	top_layout->setContentsMargins(5, 5, 5, 5);
+
 	header(OUTPUT_TAB_HEADER);
 	body();
 
@@ -73,11 +75,11 @@ void OutputTab::addComponent()
 
 	view_mode_widget->setLayout(view_mode_layout);
 
-	add_pic("Diffuse", "diffuse");
-	add_pic("Roughness", "roughness");
-	add_pic("Metallic", "metallic");
-	add_pic("Normal_Disturb", "normal_disturb");
-	add_pic("Height", "height");
+	add_pic(OUTPUT_TAB_DIFFUSE, "diffuse");
+	add_pic(OUTPUT_TAB_ROUGHNESS, "roughness");
+	add_pic(OUTPUT_TAB_METALLIC, "metallic");
+	add_pic(OUTPUT_TAB_NORMAL_DISTURB, "normal_disturb");
+	add_pic(OUTPUT_TAB_HEIGHT, "height");
 	end_body();
 	setLayout(top_layout);
 }
@@ -87,22 +89,24 @@ void OutputTab::header(QString header)
 	QWidget* head = new QWidget();
 
 	UIModel* model = UIModel::get();
-	head->setFixedHeight(model->control_panel_header_height);
+	head->setFixedHeight(model->control_selector_button_height);
 
 	head->setObjectName("head");
+	head->setStyleSheet("background-color:transparent;color:white;border:0px solid red;");
 
 	QHBoxLayout* header_layout = new QHBoxLayout();
-	header_layout->setContentsMargins(0, 0, 0, 0);
+	header_layout->setContentsMargins(5, 0, 5, 0);
+	header_layout->setSpacing(5);
 
 	QPushButton* icon_btn = new QPushButton();
 	icon_btn->setObjectName("header_icon");
-	icon_btn->setStyleSheet("background-color:transparent;color:transparent;border:solid 0px;");
+	icon_btn->setStyleSheet("background-color:transparent;color:transparent;border:0px solid;");
 
 	QIcon* icon = new QIcon("resources/ui/icons/output-30.png");
 
 	icon_btn->setIcon(*icon);
-	icon_btn->setIconSize(QSize(model->control_selector_icon_width, model->control_selector_icon_height));
-	icon_btn->setFixedSize(QSize(model->control_selector_button_width, model->control_selector_button_height));
+	icon_btn->setIconSize(QSize(20, 20));
+	icon_btn->setFixedSize(QSize(20, 20));
 	icon_btn->setEnabled(false);
 
 	header_layout->addWidget(icon_btn);
@@ -140,7 +144,7 @@ void OutputTab::add_pic(QString title,string tag)
 	QWidget* line_widget = new ScalableContainer(pic_widget);
 	line_widget->setFixedHeight(line_height);
 
-	ExpandableNode* preview_node = new ExpandableNode("preview", line_widget);
+	ExpandableNode* preview_node = new ExpandableNode(IMG_DRAWER_PREVIEW, line_widget);
 
 	QWidget* wrapper_widget = new QWidget();
 	QVBoxLayout* wrapper_layout = new QVBoxLayout();
@@ -156,7 +160,7 @@ void OutputTab::add_pic(QString title,string tag)
 	QPushButton* view_mode_btn = new QPushButton();
 	view_mode_btn->setObjectName("operator");
 	view_mode_btn->setStyleSheet("QPushButton{background-color: #545454;}QPushButton:hover{background-color: #656565;}");
-	view_mode_btn->setText("Switch View Mode");
+	view_mode_btn->setText(IMG_DRAWER_SWITCH_VIEW_MODE);
 	view_mode_btn->setIcon(repeat_icon);
 	view_mode_btn->setFixedHeight(operators_height);
 	view_mode_btn->setMinimumHeight(operators_height);
@@ -175,7 +179,7 @@ void OutputTab::add_pic(QString title,string tag)
 	QPushButton* save_btn = new QPushButton();
 	save_btn->setObjectName("operator");
 	save_btn->setStyleSheet("QPushButton{background-color: #545454;}QPushButton:hover{background-color: #656565;}");
-	save_btn->setText("Save Texture");
+	save_btn->setText(OUTPUT_TAB_SAVE);
 	save_btn->setIcon(save_icon);
 	save_btn->setFixedHeight(operators_height);
 	connect(save_btn, &QPushButton::clicked, [=]() {

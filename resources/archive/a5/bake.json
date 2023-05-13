@@ -1,5 +1,6 @@
 {
+    "disturb_factor": 32,
     "stop_time": 12,
     "use_depth": false,
-    "use_disturb": false
+    "use_disturb": true
 }

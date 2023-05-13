@@ -44,7 +44,9 @@ void CustomDPDLayer::accept_rules(PipelineConfig* p_config)
             unit.thickness = 0;
             unit.ac = addition_config->ac;
             unit.composition = FilmComposition::Custom;
-            unit.color = addition_config->color;
+            vec4 base_color = addition_config->color;
+            float randomizer = 0.9f + MyRandom::_0_1F() * 0.2f;
+            unit.color = vec4(base_color.x * randomizer, base_color.y * randomizer, base_color.z * randomizer, 255);
             unit.roughness = addition_config->roughness;
             unit.metallic = addition_config->metallic;
             units[i][j] = unit;

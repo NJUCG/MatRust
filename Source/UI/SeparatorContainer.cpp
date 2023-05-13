@@ -24,7 +24,7 @@ void SeparatorContainer::resizeEvent(QResizeEvent* e)
 	for (int i = 0; i < containers.size(); i++) {
 		QWidget* w = containers.at(i);
 		QSize s = base_max.at(i);
-		w->setMaximumSize(s);
+		//w->setMaximumSize(s);
 	}
 	QWidget::resizeEvent(e);
 }

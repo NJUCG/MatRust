@@ -9,7 +9,7 @@
 
   "ENV_TAB_ENV_ARGS_HEADER_TITLE": "环境参数",
   "ENV_TAB_ARG_RH": "相对湿度",
-  "ENV_TAB_ARG_CC": "T浓度",
+  "ENV_TAB_ARG_CC": "碳浓度",
   "ENV_TAB_ARG_SC": "硫浓度",
   "ENV_TAB_ARG_OC": "氧浓度",
   "ENV_TAB_ARG_TEMPERATURE": "环境温度",
@@ -19,19 +19,23 @@
   "OBJECT_TAB_OBJECT_HEADER_TITLE": "物体控制",
   "OBJECT_TAB_LIGHT_HEADER_TITLE": "灯光控制",
   "OBJECT_TAB_OBJECT_MODEL_PATH": "模型路径",
+
+  "OBJECT_TAB_LOC": "位置",
   "OBJECT_TAB_LOC_X": "位置 x",
   "OBJECT_TAB_LOC_Y": "y",
   "OBJECT_TAB_LOC_Z": "z",
 
-  "OBJECT_TAB_ROT_X": "旋转 x",
+  "OBJECT_TAB_ROT": "角度",
+  "OBJECT_TAB_ROT_X": "角度 x",
   "OBJECT_TAB_ROT_Y": "y",
   "OBJECT_TAB_ROT_Z": "z",
 
-  "OBJECT_TAB_SCL_X": "大小 x",
+  "OBJECT_TAB_SCL": "缩放",
+  "OBJECT_TAB_SCL_X": "缩放 x",
   "OBJECT_TAB_SCL_Y": "y",
   "OBJECT_TAB_SCL_Z": "z",
 
-  "OBJECT_TAB_LIGHT_INTENSITY": "光照强度",
+  "OBJECT_TAB_LIGHT_INTENSITY": "光强",
 
   "NODE_EDITOR_PANEL_PERLIN_LAYER": "Perlin层",
   "NODE_EDITOR_PANEL_DPD_LAYER": "DPD层",
@@ -70,20 +74,33 @@
   "NODE_EDITOR_NODE_WIDGET_DPD_LAYER_TITLE": "DPD层",
   "NODE_EDITOR_NODE_WIDGET_LAYER_MACHINE_TITLE": "层次组织者",
 
-  "OJBECT_TAB_SELECT_MODEL": "选择模型",
+  "OBJECT_TAB_SELECT_MODEL": "模型选择",
 
   "HEADER_LOAD_ARCHIVE": "读取存档",
   "HEADER_SAVE_ARCHIVE": "写入存档",
 
   "BAKE_TAB_HEADER": "渲染配置",
+  "BAKE_TAB_DISTURB_FACTOR": "扰动系数",
   "BAKE_TAB_USE_DISTURB": "法线扰动",
   "BAKE_TAB_USE_DEPTH": "高度图",
   "BAKE_TAB_TIME": "生长时间",
+  "BAKE_TAB_ILLUSION": "视差",
+  "BAKE_TAB_NOISE": "噪点",
+  "BAKE_TAB_WAVE_LENGTH": "波长",
+  "BAKE_TAB_REGENERATE_NOISE": "重新生成噪点",
   "HEADER_SAVE_OUTPUT": "保存材质",
   "OUTPUT_TAB_HEADER": "输出",
   "OUTPUT_TAB_DIFFUSE": "漫反射纹理",
   "OUTPUT_TAB_ROUGHNESS": "粗糙度纹理",
   "OUTPUT_TAB_METALLIC": "金属度纹理",
   "OUTPUT_TAB_HEIGHT": "高度纹理",
-  "OUTPUT_TAB_NORMAL_DISTUR": "法线扰动纹理"
+  "OUTPUT_TAB_NORMAL_DISTURB": "法线扰动纹理",
+  "OUTPUT_TAB_SAVE": "保存纹理",
+  "IMG_DRAWER_SWITCH_VIEW_MODE": "切换显示模式",
+  "IMG_DRAWER_PREVIEW": "预览",
+  "ENV_TAB_ARG_CONCENTRATION": "浓度",
+  "ENV_TAB_ARG_MODEL_SURFACE": "模型表面",
+  "LAYER_TAB_TITLE": "层次控制",
+  "PLAYER_TITLE": "时间控制",
+  "APPLICATION_TITLE": "锈蚀"
 }

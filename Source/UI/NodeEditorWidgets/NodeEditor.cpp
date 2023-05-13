@@ -393,8 +393,21 @@ void NodeEditor::remove_connection(NodeDataButton* btn)
 	}
 }
 
+void NodeEditor::on_widget_deleted(void* v)
+{
+	NodeWidget* w = (NodeWidget*)(v);
+	for (int i = 0; i < widgets.size(); i++) {
+		if (widgets[i] == w) {
+			widgets.erase(widgets.begin() + i);
+			delete w;
+		}
+	}
+}
+
 void NodeEditor::read_config(QString path)
 {
+	QPoint base_loc = mapToGlobal(QPoint(0, 0));
+
 	for (NodeWidget* w : widgets) {
 		delete w;
 	}
@@ -450,12 +463,12 @@ void NodeEditor::read_config(QString path)
 		QJsonObject obj = curve_v.toObject();
 
 		QPoint start_pos;
-		start_pos.setX(obj["start_pos_x"].toInt());
-		start_pos.setY(obj["start_pos_y"].toInt());
+		start_pos.setX(obj["start_pos_x"].toInt() + base_loc.x());
+		start_pos.setY(obj["start_pos_y"].toInt() + base_loc.y());
 
 		QPoint stop_pos;
-		stop_pos.setX(obj["stop_pos_x"].toInt());
-		stop_pos.setY(obj["stop_pos_y"].toInt());
+		stop_pos.setX(obj["stop_pos_x"].toInt() + base_loc.x());
+		stop_pos.setY(obj["stop_pos_y"].toInt() + base_loc.y());
 
 		NodeDataButton* start_btn = widgets[obj["start_widget_idx"].toInt()]->release_in_me(start_pos);
 		NodeDataButton* stop_btn = widgets[obj["stop_widget_idx"].toInt()]->release_in_me(stop_pos);
@@ -476,7 +489,7 @@ void NodeEditor::read_config(QString path)
 void NodeEditor::write_config(QString path)
 {
 	QJsonObject json;
-
+	QPoint base_loc = mapToGlobal(QPoint(0, 0));
 	QJsonArray widgets_array;
 	for (NodeWidget* w : widgets)
 	{
@@ -507,7 +520,7 @@ void NodeEditor::write_config(QString path)
 		}
 
 		QJsonObject obj;
-		c->write(obj);
+		c->write(obj, base_loc);
 		curves_array.append(obj);
 	}
 	json["connections"] = curves_array;
